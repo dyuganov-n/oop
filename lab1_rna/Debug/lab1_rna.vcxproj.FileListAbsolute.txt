@@ -1,0 +1,2 @@
+C:\Users\Dyuga\Desktop\study_labs\oop\lab1_rna\Debug\lab1_rna.exe
+C:\Users\Dyuga\Desktop\study_labs\oop\lab1_rna\Debug\lab1_rna.pdb
