@@ -1,11 +1,9 @@
 #include "RNA.h"
 
 #include <iostream>
-#include <cstring> // memcpy()
 
 using namespace std;
 
-// adds num nucls nucl
 RNA::RNA(const size_t num, const Nucl& nucl) {
 	this->capacity = 0;
 	this->nuclNum = 0;
@@ -15,7 +13,6 @@ RNA::RNA(const size_t num, const Nucl& nucl) {
 	}
 }
 
-// adds 1 nucl
 RNA::RNA(const Nucl& nucl) {
 	this->capacity = 0;
 	this->nuclNum = 0;
@@ -23,25 +20,24 @@ RNA::RNA(const Nucl& nucl) {
 	addNucl(nucl);
 }
 
-// copy constructor
 RNA::RNA(const RNA &other) {
 	this->nuclNum = other.nuclNum;
 	this->capacity = other.capacity;
 	this->rna = nullptr;
 
-	const size_t rnaSize = capacity / bitPairsinRnaPart;
-	this->rna = new size_t[rnaSize];
-	memcpy(this->rna, other.rna, rnaSize);
+	if (other.rna != nullptr) {
+		const size_t rnaSize = capacity / bitPairsinRnaPart;
+		this->rna = new size_t[rnaSize];
+		copyMem(this->rna, other.rna, rnaSize);
+	}
 }
 
-// empty constructor
 RNA::RNA(){
 	this->capacity = 0;
 	this->nuclNum = 0;
 	this->rna = nullptr;
 }
 
-// destructor
 RNA::~RNA() {
 	delete[] this->rna;
 	rna = nullptr;
@@ -57,6 +53,10 @@ void RNA::add(const Nucl &nucl, const size_t& idx, size_t& dst) {
 }
 
 void RNA::addNucl(const Nucl& nucl) {
+
+	size_t rnaArrayIdx = nuclNum / bitPairsinRnaPart;
+	size_t rnaPartIdx = nuclNum % bitPairsinRnaPart;
+
 	// First element 
 	if (nuclNum == 0 && capacity == 0) {
 		rna = new size_t[1];
@@ -72,33 +72,26 @@ void RNA::addNucl(const Nucl& nucl) {
 			tmp[i] = 0;
 		}
 	
-		//memcpy(tmp, rna, nuclNum*4); // doesn't work (don't know why)
-		//for (size_t i = 0; i < newMemSize / 2; ++i) {tmp[i] = rna[i];} // not effective
 		size_t* tmp1 = tmp;
 		size_t* rna1 = rna;
 		for (size_t i = 0; i < newMemSize / 2; ++i) { 
 			*(tmp1++) = *(rna1++);
 		}
+
 		delete[] rna;
 		rna = tmp;
 
 		capacity = newMemSize * bitPairsinRnaPart;
-
-		size_t rnaArrayIdx = nuclNum / bitPairsinRnaPart;
 		add(nucl, 0, rna[rnaArrayIdx]);
 	}
 	// Just insert
 	else {
-		size_t rnaArrayIdx = nuclNum / bitPairsinRnaPart;
-		size_t rnaPartIdx = nuclNum % bitPairsinRnaPart;
 		add(nucl, rnaPartIdx, rna[rnaArrayIdx]);
 	}
 }
 
-char const RNA::getNucl(size_t idx) {
-	// correct input check
-	if (idx > nuclNum - 1 || rna == nullptr) return 'E';
-
+Nucl const RNA::_getNucl(const size_t& idx) {
+	
 	size_t rnaPartIdx = idx / bitPairsinRnaPart;
 	size_t localIdxInRnaPart = ((bitPairsinRnaPart) - (idx % (bitPairsinRnaPart)) - 1);
 	size_t rnaPart = rna[rnaPartIdx];
@@ -108,7 +101,13 @@ char const RNA::getNucl(size_t idx) {
 	nucl &= rnaPart;
 	nucl >>= localIdxInRnaPart*2;
 
-	return getCharValue((Nucl)nucl);
+	return (Nucl)nucl;
+}
+
+// does not work with const RNA&
+char const RNA::getNucl(const size_t& idx) {
+	if (idx > nuclNum - 1 || rna == nullptr) return 'E';
+	return getCharValue(_getNucl(idx));
 }
 
 char const RNA::getCharValue(const Nucl& nucl) {
@@ -125,57 +124,107 @@ char const RNA::getCharValue(const Nucl& nucl) {
 	return 'E';
 }
 
-// WIP
-void RNA::trim(const size_t idx) {
-	if (idx > nuclNum) return;
+// tested
+RNA RNA::split(const size_t& idx) {
 	
-	size_t newNuclNum = idx + 1;
-	const size_t newMemSize = (newNuclNum / bitPairsinRnaPart) + 1;
-	capacity = newMemSize * bitPairsinRnaPart;
+	RNA result;
+	if (idx > nuclNum) return result;
 
-	size_t* tmp = new size_t[newMemSize];
-	for (size_t i = 0; i < newMemSize; ++i) {
-		tmp[i] = 0;
+	size_t resultNuclNum = this->nuclNum - idx;
+	for (size_t i = 0; i < resultNuclNum; ++i) {
+		result.addNucl(this->_getNucl(i+idx));
 	}
-	memcpy(tmp, rna, newMemSize);
-	// удалить еще несколько нуклеотидов с конца, чтобы их было idx+1
-	
-	delete[] rna;
-	rna = nullptr;
-	rna = tmp;
-	
-	nuclNum = newNuclNum;
-}
 
-// WIP
-RNA RNA::buildComplimentaryRna(const RNA& source) {
-	RNA result = RNA(source);
-	size_t rnaArrSize = nuclNum / bitPairsinRnaPart;
-
-	for (size_t i = 0; i < rnaArrSize; ++i) {
-		result.rna[i] = !result.rna[i];
+	RNA tmp;
+	for (size_t i = 0; i < idx; ++i) {
+		tmp.addNucl(this->_getNucl(i));
 	}
-	// еще если конец не полный, то происходит ЖОПА (нужно аккуратно занулить)
-	result.rna[rnaArrSize] <<= bitPairsinRnaPart - (nuclNum % bitPairsinRnaPart);
-	result.rna[rnaArrSize] >>= bitPairsinRnaPart - (nuclNum % bitPairsinRnaPart);
-	// test this
+
+	*this = tmp;
+		
 	return result;
 }
 
-// WIP
-RNA RNA::split(const size_t& idx)
-{
-	return RNA();
+// operator ! does not work
+RNA RNA::operator!() {
+	if (nuclNum == 0) return *this;
+
+	RNA result(*this);
+
+	size_t rnaArrSize = nuclNum / bitPairsinRnaPart;
+	for (size_t i = 0; i < rnaArrSize; ++i) {
+		rna[i] = ~(rna[i]);
+	}
+
+	// if the end is not full, need set it with 0..
+	size_t notUsedBitsOfRnaPart = 2*(bitPairsinRnaPart - (nuclNum % bitPairsinRnaPart));
+	rna[rnaArrSize] <<= notUsedBitsOfRnaPart;
+	rna[rnaArrSize] >>= notUsedBitsOfRnaPart;
+
+	return *this;
 }
 
 // NEED TESTS
-bool RNA::isComplementary(RNA& sample){
+// does not work bwcause of not working operator !
+bool const RNA::isComplementary(RNA& sample){
 	if (this->rna == nullptr || sample.rna == nullptr) return false;
+	RNA complementary(!sample);
 	for (size_t i = 0; i < nuclNum / bitPairsinRnaPart; ++i) {
 		if (this->rna[i] != sample.rna[i]) return false;
 	}
 	return true;
 }
 
+// tested
+RNA const RNA::operator+(RNA& right){
+	
+	RNA result(*this);
+	if (this->nuclNum == 0 && right.nuclNum == 0) return result;
+	
+	size_t thisMemSize = this->capacity / this->bitPairsinRnaPart;
+	size_t resultNuclNum = this->nuclNum + right.nuclNum;
 
+	for (size_t i = 0; i < right.nuclNum; ++i) {
+		result.addNucl(right._getNucl(i));
+	}
+
+	return result;
+}
+
+// tested
+bool const RNA::operator==(const RNA& right){
+	if (this->nuclNum != right.nuclNum) return false;
+	for (size_t i = 0; i < this->capacity / this->bitPairsinRnaPart; ++i) {
+		if (this->rna[i] != right.rna[i]) return false;
+	}
+	return true;
+}
+
+// tested
+void RNA::operator=(const RNA& value) {
+	this->nuclNum = value.nuclNum;
+	this->capacity = value.capacity;
+
+	delete[] this->rna;
+	this->rna = nullptr;
+
+	size_t newMemSize = capacity / bitPairsinRnaPart;
+	if (newMemSize > 0) {
+		this->rna = new size_t[newMemSize];
+		copyMem(this->rna, value.rna, newMemSize);
+	}
+}
+
+// WIP
+RNA::nuclRef RNA::operator[](size_t& idx){
+
+	return nuclRef();
+}
+
+ostream& operator<<(ostream& os, RNA r) {
+	for (size_t i = 0; i < r.getNuclNum(); ++i) {
+		os << r.getNucl(i) << endl;
+	}
+	return os;
+}
 
