@@ -124,7 +124,6 @@ char const RNA::getCharValue(const Nucl& nucl) {
 	return 'E';
 }
 
-// tested
 RNA RNA::split(const size_t& idx) {
 	
 	RNA result;
@@ -145,37 +144,32 @@ RNA RNA::split(const size_t& idx) {
 	return result;
 }
 
-// operator ! does not work
 RNA RNA::operator!() {
 	if (nuclNum == 0) return *this;
 
 	RNA result(*this);
-
-	size_t rnaArrSize = nuclNum / bitPairsinRnaPart;
-	for (size_t i = 0; i < rnaArrSize; ++i) {
-		rna[i] = ~(rna[i]);
+	
+	size_t rnaArrSize = (nuclNum / bitPairsinRnaPart);
+	for (size_t i = 0; i <= rnaArrSize; ++i) {
+		result.rna[i] = ~result.rna[i];
 	}
 
 	// if the end is not full, need set it with 0..
 	size_t notUsedBitsOfRnaPart = 2*(bitPairsinRnaPart - (nuclNum % bitPairsinRnaPart));
-	rna[rnaArrSize] <<= notUsedBitsOfRnaPart;
-	rna[rnaArrSize] >>= notUsedBitsOfRnaPart;
+	result.rna[rnaArrSize] >>= notUsedBitsOfRnaPart;
+	result.rna[rnaArrSize] <<= notUsedBitsOfRnaPart;
 
-	return *this;
+	return result;
 }
 
-// NEED TESTS
-// does not work bwcause of not working operator !
-bool const RNA::isComplementary(RNA& sample){
-	if (this->rna == nullptr || sample.rna == nullptr) return false;
-	RNA complementary(!sample);
-	for (size_t i = 0; i < nuclNum / bitPairsinRnaPart; ++i) {
-		if (this->rna[i] != sample.rna[i]) return false;
-	}
-	return true;
+bool const RNA::isComplementary(RNA& sample) {
+	if(this->rna == nullptr || sample.rna == nullptr) return false;
+	
+	RNA complementary = !sample;
+	if (complementary == *this) return true;
+	else return false;
 }
 
-// tested
 RNA const RNA::operator+(RNA& right){
 	
 	RNA result(*this);
@@ -191,7 +185,6 @@ RNA const RNA::operator+(RNA& right){
 	return result;
 }
 
-// tested
 bool const RNA::operator==(const RNA& right){
 	if (this->nuclNum != right.nuclNum) return false;
 	for (size_t i = 0; i < this->capacity / this->bitPairsinRnaPart; ++i) {
@@ -200,7 +193,6 @@ bool const RNA::operator==(const RNA& right){
 	return true;
 }
 
-// tested
 void RNA::operator=(const RNA& value) {
 	this->nuclNum = value.nuclNum;
 	this->capacity = value.capacity;
@@ -215,12 +207,6 @@ void RNA::operator=(const RNA& value) {
 	}
 }
 
-// WIP
-RNA::nuclRef RNA::operator[](size_t& idx){
-
-	return nuclRef();
-}
-
 ostream& operator<<(ostream& os, RNA r) {
 	for (size_t i = 0; i < r.getNuclNum(); ++i) {
 		os << r.getNucl(i) << endl;
@@ -228,3 +214,8 @@ ostream& operator<<(ostream& os, RNA r) {
 	return os;
 }
 
+// WIP
+RNA::nuclRef RNA::operator[](size_t& idx) {
+
+	return nuclRef();
+}
