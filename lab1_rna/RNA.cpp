@@ -90,7 +90,7 @@ void RNA::addNucl(const Nucl& nucl) {
 	}
 }
 
-Nucl const RNA::_getNucl(const size_t& idx) {
+Nucl RNA::_getNucl(const size_t& idx) {
 	
 	size_t rnaPartIdx = idx / bitPairsinRnaPart;
 	size_t localIdxInRnaPart = ((bitPairsinRnaPart) - (idx % (bitPairsinRnaPart)) - 1);
@@ -105,12 +105,12 @@ Nucl const RNA::_getNucl(const size_t& idx) {
 }
 
 // does not work with const RNA&
-char const RNA::getNucl(const size_t& idx) {
+char RNA::getNucl(const size_t& idx) {
 	if (idx > nuclNum - 1 || rna == nullptr) return 'E';
 	return getCharValue(_getNucl(idx));
 }
 
-char const RNA::getCharValue(const Nucl& nucl) {
+char RNA::getCharValue(const Nucl& nucl) {
 	switch (nucl) {
 	case Nucl::A:
 		return 'A';
@@ -162,7 +162,7 @@ RNA RNA::operator!() {
 	return result;
 }
 
-bool const RNA::isComplementary(RNA& sample) {
+bool RNA::isComplementary(RNA& sample) {
 	if(this->rna == nullptr || sample.rna == nullptr) return false;
 	
 	RNA complementary = !sample;
@@ -170,7 +170,7 @@ bool const RNA::isComplementary(RNA& sample) {
 	else return false;
 }
 
-RNA const RNA::operator+(RNA& right){
+RNA RNA::operator+(RNA& right){
 	
 	RNA result(*this);
 	if (this->nuclNum == 0 && right.nuclNum == 0) return result;
@@ -185,7 +185,7 @@ RNA const RNA::operator+(RNA& right){
 	return result;
 }
 
-bool const RNA::operator==(const RNA& right){
+bool RNA::operator==(const RNA& right){
 	if (this->nuclNum != right.nuclNum) return false;
 	for (size_t i = 0; i < this->capacity / this->bitPairsinRnaPart; ++i) {
 		if (this->rna[i] != right.rna[i]) return false;
@@ -214,8 +214,6 @@ ostream& operator<<(ostream& os, RNA r) {
 	return os;
 }
 
-// WIP
-RNA::nuclRef RNA::operator[](size_t& idx) {
-
-	return nuclRef();
+RNA::nuclRef RNA::operator[](const size_t &idx){
+	return RNA::nuclRef(idx, *this);
 }

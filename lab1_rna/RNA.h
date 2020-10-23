@@ -19,30 +19,45 @@ public:
 	RNA(const RNA& other);
 	RNA();
 	virtual ~RNA();
-
+	
 	class nuclRef {
-
+	private:
+		const size_t &idx;
+		RNA& r;
+	public:
+		nuclRef(const size_t& index, RNA& rna) : idx(index), r(rna) {};
+		nuclRef& operator=(Nucl nucl) {
+			r.add((Nucl)0, idx, r.rna[idx / r.bitPairsinRnaPart]);
+			r.add(nucl, idx, r.rna[idx / r.bitPairsinRnaPart]);
+			r.nuclNum -= 2;
+			return *this;
+		}
+		nuclRef& operator=(nuclRef other) {
+			Nucl tmp = other.r._getNucl(other.idx);
+			r[idx] = tmp;
+			return *this;
+		}
 	};
 
-	char const getNucl(const size_t& idx);
+	char getNucl(const size_t& idx);
 	void addNucl(const Nucl& nucl);
 
 	RNA split(const size_t& idx);
-	bool const isComplementary(RNA& sample);
+	bool isComplementary(RNA& sample);
 
 	void operator=(const RNA& value);
 	RNA operator!();
-	RNA const operator+(RNA& right);
-	bool const operator==(const RNA& right);
-	bool const operator!=(const RNA& right) { return !(*this == right); }
-	nuclRef operator[](size_t& idx);
+	RNA  operator+(RNA& right);
+	bool operator==(const RNA& right);
+	bool operator!=(const RNA& right) { return !(*this == right); }
+	nuclRef operator[](const size_t &idx);
 	friend std::ostream& operator<<(std::ostream& os, RNA r);
 
-	bool const isEmpty() { return (rna == nullptr || nuclNum == 0) ? true : false; }
-	size_t const getNuclNum() { return this->nuclNum; }
-	size_t const getCapacity() { return this->capacity; }
-	size_t const getBitPairsinRnaPart() { return this->bitPairsinRnaPart; }
-	char const getCharValue(const Nucl& nucl);
+	bool isEmpty() { return (rna == nullptr || nuclNum == 0) ? true : false; }
+	size_t getNuclNum() { return this->nuclNum; }
+	size_t getCapacity() { return this->capacity; }
+	size_t getBitPairsinRnaPart() { return this->bitPairsinRnaPart; }
+	char getCharValue(const Nucl& nucl);
 
 private:
 	size_t nuclNum;
@@ -51,7 +66,7 @@ private:
 	const size_t bitPairsinRnaPart = (sizeof(size_t) * 4);
 
 	void add(const Nucl& nucl, const size_t& idx, size_t& dst);
-	Nucl const _getNucl(const size_t& idx);
+	Nucl _getNucl(const size_t& idx);
 
 	// my analog of memcpy because it doesn't work
 	void copyMem(size_t* dst, size_t* src, size_t size) {
