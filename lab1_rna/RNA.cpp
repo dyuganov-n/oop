@@ -105,7 +105,6 @@ Nucl RNA::_getNucl(const size_t& idx) const {
 	return (Nucl)nucl;
 }
 
-// does not work with const RNA&
 char RNA::getNucl(const size_t& idx) const {
 	if (idx > nuclNum - 1 || rna == nullptr) return 'E';
 	return getCharValue(_getNucl(idx));
@@ -163,7 +162,7 @@ RNA RNA::operator!()const {
 	return result;
 }
 
-bool RNA::isComplementary(RNA& sample) const {
+bool RNA::isComplementary(const RNA& sample) const {
 	if(this->rna == nullptr || sample.rna == nullptr) return false;
 	
 	RNA complementary = !sample;
@@ -171,7 +170,7 @@ bool RNA::isComplementary(RNA& sample) const {
 	else return false;
 }
 
-RNA RNA::operator+(RNA& right) const{
+RNA RNA::operator+(const RNA& right) const{
 	
 	RNA result(*this);
 	if (this->nuclNum == 0 && right.nuclNum == 0) return result;

@@ -1,8 +1,6 @@
 #pragma once
 
 #include <iostream>
-//using namespace std;
-
 
 enum Nucl {
 	A = 0, // A - 00
@@ -10,7 +8,6 @@ enum Nucl {
 	C = 2, // C - 10
 	T = 3 // T - 11 
 };
-
 
 class RNA {
 public:
@@ -29,7 +26,6 @@ public:
 		const size_t& getIndex() const { return this->idx; }
 		const RNA& getRna() const { return this->r; }
 	};
-	
 	class nuclRef {
 	private:
 		const size_t &idx;
@@ -55,29 +51,26 @@ public:
 			return *this;
 		}
 	};
-	
 
-
-	char getNucl(const size_t& idx) const;
 	void addNucl(const Nucl& nucl);
 
 	RNA split(const size_t& idx);
-	bool isComplementary(RNA& sample) const;
+	bool isComplementary(const RNA& sample) const;
 
 	RNA operator=(const RNA& value);
 	RNA operator!() const;
-	RNA operator+(RNA& right) const;
+	RNA operator+(const RNA& right) const;
 	bool operator==(const RNA& right) const;
 	bool operator!=(const RNA& right) const { return !(*this == right); }
 	nuclRef operator[](const size_t &idx);
 	constNuclRef operator[](const size_t& idx) const;
+
 	friend std::ostream& operator<<(std::ostream& os, RNA r);
 
 	bool isEmpty() const { return (rna == nullptr || nuclNum == 0) ? true : false; }
 	size_t getNuclNum() const { return this->nuclNum; }
 	size_t getCapacity() const { return this->capacity; }
 	size_t getBitPairsinRnaPart() const { return this->bitPairsinRnaPart; }
-	char getCharValue(const Nucl& nucl) const;
 
 private:
 	size_t nuclNum;
@@ -87,6 +80,9 @@ private:
 
 	void add(const Nucl& nucl, const size_t& idx, size_t& dst);
 	Nucl _getNucl(const size_t& idx) const;
+
+	char getCharValue(const Nucl& nucl) const;
+	char getNucl(const size_t& idx) const;
 
 	// my analog of memcpy because it doesn't work
 	void copyMem(size_t* dst, size_t* src, size_t size) {

@@ -9,7 +9,7 @@ using namespace std;
 
 int main() {
 	try {
-		
+		// something here
 	}
 	catch (const int& e) {
 		if (e == 2) cout << endl << "Wrong RNA array index" << endl;
@@ -18,3 +18,4 @@ int main() {
 	}
 	return 0;
 }
+
