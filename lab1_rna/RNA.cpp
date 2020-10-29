@@ -127,7 +127,10 @@ char RNA::getCharValue(const Nucl& nucl) const {
 RNA RNA::split(const size_t& idx) {
 	
 	RNA result;
-	if (idx > nuclNum) return result;
+	if (idx > nuclNum) {
+		throw 2;
+		return result;
+	}
 
 	size_t resultNuclNum = this->nuclNum - idx;
 	for (size_t i = 0; i < resultNuclNum; ++i) {

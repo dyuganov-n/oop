@@ -25,6 +25,7 @@ public:
 		constNuclRef(const size_t& index, const RNA& rna) : idx(index), r(rna) {};
 		const size_t& getIndex() const { return this->idx; }
 		const RNA& getRna() const { return this->r; }
+		operator Nucl() const { return r._getNucl(idx); }
 	};
 	class nuclRef {
 	private:
@@ -50,6 +51,7 @@ public:
 			r.nuclNum -= 2;
 			return *this;
 		}
+		operator Nucl() const { return r._getNucl(idx); }
 	};
 
 	void addNucl(const Nucl& nucl);

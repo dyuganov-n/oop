@@ -1,2 +1,4 @@
 ﻿  main.cpp
-  lab1_rna.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab1_rna\Debug\lab1_rna.exe
+C:\Users\Dyuga\Desktop\study_labs\oop\lab1_rna\main.cpp(50,1): error C2857: '#include' statement specified with the /Ycstdafx.h command-line option was not found in the source file
+  RNA.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab1_rna\RNA.cpp(238,1): error C2857: '#include' statement specified with the /Ycstdafx.h command-line option was not found in the source file
