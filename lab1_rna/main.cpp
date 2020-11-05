@@ -2,7 +2,7 @@
 #include <limits>
 #include <string>
 
-#include "rna.h"
+#include "RNA.h"
 
 #include <time.h> // time
 
