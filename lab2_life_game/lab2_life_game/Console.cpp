@@ -7,8 +7,9 @@ using namespace std;
 
 void Console::drawField(Game* game) {
 	this->clear();
+	//this->baseMessage();
 
-	const char symbolTrue = '*';
+	const char symbolTrue = 'X';
 	const char symbolFalse = '.';
 
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {
@@ -22,7 +23,15 @@ void Console::drawField(Game* game) {
 		}
 		cout << endl;
 	}
-	cout << "Step: " <<(*game).getStepCnt() << endl << endl;
+	showStepsN(game);
+}
+
+void Console::showStepsN(Game* game) {
+	cout << "Step: " << game->getStepCnt() << endl;
+}
+
+void Console::baseMessage(){
+	cout << "_____Life_Game_____" << endl;
 }
 
 void Console::clear() {

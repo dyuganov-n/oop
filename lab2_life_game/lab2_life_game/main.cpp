@@ -3,18 +3,26 @@
 #include "Game.h"
 #include "Console.h"
 #include "Parser.h"
+#include <fstream>
 
 using namespace std;
 
 int main() {
 
-	Game game;
-	Parser parser(&game);
-	Console console;
+	try {
+		Game game;
+		Parser parser(&game);
+		Console console;
 
-	while (1) {
-		parser.getCommand(console);
 		console.drawField(&game);
+		while (1) { 
+			parser.getCommand(console);
+			console.drawField(&game);
+		}
+	}
+	catch (exception& e) {
+		cout << "Opps... " << e.what() << endl;
+		return -1;
 	}
 
 

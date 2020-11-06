@@ -10,23 +10,19 @@ using namespace std;
 
 class Console {
 private:
-	//Game* game;
+	void clear();
 
-public:
-	/*
-	Console(Game* _game) {
-		game = _game;
-	}
-	*/
-	
+public:	
 	Console(){}
 
 	void drawField(Game* game);
-	void showStepsN();
+	void showStepsN(Game* game);
+	void baseMessage();
 
 	string getCommand();
 	string getArguements();
 	size_t getNumArguement();
 
-	void clear();
+
+	
 };

@@ -1,7 +1,5 @@
 #include "Game.h"
 
-#include <iostream>
-#include <fstream>
 using namespace std;
 
 Game::Game() {
@@ -40,26 +38,91 @@ Game::~Game() {
 	prevField = nullptr;
 }
 
-void Game::nextStep() {
-	++stepCnt;
+size_t Game::countNeighbors(const int& _x, const int& _y) const { // PROBLEMS HERE
+	size_t cnt = 0;
 
-	// copy cur to prev
-	for (size_t i = 0; i < FIELD_SIZE; ++i) {
-		for (size_t j = 0; j < FIELD_SIZE; ++j) {
-			prevField[i][j] = currField[i][j];
+	for (int i = -1; i <= 1; ++i) {
+		for (int j = -1; j <= 1; ++j) {
+
+			if (i == 0 && j == 0) continue; // cell itself
+
+			if ((_x + i) < 0 && (_y + j) < 0) { // negative sides
+				int x = 9;
+				int y = 9;
+				if (prevField[x][y]) ++cnt;
+			}
+			else if ((_y + j) < 0) {
+				int x = (_x + i) % FIELD_SIZE;
+				int y = 9;
+				if (prevField[x][y]) ++cnt;
+			}
+			else if ((_x + i) < 0) {
+				int x = 9;
+				int y = (_y + j) % FIELD_SIZE;
+				if (prevField[x][y]) ++cnt;
+			}
+			else { // normal case
+				int x = (_x + i) % FIELD_SIZE;
+				int y = (_y + j) % FIELD_SIZE;
+				if (prevField[x][y]) ++cnt;
+			}
 		}
 	}
-
-	buildNewField();
+	
+	return cnt;
 }
 
 void Game::buildNewField() {
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {
 		for (size_t j = 0; j < FIELD_SIZE; ++j) {
-			size_t neighborsCnt = 0;
-
-
+			size_t nbrsCnt = countNeighbors(i, j);
+			if (prevField[i][j] == 0 && nbrsCnt == 3) currField[i][j] = 1;
+			else if (prevField[i][j] == 1 && ((nbrsCnt < 2) || (nbrsCnt > 3))) currField[i][j] = 0;
 		}
+	}
+}
+
+void Game::nextStep() {
+	try {
+		++stepCnt;
+		this->stopGame = true;
+
+		// curField to prevField
+		for (size_t i = 0; i < FIELD_SIZE; ++i) { 
+			for (size_t j = 0; j < FIELD_SIZE; ++j) {
+				prevField[i][j] = currField[i][j];
+			}
+		}
+		buildNewField();
+
+		// Game end check
+		for (size_t i = 0; i < FIELD_SIZE; ++i) {
+			for (size_t j = 0; j < FIELD_SIZE; ++j) {
+				if (prevField[i][j] != currField[i][j]) {
+					this->stopGame = false;
+				}
+			}
+		}
+		if (this->stopGame) throw exception("Game finished!");
+	}
+	catch (const exception& e) {
+		throw e;
+	}
+}
+
+void Game::back(){
+	try {
+		if (cantGoBack) throw exception("Can't go back");
+		--stepCnt;
+		for (size_t i = 0; i < FIELD_SIZE; ++i) {
+			for (size_t j = 0; j < FIELD_SIZE; ++j) {
+				currField[i][j] = prevField[i][j];
+				prevField[i][j] = 0;
+			}
+		}
+	}
+	catch (exception& e) {
+		throw e;
 	}
 }
 
@@ -75,9 +138,13 @@ void Game::resetGame() {
 
 void Game::loadField(const string& fileName) {
 	try {
+		ifstream field;
+		if (!fileName.empty()) field.open(fileName.c_str()); // PROBLEM: can't open it 
+		if (!field.is_open()) throw exception("File was not opened");
+		if (!field.good()) throw exception("File problems");
+
 		this->stepCnt = 0;
-		ifstream field(fileName);
-		if (!field.is_open()) throw 2; // file was not opened
+		
 		for (size_t i = 0; i < FIELD_SIZE; ++i) {
 			for (size_t j = 0; j < FIELD_SIZE; ++j) {
 				field >> currField[i][j];
@@ -85,23 +152,56 @@ void Game::loadField(const string& fileName) {
 		}
 		field.close();
 	}
-	catch (const int& e) {
+	catch (exception& e) {
 		throw e;
 	}
 }
 
 void Game::saveField(const string& fileName) {
 	try {
-		ofstream out(fileName);
-		if (!out.is_open()) throw 2; // file was not opened
+		//ofstream out("field.txt");
+		ofstream out;
+		if (!fileName.empty()) out.open(fileName.c_str()); // PROBLEM: can't open it 
+		if (!out.is_open()) throw exception("File was not opened");
+		if (!out.good()) throw exception("File problems");
+
 		for (size_t i = 0; i < FIELD_SIZE; ++i) {
 			for (size_t j = 0; j < FIELD_SIZE; ++j) {
-				out << currField[i][j];
+				out << currField[i][j] << ' ';
 			}
+			out << endl;
 		}
 		out.close();
 	}
-	catch (const int& e) {
+	catch (exception& e) {
+		throw e;
+	}
+}
+
+void Game::setCel(const size_t& x, const size_t& y) {
+	try {
+		if (x <= 9 && y <= 9) {
+			currField[x][y] = 1;
+		}
+		else {
+			throw exception("Wrong index");
+		}
+	}
+	catch (exception& e) {
+		throw e;
+	}
+}
+
+void Game::clearCel(const size_t& x, const size_t& y) {
+	try {
+		if (x <= 9 && y <= 9) {
+			currField[x][y] = 0;
+		}
+		else {
+			throw exception("Wrong index");
+		}
+	}
+	catch (exception& e) {
 		throw e;
 	}
 }
