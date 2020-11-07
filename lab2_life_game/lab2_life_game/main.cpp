@@ -22,7 +22,7 @@ int main() {
 	}
 	catch (exception& e) {
 		cout << "Opps... " << e.what() << endl;
-		return -1;
+		return 0;
 	}
 
 

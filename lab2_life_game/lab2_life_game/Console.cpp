@@ -12,7 +12,12 @@ void Console::drawField(Game* game) {
 	const char symbolTrue = 'X';
 	const char symbolFalse = '.';
 
+	cout << "  "; 
+	for (size_t i = 0; i < FIELD_SIZE; ++i) cout << i << ' ';;
+	cout << endl;
+
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {
+		cout << char('A' + i) << ' ';
 		for (size_t j = 0; j < FIELD_SIZE; ++j) {
 			if ((*game).getCurField()[i][j] == 1) {
 				cout << symbolTrue << ' ';

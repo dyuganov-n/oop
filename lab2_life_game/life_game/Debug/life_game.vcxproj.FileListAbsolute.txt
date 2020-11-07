@@ -1,2 +1,0 @@
-C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\life_game\Debug\life_game.exe
-C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\life_game\Debug\life_game.pdb

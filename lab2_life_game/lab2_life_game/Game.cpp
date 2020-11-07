@@ -85,6 +85,7 @@ void Game::buildNewField() {
 void Game::nextStep() {
 	try {
 		++stepCnt;
+		if (stepCnt == SIZE_MAX) throw exception("Too many steps");
 		this->stopGame = true;
 
 		// curField to prevField
@@ -160,18 +161,18 @@ void Game::loadField(const string& fileName) {
 void Game::saveField(const string& fileName) {
 	try {
 		//ofstream out("field.txt");
-		ofstream out;
-		if (!fileName.empty()) out.open(fileName.c_str()); // PROBLEM: can't open it 
-		if (!out.is_open()) throw exception("File was not opened");
-		if (!out.good()) throw exception("File problems");
+		ofstream outField;
+		if (!fileName.empty()) outField.open(fileName.c_str()); // PROBLEM: can't open it 
+		if (!outField.is_open()) throw exception("File was not opened");
+		if (!outField.good()) throw exception("File problems");
 
 		for (size_t i = 0; i < FIELD_SIZE; ++i) {
 			for (size_t j = 0; j < FIELD_SIZE; ++j) {
-				out << currField[i][j] << ' ';
+				outField << currField[i][j] << ' ';
 			}
-			out << endl;
+			outField << endl;
 		}
-		out.close();
+		outField.close();
 	}
 	catch (exception& e) {
 		throw e;
