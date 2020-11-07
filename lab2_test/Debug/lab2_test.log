@@ -1,0 +1,5 @@
+﻿  pch.cpp
+  test.cpp
+test.obj : error LNK2019: unresolved external symbol "public: __thiscall Game::Game(void)" (??0Game@@QAE@XZ) referenced in function "private: virtual void __thiscall GameTest_EmptyField_Test::TestBody(void)" (?TestBody@GameTest_EmptyField_Test@@EAEXXZ)
+test.obj : error LNK2019: unresolved external symbol "public: __thiscall Game::~Game(void)" (??1Game@@QAE@XZ) referenced in function "private: virtual void __thiscall GameTest_EmptyField_Test::TestBody(void)" (?TestBody@GameTest_EmptyField_Test@@EAEXXZ)
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\Debug\lab2_test.exe : fatal error LNK1120: 2 unresolved externals
