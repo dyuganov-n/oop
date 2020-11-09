@@ -18,11 +18,10 @@ public:
 	void drawField(Game* game);
 	void showStepsN(Game* game);
 	void baseMessage();
+	void gameOver() { cout << "Game Over!"; }
 
 	string getCommand();
 	string getArguements();
 	size_t getNumArguement();
 
-
-	
 };

@@ -19,13 +19,13 @@ void Parser::getCommand(Console& console) {
 			string command = console.getArguements();
 			size_t x = command[0] - '0' - 17; // char letter to int
 			size_t y = command[1] - '0'; // char digit to int
-			game->setCel(x, y);
+			game->setCell(x, y);
 		}
 		else if (baseCommand == "clear") {
 			string command = console.getArguements();
 			size_t x = command[0] - '0' - 17; // char letter to int
 			size_t y = command[1] - '0'; // char digit to int
-			game->clearCel(x, y);
+			game->clearCell(x, y);
 		}
 		else if (baseCommand == "step") {
 			game->setCantGoBack(false);

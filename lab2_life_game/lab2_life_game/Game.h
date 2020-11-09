@@ -14,7 +14,8 @@ private:
 
 	size_t stepCnt = 0;
 	bool cantGoBack = 1;
-	bool stopGame = true;
+
+	bool stopGame = 0;
 
 	void buildNewField();
 	size_t countNeighbors(const int& x, const int& y) const;
@@ -24,15 +25,16 @@ public:
 	~Game();	
 
 	void setCantGoBack(const bool& val) { cantGoBack = val; }
+	bool gameIsStopped() { return stopGame; }
 
 	void resetGame();
-	bool** getCurField() const { return currField;} // for console to print 
+	bool** getCurField() const { return currField; } // for console to print 
 
 	void loadField(const string& fileName); // if the field was loaded from file
 	void saveField(const string& fileName);
 
-	void clearCel(const size_t& x, const size_t& y);
-	void setCel(const size_t& x, const size_t& y);
+	void clearCell(const size_t& x, const size_t& y); 
+	void setCell(const size_t& x, const size_t& y); 
 
 	void nextStep();
 	void back();

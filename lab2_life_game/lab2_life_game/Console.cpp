@@ -19,7 +19,7 @@ void Console::drawField(Game* game) {
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {
 		cout << char('A' + i) << ' ';
 		for (size_t j = 0; j < FIELD_SIZE; ++j) {
-			if ((*game).getCurField()[i][j] == 1) {
+			if (game->getCurField()[i][j] == 1) {
 				cout << symbolTrue << ' ';
 			}
 			else {
@@ -61,4 +61,3 @@ size_t Console::getNumArguement() {
 	cin >> result;
 	return result;
 }
-

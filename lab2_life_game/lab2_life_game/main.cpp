@@ -15,16 +15,16 @@ int main() {
 		Console console;
 
 		console.drawField(&game);
-		while (1) { 
+		while (!game.gameIsStopped()) { 
 			parser.getCommand(console);
 			console.drawField(&game);
 		}
+		console.gameOver();
 	}
 	catch (exception& e) {
-		cout << "Opps... " << e.what() << endl;
+		cout << "Oops... " << e.what() << endl;
 		return 0;
 	}
-
 
 	return 0;
 }

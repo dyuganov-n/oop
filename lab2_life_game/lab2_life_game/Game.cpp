@@ -104,7 +104,7 @@ void Game::nextStep() {
 				}
 			}
 		}
-		if (this->stopGame) throw exception("Game finished!");
+		//if (this->stopGame) throw exception("Game finished!");
 	}
 	catch (const exception& e) {
 		throw e;
@@ -179,7 +179,7 @@ void Game::saveField(const string& fileName) {
 	}
 }
 
-void Game::setCel(const size_t& x, const size_t& y) {
+void Game::setCell(const size_t& x, const size_t& y) {
 	try {
 		if (x <= 9 && y <= 9) {
 			currField[x][y] = 1;
@@ -193,7 +193,7 @@ void Game::setCel(const size_t& x, const size_t& y) {
 	}
 }
 
-void Game::clearCel(const size_t& x, const size_t& y) {
+void Game::clearCell(const size_t& x, const size_t& y) {
 	try {
 		if (x <= 9 && y <= 9) {
 			currField[x][y] = 0;
