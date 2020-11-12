@@ -34,9 +34,9 @@ public:
 	public:
 		nuclRef(const size_t& index, RNA& rna) : idx(index), r(rna) {};
 		nuclRef& operator=(Nucl nucl) {
-			r.add((Nucl)0, idx, r.rna[idx / r.bitPairsinRnaPart]);
+			r.clearNucl(idx, r.rna[idx / r.bitPairsinRnaPart]);
 			r.add(nucl, idx, r.rna[idx / r.bitPairsinRnaPart]);
-			r.nuclNum -= 2;
+			--r.nuclNum;
 			return *this;
 		}
 		nuclRef& operator=(nuclRef& other) {
@@ -46,9 +46,9 @@ public:
 		}
 		nuclRef& operator=(const constNuclRef& other) {
 			Nucl nucl = other.getRna()._getNucl(other.getIndex());
-			r.add((Nucl)0, idx, r.rna[idx / r.bitPairsinRnaPart]);
+			r.clearNucl(idx, r.rna[idx / r.bitPairsinRnaPart]);
 			r.add(nucl, idx, r.rna[idx / r.bitPairsinRnaPart]);
-			r.nuclNum -= 2;
+			--r.nuclNum;
 			return *this;
 		}
 		operator Nucl() const { return r._getNucl(idx); }
@@ -94,6 +94,6 @@ private:
 			*(_dst++) = *(_src++);
 		}
 	}
-	
+	void clearNucl(const size_t& idx, size_t& rnaPart);
 };
 

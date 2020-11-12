@@ -4,7 +4,6 @@
 #include "../lab1_rna/RNA.h"
 
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 
 /*
 #include <time.h> // time
@@ -19,7 +18,7 @@
 #define _CRTDBG_MAP_ALLOC
 */
 
-TEST(RnaConstructors, EmptyConstructor) {
+TEST(Constructors, EmptyConstructor) {
 	// Arragnge, act
 	RNA r;
 
@@ -29,7 +28,7 @@ TEST(RnaConstructors, EmptyConstructor) {
 	EXPECT_EQ(r.getBitPairsinRnaPart(), (sizeof(size_t) * 8 / 2));
 }
 
-TEST(RnaConstructors, SingleNuclConstructor) {
+TEST(Constructors, SingleNuclConstructor) {
 	// Arragnge, act
 	RNA a(Nucl::A);
 	RNA b(Nucl::C);
@@ -39,8 +38,8 @@ TEST(RnaConstructors, SingleNuclConstructor) {
 	// Assert
 	EXPECT_EQ(Nucl(a[0]), Nucl::A);
 	EXPECT_EQ(Nucl(b[0]), Nucl::C);
-	EXPECT_EQ(Nucl(c[0]), Nucl::T);
-	EXPECT_EQ(Nucl(d[0]), Nucl::G);
+	EXPECT_EQ(Nucl(c[0]), Nucl::G);
+	EXPECT_EQ(Nucl(d[0]), Nucl::T);
 
 
 	EXPECT_EQ(a.getNuclNum(), 1);
@@ -54,7 +53,7 @@ TEST(RnaConstructors, SingleNuclConstructor) {
 	EXPECT_GT(d.getCapacity(), 0);
 }
 
-TEST(RnaConstructors, MultipleNuclConstructor) {
+TEST(Constructors, MultipleNuclConstructor) {
 	// Arragnge
 	size_t len = 5;
 
@@ -63,7 +62,7 @@ TEST(RnaConstructors, MultipleNuclConstructor) {
 	RNA b(len, Nucl::C);
 	RNA c(len, Nucl::G);
 	RNA d(len, Nucl::T);
-	
+
 	// Assert
 	for (size_t i = 0; i < len; ++i) {
 		EXPECT_EQ(Nucl(a[i]), Nucl::A);
@@ -94,7 +93,7 @@ TEST(RnaConstructors, MultipleNuclConstructor) {
 	EXPECT_GT(d.getCapacity(), 0);
 }
 
-TEST(RnaAdd, AddOneNucl) {
+TEST(Add, AddOneNucl) {
 	// Arragnge
 	size_t len = 5;
 	RNA a;
@@ -107,16 +106,16 @@ TEST(RnaAdd, AddOneNucl) {
 	c.addNucl(Nucl::C);
 
 	// Assert
-	EXPECT_EQ(a.getCapacity(), 1);
-	EXPECT_EQ(b.getCapacity(), 2);
-	EXPECT_EQ(c.getCapacity(), (len + 1));
+	EXPECT_EQ(a.getNuclNum(), 1);
+	EXPECT_EQ(b.getNuclNum(), 2);
+	EXPECT_EQ(c.getNuclNum(), (len + 1));
 
 	EXPECT_EQ(Nucl(a[0]), Nucl::C);
 	EXPECT_EQ(Nucl(b[1]), Nucl::C);
 	EXPECT_EQ(Nucl(c[len]), Nucl::C);
 }
 
-TEST(RnaAdd, AddManyNucls) {
+TEST(Add, AddManyNucls) {
 	// Arrange 
 	size_t amount = 100;
 	RNA a;
@@ -134,47 +133,7 @@ TEST(RnaAdd, AddManyNucls) {
 
 }
 
-/*
-TEST(RnaAdd, LargeTest) {
-	// Arrange 
-	RNA r;
-	size_t n = 1'000'000;
-
-	// Act
-	clock_t tStart = clock();
-	for (size_t i = 0; i < n; ++i) {
-		r.addNucl(Nucl::G);
-	}
-	printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
-	
-
-	// Assert
-	EXPECT_EQ(r.getNuclNum(), n);
-	EXPECT_GT((double)(clock() - tStart) / CLOCKS_PER_SEC, 5);
-}
-*/
-/*
-TEST(RnaAdd, MemoryLeaks) {
-	// Arrange 
-	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
-	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
-
-	_CrtMemState _ms;
-	_CrtMemCheckpoint(&_ms);
-
-	// Act
-	{
-		RNA r(100, G);
-	}
-
-	_CrtMemDumpAllObjectsSince(&_ms);
-
-	// Assert
-	EXPECT_EQ(_ms.lTotalCount, 0); // ?
-}
-*/
-
-TEST(RnaSplit, Split) {
+TEST(Split, Split) {
 	// Arragnge
 	const size_t n = 10;
 	const size_t splitIdx = 7;
@@ -193,18 +152,18 @@ TEST(RnaSplit, Split) {
 	// Assert
 	EXPECT_EQ(a.getNuclNum(), splitIdx);
 	EXPECT_EQ(b.getNuclNum(), n - splitIdx);
-	
+
 	for (size_t i = 0; i < splitIdx; ++i) {
 		EXPECT_EQ(Nucl(a[i]), Nucl::C);
 	}
-	for (size_t i = 0; i < n-splitIdx; ++i) {
+	for (size_t i = 0; i < n - splitIdx; ++i) {
 		EXPECT_EQ(Nucl(b[i]), Nucl::C);
 	}
 
 	EXPECT_EQ(exception, 0);
 }
 
-TEST(RnaSplit, SplitFromZero) {
+TEST(Split, SplitFromZero) {
 	// Arragnge
 	const size_t n = 10;
 	const size_t splitIdx = 0;
@@ -230,7 +189,7 @@ TEST(RnaSplit, SplitFromZero) {
 	EXPECT_EQ(exception, 0);
 }
 
-TEST(RnaSplit, SplitFromEnd) {
+TEST(Split, SplitFromEnd) {
 	// Arragnge
 	const size_t n = 10;
 	const size_t splitIdx = n - 1;
@@ -260,43 +219,26 @@ TEST(RnaSplit, SplitFromEnd) {
 	EXPECT_EQ(exception, 0);
 }
 
-TEST(RnaSplit, SplitEmptyRna) {
+TEST(Split, SplitEmptyRna) {
 	// Arragnge
 	RNA a, b;
-	int exception = 0;
 
 	// Act
-	try {
-		a.split(10);
-	}
-	catch (int& e) {
-		exception = e;
-	}
-	
-
 	// Assert
+	ASSERT_THROW(a.split(10), std::exception);
 	EXPECT_EQ(a, b);
-	EXPECT_EQ(exception, 2);
 }
 
-TEST(RnaSplit, SplitWithWrongIndex) {
+TEST(Split, SplitWithWrongIndex) {
 	// Arrange
 	RNA a(10, G);
-	int exception = 0;
 
 	// Act
-	try {
-		a.split(100);
-	}
-	catch (int& e) {
-		exception = e;
-	}
-
 	// Assert
-	EXPECT_EQ(exception, 2);
+	ASSERT_THROW(a.split(100), std::exception);
 }
 
-TEST(RnaIsComplementary, EmptyRna) {
+TEST(IsComplementary, EmptyRna) {
 	// Arragnge
 	RNA a, b;
 
@@ -305,11 +247,11 @@ TEST(RnaIsComplementary, EmptyRna) {
 	bool resultBA = b.isComplementary(a);
 
 	// Assert
-	EXPECT_EQ(resultAB, true);
-	EXPECT_EQ(resultBA, true);
+	EXPECT_EQ(resultAB, false);
+	EXPECT_EQ(resultBA, false);
 }
 
-TEST(RnaIsComplementary, ComplementaryRna) {
+TEST(IsComplementary, ComplementaryRna) {
 	// Arragnge
 	RNA a(A), b(T);
 	RNA c(10, C), d(10, G);
@@ -328,12 +270,12 @@ TEST(RnaIsComplementary, ComplementaryRna) {
 	EXPECT_EQ(resultDC, true);
 }
 
-TEST(RnaIsComplementary, NotComplementaryRna) {
+TEST(IsComplementary, NotComplementaryRna) {
 	// Arragnge
 	RNA a(A), b(T), e(G);
 	RNA c(10, C), d(10, C);
 	RNA g;
-	
+
 	// Act
 	bool resultAA = a.isComplementary(a);
 	bool resultAE = a.isComplementary(e);
@@ -353,7 +295,7 @@ TEST(RnaIsComplementary, NotComplementaryRna) {
 	EXPECT_EQ(resultGA, false);
 }
 
-TEST(RnaOperatorAssign, EmptyRna) {
+TEST(OperatorAssign, EmptyRna) {
 	// Arragnge
 	RNA a, b;
 
@@ -367,7 +309,7 @@ TEST(RnaOperatorAssign, EmptyRna) {
 	EXPECT_EQ(b.getCapacity(), 0);
 }
 
-TEST(RnaOperatorAssign, NormalUse) {
+TEST(OperatorAssign, NormalUse) {
 	// Arragnge
 	RNA a(G), b;
 	RNA c(10, T), d(5, G);
@@ -378,16 +320,16 @@ TEST(RnaOperatorAssign, NormalUse) {
 
 	// Assert
 	EXPECT_EQ(b.getNuclNum(), 1);
-	EXPECT_LT(b.getCapacity(), 0);
+	EXPECT_GT(b.getCapacity(), 0);
 	EXPECT_EQ(c.getNuclNum(), 10);
 	EXPECT_EQ(d.getNuclNum(), 10);
-	
+
 	for (size_t i = 0; i < 10; ++i) {
 		EXPECT_EQ(Nucl(c[i]), Nucl(d[i]));
 	}
 }
 
-TEST(RnaOperatorAssign, MakeEmpty) {
+TEST(OperatorAssign, MakeEmpty) {
 	// Arragnge
 	RNA a, b(10, C);
 
@@ -400,7 +342,7 @@ TEST(RnaOperatorAssign, MakeEmpty) {
 	EXPECT_EQ(b.getNuclNum(), 0);
 }
 
-TEST(RnaOperatorAssign, AssignToItself) {
+TEST(OperatorAssign, AssignToItself) {
 	// Arragnge
 	RNA a;
 	RNA b(T);
@@ -417,7 +359,7 @@ TEST(RnaOperatorAssign, AssignToItself) {
 	EXPECT_EQ(c.getNuclNum(), 10);
 }
 
-TEST(RnaOperatorBuildComplementary, EmptyRna) {
+TEST(OperatorBuildComplementary, EmptyRna) {
 	// Arragnge
 	RNA a, b;
 
@@ -431,7 +373,7 @@ TEST(RnaOperatorBuildComplementary, EmptyRna) {
 	EXPECT_EQ(a.getCapacity(), 0);
 }
 
-TEST(RnaOperatorBuildComplementary, NormalUse) {
+TEST(OperatorBuildComplementary, NormalUse) {
 	// Arragnge
 	RNA a(10, C), b;
 
@@ -444,7 +386,7 @@ TEST(RnaOperatorBuildComplementary, NormalUse) {
 	}
 }
 
-TEST(RnaIsComplementary, NormalUse) {
+TEST(IsComplementary, NormalUse) {
 	// Arragnge
 	RNA a(10, C), b(10, G);
 	RNA c, d;
@@ -477,7 +419,7 @@ TEST(RnaIsComplementary, NormalUse) {
 	EXPECT_EQ(result10, false);
 }
 
-TEST(RnaOperatorEqual, NormalUse) {
+TEST(OperatorEqual, NormalUse) {
 	// Arragnge
 	RNA a, b;
 	RNA c(C), d(C), e(G), f(T), g(A);
@@ -508,7 +450,7 @@ TEST(RnaOperatorEqual, NormalUse) {
 	EXPECT_EQ(result10, false);
 }
 
-TEST(RnaOperatorNotEqual, NormalUse) {
+TEST(OperatorNotEqual, NormalUse) {
 	// Arragnge
 	RNA a, b;
 	RNA c(C), d(C), e(G), f(T), g(A);
@@ -545,32 +487,27 @@ TEST(RnaOperatorNotEqual, NormalUse) {
 	EXPECT_EQ(result10, true);
 }
 
-TEST(RnaOperatorGetNuclByIndex, WrongIndex) {
+TEST(OperatorGetNuclByIndex, WrongIndex) {
 	// Arragnge
 	RNA a;
 	RNA b(A);
 	RNA c(10, G);
-	int exception1 = 0;
-	int exception2 = 0;
-	int exception3 = 0;
+	const RNA d;
+	const RNA e(A);
+	const RNA f(10, G);
 
 	// Act
-	try { a[1]; }
-	catch (const int& e) { exception1 = e; }
-
-	try { b[100]; }
-	catch (const int& e) { exception2 = e; }
-
-	try { c[100]; }
-	catch (const int& e) { exception3 = e; }
-
 	// Assert
-	EXPECT_EQ(exception1, 2);
-	EXPECT_EQ(exception2, 2);
-	EXPECT_EQ(exception3, 2);
+	ASSERT_THROW(a[100], std::exception);
+	ASSERT_THROW(b[100], std::exception);
+	ASSERT_THROW(c[100], std::exception);
+	ASSERT_THROW(d[100], std::exception);
+	ASSERT_THROW(e[100], std::exception);
+	ASSERT_THROW(f[100], std::exception);
+
 }
 
-TEST(RnaOperatorGetNuclByIndex, NormalUse) {
+TEST(OperatorGetNuclByIndex, NormalUse) {
 	// Arragnge
 	size_t size = 10;
 	RNA a(size, A), b(size, C), c(size, G), d(size, T);
@@ -613,31 +550,29 @@ TEST(RnaOperatorGetNuclByIndex, NormalUse) {
 	delete[] result4;
 }
 
-TEST(RnaOperatorGetNuclByIndex, ConstRna) {
+TEST(OperatorGetNuclByIndex, ConstRna) {
 	// Arragnge
 	const RNA a(10, C);
 	RNA b(10, G);
-	Nucl result1; 
-	Nucl result2;
 
 	// Act
-	result1 = Nucl(a[1]);
-	
+	Nucl result1 = Nucl(a[1]);
+
 	b[5] = a[1];
-	result2 = Nucl(b[5]);
+	Nucl result2 = Nucl(b[5]);
 
 	// Assert
 	EXPECT_EQ(result1, Nucl::C);
 	EXPECT_EQ(result2, Nucl::C);
 }
 
-TEST(RnaIsEmpty, NormalUse) {
+TEST(IsEmpty, NormalUse) {
 	// Arragnge
 	RNA a;
 	const RNA b;
 	RNA c(T), d(10, G);
 	const RNA e(A);
-	
+
 	// Act
 	bool result1 = a.isEmpty(); // 1
 	bool result2 = b.isEmpty(); // 1

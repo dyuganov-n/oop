@@ -125,26 +125,30 @@ char RNA::getCharValue(const Nucl& nucl) const {
 }
 
 RNA RNA::split(const size_t& idx) {
-	
-	RNA result;
-	if (idx > nuclNum) {
-		throw 2;
+	try {
+		RNA result;
+		if (idx > nuclNum) {
+			throw exception("Wrong index");
+			return result;
+		}
+
+		size_t resultNuclNum = this->nuclNum - idx;
+		for (size_t i = 0; i < resultNuclNum; ++i) {
+			result.addNucl(this->_getNucl(i + idx));
+		}
+
+		RNA tmp;
+		for (size_t i = 0; i < idx; ++i) {
+			tmp.addNucl(this->_getNucl(i));
+		}
+
+		*this = tmp;
+
 		return result;
 	}
-
-	size_t resultNuclNum = this->nuclNum - idx;
-	for (size_t i = 0; i < resultNuclNum; ++i) {
-		result.addNucl(this->_getNucl(i+idx));
+	catch (exception& e) {
+		throw e;
 	}
-
-	RNA tmp;
-	for (size_t i = 0; i < idx; ++i) {
-		tmp.addNucl(this->_getNucl(i));
-	}
-
-	*this = tmp;
-		
-	return result;
 }
 
 RNA RNA::operator!()const {
@@ -222,16 +226,37 @@ ostream& operator<<(ostream& os, RNA r) {
 
 RNA::nuclRef RNA::operator[](const size_t& idx) {
 	try {
-		if (idx > this->nuclNum - 1) throw 2;
+		long long tmpNuclNum = this->nuclNum; // to avoid (0 - 1) in size_t
+		long long tmpIdx = idx;
+		if (tmpIdx > tmpNuclNum - 1) throw exception("Wrong index");
 	}
-	catch (const int& e) { throw e; }
+	catch (exception& e) { throw e; }
 	return RNA::nuclRef(idx, *this);
 }
 
 RNA::constNuclRef RNA::operator[](const size_t& idx) const {
 	try {
-		if (idx > this->nuclNum - 1) throw 2;
+		long long tmpNuclNum = this->nuclNum; // to avoid (0 - 1) in size_t
+		long long tmpIdx = idx;
+		if (tmpIdx > tmpNuclNum - 1) throw exception("Wrong index");
 	}
-	catch (const int& e) { throw e; }
-	return constNuclRef(idx, (*this));
+	catch (exception& e) { throw e; }
+	return RNA::constNuclRef(idx, (*this));
+}
+
+void RNA::clearNucl(const size_t& idx, size_t& rnaPart) {
+	size_t newRnaPart = 0;
+	size_t tmp1 = rnaPart;
+	size_t tmp2 = rnaPart;
+
+	tmp1 >>= 2 * (bitPairsinRnaPart - idx);
+	tmp1 <<= 2 * (bitPairsinRnaPart - idx);
+
+	tmp2 <<= 2 * ((bitPairsinRnaPart - (bitPairsinRnaPart - idx - 1)));
+	tmp2 >>= 2 * ((bitPairsinRnaPart - (bitPairsinRnaPart - idx - 1)));
+
+	newRnaPart |= tmp1;
+	newRnaPart |= tmp2;
+
+	rnaPart = newRnaPart;
 }

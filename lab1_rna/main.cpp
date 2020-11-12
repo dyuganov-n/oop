@@ -15,7 +15,7 @@ using namespace std;
 
 
 int main() {
-
+	
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
 	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
 
@@ -36,10 +36,9 @@ int main() {
 		}
 
 	}
-	catch (const int& e) {
-		if (e == 2) cout << endl << "Wrong RNA array index" << endl;
-		else cout << "Some error";
-		return -1;
+	catch (exception& e) {
+		cout << "Error: " << e.what() << endl;
+		return 0;
 	}
 
 	_CrtMemDumpAllObjectsSince(&_ms);

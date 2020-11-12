@@ -1,2 +1,0 @@
-﻿  pch.cpp
-C:\Users\Dyuga\Desktop\study_labs\oop\lab1_test\pch.cpp(7,1): error C2857: '#include' statement specified with the /Ycstdafx.h command-line option was not found in the source file

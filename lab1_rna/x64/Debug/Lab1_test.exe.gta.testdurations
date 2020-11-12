@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GtaTestDurations xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Executable>C:\Users\Dyuga\Desktop\study_labs\oop\lab1_rna\x64\Debug\Lab1_test.exe</Executable>
+  <TestDurations>
+    <TestDuration Test="RnaConstructors.EmptyConstructor" Duration="1" />
+    <TestDuration Test="RnaConstructors.SingleNuclConstructor" Duration="1" />
+    <TestDuration Test="RnaConstructors.MultipleNuclConstructor" Duration="1" />
+    <TestDuration Test="RnaAdd.AddOneNucl" Duration="1" />
+    <TestDuration Test="RnaAdd.AddManyNucls" Duration="1" />
+    <TestDuration Test="RnaSplit.Split" Duration="1" />
+    <TestDuration Test="RnaSplit.SplitFromZero" Duration="1" />
+    <TestDuration Test="RnaSplit.SplitFromEnd" Duration="1" />
+    <TestDuration Test="RnaSplit.SplitEmptyRna" Duration="1" />
+    <TestDuration Test="RnaSplit.SplitWithWrongIndex" Duration="1" />
+    <TestDuration Test="RnaIsComplementary.EmptyRna" Duration="1" />
+    <TestDuration Test="RnaIsComplementary.ComplementaryRna" Duration="1" />
+    <TestDuration Test="RnaIsComplementary.NotComplementaryRna" Duration="1" />
+    <TestDuration Test="RnaIsComplementary.NormalUse" Duration="1" />
+    <TestDuration Test="RnaOperatorAssign.EmptyRna" Duration="1" />
+    <TestDuration Test="RnaOperatorAssign.NormalUse" Duration="1" />
+    <TestDuration Test="RnaOperatorAssign.MakeEmpty" Duration="1" />
+    <TestDuration Test="RnaOperatorAssign.AssignToItself" Duration="1" />
+    <TestDuration Test="RnaOperatorBuildComplementary.EmptyRna" Duration="1" />
+    <TestDuration Test="RnaOperatorBuildComplementary.NormalUse" Duration="1" />
+    <TestDuration Test="RnaOperatorEqual.NormalUse" Duration="1" />
+    <TestDuration Test="RnaOperatorNotEqual.NormalUse" Duration="1" />
+    <TestDuration Test="RnaOperatorGetNuclByIndex.WrongIndex" Duration="1" />
+    <TestDuration Test="RnaOperatorGetNuclByIndex.NormalUse" Duration="1" />
+    <TestDuration Test="RnaOperatorGetNuclByIndex.ConstRna" Duration="1" />
+    <TestDuration Test="RnaIsEmpty.NormalUse" Duration="1" />
+    <TestDuration Test="Constructors.EmptyConstructor" Duration="1" />
+    <TestDuration Test="Constructors.SingleNuclConstructor" Duration="1" />
+    <TestDuration Test="Constructors.MultipleNuclConstructor" Duration="1" />
+    <TestDuration Test="Add.AddOneNucl" Duration="1" />
+    <TestDuration Test="Add.AddManyNucls" Duration="1" />
+    <TestDuration Test="Split.Split" Duration="1" />
+    <TestDuration Test="Split.SplitFromZero" Duration="1" />
+    <TestDuration Test="Split.SplitFromEnd" Duration="1" />
+    <TestDuration Test="Split.SplitEmptyRna" Duration="1" />
+    <TestDuration Test="Split.SplitWithWrongIndex" Duration="1" />
+    <TestDuration Test="IsComplementary.EmptyRna" Duration="1" />
+    <TestDuration Test="IsComplementary.ComplementaryRna" Duration="1" />
+    <TestDuration Test="IsComplementary.NotComplementaryRna" Duration="1" />
+    <TestDuration Test="IsComplementary.NormalUse" Duration="1" />
+    <TestDuration Test="OperatorAssign.EmptyRna" Duration="1" />
+    <TestDuration Test="OperatorAssign.NormalUse" Duration="1" />
+    <TestDuration Test="OperatorAssign.MakeEmpty" Duration="1" />
+    <TestDuration Test="OperatorAssign.AssignToItself" Duration="1" />
+    <TestDuration Test="OperatorBuildComplementary.EmptyRna" Duration="1" />
+    <TestDuration Test="OperatorBuildComplementary.NormalUse" Duration="1" />
+    <TestDuration Test="OperatorEqual.NormalUse" Duration="1" />
+    <TestDuration Test="OperatorNotEqual.NormalUse" Duration="1" />
+    <TestDuration Test="OperatorGetNuclByIndex.WrongIndex" Duration="1" />
+    <TestDuration Test="OperatorGetNuclByIndex.NormalUse" Duration="1" />
+    <TestDuration Test="OperatorGetNuclByIndex.ConstRna" Duration="1" />
+    <TestDuration Test="IsEmpty.NormalUse" Duration="1" />
+  </TestDurations>
+</GtaTestDurations>
