@@ -61,3 +61,7 @@ size_t Console::getNumArguement() {
 	cin >> result;
 	return result;
 }
+
+void Console::printException(const exception& e) {
+	cout << "Oops... " << e.what() << endl;
+}

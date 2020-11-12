@@ -8,7 +8,7 @@ Parser::Parser(Game* _game) {
 
 void Parser::getCommand(Console& console) {
 	try {
-		string baseCommand, commandValue;
+		string baseCommand;
 		baseCommand = console.getCommand();
 
 		if (baseCommand == "reset") {
@@ -39,13 +39,13 @@ void Parser::getCommand(Console& console) {
 			game->setCantGoBack(true);
 		}
 		else if (baseCommand == "save") {
-			commandValue = console.getArguements();
-			game->saveField(commandValue);
+			string name = console.getArguements();
+			game->saveField(name);
 		}
 		else if (baseCommand == "load") {
 			game->setCantGoBack(true);
-			commandValue = console.getArguements();
-			game->loadField(commandValue);
+			string name = console.getArguements();
+			game->loadField(name);
 		}
 		else {
 			throw exception("Wrong command");

@@ -19,6 +19,7 @@ public:
 	void showStepsN(Game* game);
 	void baseMessage();
 	void gameOver() { cout << "Game Over!"; }
+	void printException(const exception& e);
 
 	string getCommand();
 	string getArguements();

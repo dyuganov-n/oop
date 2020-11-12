@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GtaTestDurations xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Executable>C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\x64\Debug\lab2_test.exe</Executable>
+  <TestDurations>
+    <TestDuration Test="TestCaseName.TestName" Duration="1" />
+    <TestDuration Test="GameTest.EmptyField" Duration="1" />
+    <TestDuration Test="Reset.NormalUse" Duration="1" />
+    <TestDuration Test="Reset.DoubleReset" Duration="1" />
+    <TestDuration Test="Back.NormalUse" Duration="1" />
+    <TestDuration Test="Back.CantGoBack" Duration="1" />
+    <TestDuration Test="Constructor.EmptyField" Duration="1" />
+    <TestDuration Test="SetCell.NormalUse" Duration="1" />
+    <TestDuration Test="SetCell.WrongIndex" Duration="1" />
+    <TestDuration Test="SetCell.DoubleUse" Duration="1" />
+    <TestDuration Test="ClearCell.NormalUse" Duration="1" />
+    <TestDuration Test="ClearCell.WrongIndex" Duration="1" />
+    <TestDuration Test="ClearCell.DoubleUse" Duration="1" />
+    <TestDuration Test="LoadField.WrongName" Duration="1" />
+    <TestDuration Test="SaveField.WrongName" Duration="6" />
+    <TestDuration Test="Step.NormalUse" Duration="1" />
+  </TestDurations>
+</GtaTestDurations>

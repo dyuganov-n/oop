@@ -27,12 +27,14 @@ Game::~Game() {
 	// memory free
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {
 		delete[] currField[i];
+		currField[i] = nullptr;
 	}
 	delete[] currField;
 	currField = nullptr;
 
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {
 		delete[] prevField[i];
+		prevField[i] = nullptr;
 	}
 	delete[] prevField;
 	prevField = nullptr;
@@ -87,7 +89,7 @@ void Game::nextStep() {
 		++stepCnt;
 		if (stepCnt == SIZE_MAX) throw exception("Too many steps");
 		this->stopGame = true;
-
+		
 		// curField to prevField
 		for (size_t i = 0; i < FIELD_SIZE; ++i) { 
 			for (size_t j = 0; j < FIELD_SIZE; ++j) {
@@ -104,7 +106,8 @@ void Game::nextStep() {
 				}
 			}
 		}
-		//if (this->stopGame) throw exception("Game finished!");
+		//if (this->stopGame) throw exception("Game over!");
+		this->cantGoBack = false;
 	}
 	catch (const exception& e) {
 		throw e;

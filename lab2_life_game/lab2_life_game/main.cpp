@@ -8,12 +8,12 @@
 using namespace std;
 
 int main() {
+	
+	Console console;
+	Game game;
+	Parser parser(&game);
 
 	try {
-		Game game;
-		Parser parser(&game);
-		Console console;
-
 		console.drawField(&game);
 		while (!game.gameIsStopped()) { 
 			parser.getCommand(console);
@@ -22,7 +22,7 @@ int main() {
 		console.gameOver();
 	}
 	catch (exception& e) {
-		cout << "Oops... " << e.what() << endl;
+		console.printException(e);
 		return 0;
 	}
 

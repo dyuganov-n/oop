@@ -1,0 +1,8 @@
+﻿  test.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_test\test.cpp(18,2): warning C4003: not enough arguments for function-like macro invocation 'EXPECT_NO_THROW'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_test\test.cpp(18,2): warning C4003: not enough arguments for function-like macro invocation 'GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_test\test.cpp(30,2): warning C4003: not enough arguments for function-like macro invocation 'EXPECT_NO_THROW'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_test\test.cpp(30,2): warning C4003: not enough arguments for function-like macro invocation 'GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_test\test.cpp(42,2): warning C4003: not enough arguments for function-like macro invocation 'EXPECT_NO_THROW'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_test\test.cpp(42,2): warning C4003: not enough arguments for function-like macro invocation 'GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_'
+  lab2_test.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\x64\Debug\lab2_test.exe

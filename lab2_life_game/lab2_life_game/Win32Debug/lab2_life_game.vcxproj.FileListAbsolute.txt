@@ -1,0 +1,2 @@
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\Debug\Win32\lab2_life_game.pdb
+C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\lab2_life_game\Win32Debug\lab2_life_game.pdb

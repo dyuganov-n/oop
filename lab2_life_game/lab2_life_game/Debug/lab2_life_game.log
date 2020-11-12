@@ -1,2 +1,6 @@
-﻿  Game.cpp
-  lab2_life_game.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\Debug\lab2_life_game.exe
+﻿  Console.cpp
+  Game.cpp
+  main.cpp
+  Parser.cpp
+  Generating Code...
+  lab2_life_game.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab2_life_game\Debug\lab2_life_game.lib
