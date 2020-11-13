@@ -51,22 +51,22 @@ size_t Game::countNeighbors(const int& _x, const int& _y) const { // PROBLEMS HE
 			if ((_x + i) < 0 && (_y + j) < 0) { // negative sides
 				int x = 9;
 				int y = 9;
-				if (prevField[x][y]) ++cnt;
+				if (currField[x][y]) ++cnt;
 			}
 			else if ((_y + j) < 0) {
 				int x = (_x + i) % FIELD_SIZE;
 				int y = 9;
-				if (prevField[x][y]) ++cnt;
+				if (currField[x][y]) ++cnt;
 			}
 			else if ((_x + i) < 0) {
 				int x = 9;
 				int y = (_y + j) % FIELD_SIZE;
-				if (prevField[x][y]) ++cnt;
+				if (currField[x][y]) ++cnt;
 			}
 			else { // normal case
 				int x = (_x + i) % FIELD_SIZE;
 				int y = (_y + j) % FIELD_SIZE;
-				if (prevField[x][y]) ++cnt;
+				if (currField[x][y]) ++cnt;
 			}
 		}
 	}
@@ -78,8 +78,14 @@ void Game::buildNewField() {
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {
 		for (size_t j = 0; j < FIELD_SIZE; ++j) {
 			size_t nbrsCnt = countNeighbors(i, j);
-			if (prevField[i][j] == 0 && nbrsCnt == 3) currField[i][j] = 1;
-			else if (prevField[i][j] == 1 && ((nbrsCnt < 2) || (nbrsCnt > 3))) currField[i][j] = 0;
+
+			if (currField[i][j] == 0 && nbrsCnt == 3) prevField[i][j] = 1;
+			else if(currField[i][j] == 1 && (nbrsCnt == 2) || (nbrsCnt == 3)) prevField[i][j] = 1;
+			else if (currField[i][j] == 1 && ((nbrsCnt < 2) || (nbrsCnt > 3))) prevField[i][j] = 0;
+			
+			if (prevField[i][j] != currField[i][j]) { 
+				this->stopGame = false;
+			}
 		}
 	}
 }
@@ -89,24 +95,11 @@ void Game::nextStep() {
 		++stepCnt;
 		if (stepCnt == SIZE_MAX) throw exception("Too many steps");
 		this->stopGame = true;
-		
-		// curField to prevField
-		for (size_t i = 0; i < FIELD_SIZE; ++i) { 
-			for (size_t j = 0; j < FIELD_SIZE; ++j) {
-				prevField[i][j] = currField[i][j];
-			}
-		}
+				
+		// new field builds in prew using curr
 		buildNewField();
+		swapPrevAndCurr();
 
-		// Game end check
-		for (size_t i = 0; i < FIELD_SIZE; ++i) {
-			for (size_t j = 0; j < FIELD_SIZE; ++j) {
-				if (prevField[i][j] != currField[i][j]) {
-					this->stopGame = false;
-				}
-			}
-		}
-		//if (this->stopGame) throw exception("Game over!");
 		this->cantGoBack = false;
 	}
 	catch (const exception& e) {
@@ -143,7 +136,7 @@ void Game::resetGame() {
 void Game::loadField(const string& fileName) {
 	try {
 		ifstream field;
-		if (!fileName.empty()) field.open(fileName.c_str()); // PROBLEM: can't open it 
+		if (!fileName.empty()) field.open(fileName.c_str());
 		if (!field.is_open()) throw exception("File was not opened");
 		if (!field.good()) throw exception("File problems");
 
@@ -165,7 +158,7 @@ void Game::saveField(const string& fileName) {
 	try {
 		//ofstream out("field.txt");
 		ofstream outField;
-		if (!fileName.empty()) outField.open(fileName.c_str()); // PROBLEM: can't open it 
+		if (!fileName.empty()) outField.open(fileName.c_str());
 		if (!outField.is_open()) throw exception("File was not opened");
 		if (!outField.good()) throw exception("File problems");
 

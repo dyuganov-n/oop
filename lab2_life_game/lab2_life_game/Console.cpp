@@ -13,7 +13,7 @@ void Console::drawField(Game* game) {
 	const char symbolFalse = '.';
 
 	cout << "  "; 
-	for (size_t i = 0; i < FIELD_SIZE; ++i) cout << i << ' ';;
+	for (size_t i = 0; i < FIELD_SIZE; ++i) cout << i << ' ';
 	cout << endl;
 
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {

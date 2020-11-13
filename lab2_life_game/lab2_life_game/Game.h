@@ -20,6 +20,12 @@ private:
 	void buildNewField();
 	size_t countNeighbors(const int& x, const int& y) const;
 
+	void swapPrevAndCurr() {
+		bool** tmp = currField;
+		currField = prevField;
+		prevField = tmp;
+	}
+
 public:
 	Game();
 	~Game();	
