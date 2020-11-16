@@ -78,8 +78,9 @@ void Game::buildNewField() {
 	for (size_t i = 0; i < FIELD_SIZE; ++i) {
 		for (size_t j = 0; j < FIELD_SIZE; ++j) {
 			size_t nbrsCnt = countNeighbors(i, j);
-
+			
 			if (currField[i][j] == 0 && nbrsCnt == 3) prevField[i][j] = 1;
+			else if (currField[i][j] == 0) prevField[i][j] = 0;
 			else if(currField[i][j] == 1 && (nbrsCnt == 2) || (nbrsCnt == 3)) prevField[i][j] = 1;
 			else if (currField[i][j] == 1 && ((nbrsCnt < 2) || (nbrsCnt > 3))) prevField[i][j] = 0;
 			

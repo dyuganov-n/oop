@@ -18,5 +18,6 @@
     <TestDuration Test="LoadField.WrongName" Duration="1" />
     <TestDuration Test="SaveField.WrongName" Duration="6" />
     <TestDuration Test="Step.NormalUse" Duration="1" />
+    <TestDuration Test="Step.SingleCell" Duration="1" />
   </TestDurations>
 </GtaTestDurations>

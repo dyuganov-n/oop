@@ -13,8 +13,8 @@ private:
 	bool** prevField;
 
 	size_t stepCnt = 0;
-	bool cantGoBack = 1;
 
+	bool cantGoBack = 1;
 	bool stopGame = 0;
 
 	void buildNewField();
