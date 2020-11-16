@@ -208,7 +208,26 @@ TEST(Step, NormalUse) {
 	EXPECT_EQ(game.getStepCnt(), 2);
 }
 
+TEST(Step, SingleCell) {
+	Game game;
+	game.setCell(3, 3);
 
+	EXPECT_NO_THROW(game.nextStep());
+
+	for (size_t i = 0; i < FIELD_SIZE; ++i) {
+		for (size_t j = 0; j < FIELD_SIZE; ++j) {
+			EXPECT_EQ(game.getCurField()[i][j], 0);
+		}
+	}
+
+	EXPECT_NO_THROW(game.nextStep());
+
+	for (size_t i = 0; i < FIELD_SIZE; ++i) {
+		for (size_t j = 0; j < FIELD_SIZE; ++j) {
+			EXPECT_EQ(game.getCurField()[i][j], 0);
+		}
+	}
+}
 
 int main(int argc, char** argv) {
 	testing::InitGoogleTest(&argc, argv);
