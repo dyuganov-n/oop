@@ -1,0 +1,2 @@
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Debug\lab3_robots.exe
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Debug\lab3_robots.pdb
