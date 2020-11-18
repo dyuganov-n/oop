@@ -1,36 +1,48 @@
 #pragma once
 
+#include <string>
+using namespace std;
+
 class Command {
-public:
-	enum class Direction {
-		up, down, left, right
-	};
-	enum class ExplorerMode {
-		manual, automatical, scan
-	};
-	enum class SapeerMode {
-		on, off
-	};
-protected:
+public:	
+	void virtual setCommand(const string& cmd) = 0;
+	//string virtual getCommand() = 0;
+};
 
+class ChangeModeCommand : public Command {
+public:
+	void setCommand(const string& cmd);
 
 };
 
-class ChangeExplorerMode : public Command {
+class ManualModeCommand : public Command {
+public:
+	// interface
+	void setCommand(const string& cmd);
+
+	// other
+	enum class Direction { up, down, left, right };
+	void virtual grab() = 0;
+	void virtual move(const Direction& dir) = 0;
+	void virtual scan() = 0;
+};
+
+class MoveManualCommand : public ManualModeCommand {
+public:
+
+
+private:
+
+};
+
+class GrabManualCommand : public ManualModeCommand {
 public:
 
 private:
 
 };
 
-class ChangeSapperMode : public Command {
-public:
-
-private:
-
-};
-
-class ExplorerCommand : public Command {
+class ScanManualCommand : public ManualModeCommand {
 public:
 
 private:

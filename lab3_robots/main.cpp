@@ -1,7 +1,10 @@
 
 #include <iostream>
 #include <exception>
+
 #include "Map.h"
+#include "View.h"
+#include "Explorer.h"
 
 using namespace std;
 
@@ -17,10 +20,7 @@ int main(int argc, char* argv[]) {
 	}
 	*/
 	try {
-		//if (argc != 1) throw std::exception("Incorrect number of arguements");
-		// else send filename to parser
-
-
+		
 	}
 	catch (std::exception& e) {
 		std::cout << "Some problems: " << e.what() << std::endl;

@@ -1,6 +1,6 @@
 #include "Map.h"
 
-
+/*
 Map Map::operator=(const Map& val) {
 	 // cleaning mem
 	 for (size_t i = 0; i < minMapSize; ++i) {
@@ -25,3 +25,4 @@ Map Map::operator=(const Map& val) {
 	 }
 	 return *this;
 }
+*/

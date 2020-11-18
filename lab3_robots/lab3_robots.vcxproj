@@ -142,18 +142,22 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Explorer.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Mode.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="Sapper.h" />
+    <ClInclude Include="View.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Explorer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Mode.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="Sapper.cpp" />
+    <ClCompile Include="View.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
