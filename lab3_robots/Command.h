@@ -3,19 +3,19 @@
 #include <string>
 using namespace std;
 
-class Command {
+class ICommand {
 public:	
 	void virtual setCommand(const string& cmd) = 0;
 	//string virtual getCommand() = 0;
 };
 
-class ChangeModeCommand : public Command {
+class ChangeModeCommand : public ICommand {
 public:
 	void setCommand(const string& cmd);
 
 };
 
-class ManualModeCommand : public Command {
+class ManualModeCommand : public ICommand {
 public:
 	// interface
 	void setCommand(const string& cmd);
@@ -29,10 +29,10 @@ public:
 
 class MoveManualCommand : public ManualModeCommand {
 public:
-
+	
 
 private:
-
+	Direction dir;
 };
 
 class GrabManualCommand : public ManualModeCommand {

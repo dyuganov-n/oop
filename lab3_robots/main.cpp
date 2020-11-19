@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <exception>
 
@@ -20,7 +19,12 @@ int main(int argc, char* argv[]) {
 	}
 	*/
 	try {
-		
+		ConsoleView v;
+		Map m;
+		Sapper s;
+		Explorer e(&s, m);
+		e.setLocation(1, 1);
+		v.showMap(&e, &s, 20);
 	}
 	catch (std::exception& e) {
 		std::cout << "Some problems: " << e.what() << std::endl;

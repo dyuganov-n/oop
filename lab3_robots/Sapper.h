@@ -7,11 +7,16 @@ class Sapper : public Robot {
 private:
 	Explorer* expl;
 	
-	Map _map;
+	//Map _map;
 	size_t currX = 0;
 	size_t currY = 0;
 
 public:
+
+	Sapper(Explorer* ex) {
+		this->expl = ex;
+	}
+	//Sapper();
 	
 	// interface 
 	size_t getCurrX() { return this->currX; }
@@ -19,9 +24,9 @@ public:
 	void setCurrX(const size_t& x) { this->currX = x; }
 	void setCurrY(const size_t& y) { this->currY = y; }
 
-	object** getMap() { return this->_map.getMap(); }
+	object** getMap() { return this->expl->getMap(); }
 
-	void setMode(const Mode& md); // on or off
+	void setMode(IMode& md); // on or off
 
 	// other
 	void setExploter(Explorer* e) { this->expl = e; }

@@ -1,8 +1,64 @@
 ﻿  Explorer.cpp
-  Map.cpp
-  Robot.cpp
-  Sapper.cpp
-  View.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,16): error C2238: unexpected token(s) preceding ';'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(16,8): error C2061: syntax error: identifier 'Explorer'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,27): error C2061: syntax error: identifier 'Explorer'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(17,9): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(17,16): error C2065: 'ex': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(27,35): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,40): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,47): error C2065: 'e': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.cpp(2,1): fatal error C1004: unexpected end-of-file found
   main.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,16): error C2238: unexpected token(s) preceding ';'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(16,8): error C2061: syntax error: identifier 'Explorer'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,27): error C2061: syntax error: identifier 'Explorer'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(17,9): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(17,16): error C2065: 'ex': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(27,35): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,40): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,47): error C2065: 'e': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.h(11,7): error C2059: syntax error: 'using namespace'
+  Sapper.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.h(14,8): error C2143: syntax error: missing ';' before '*'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.h(14,8): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.h(14,26): error C2238: unexpected token(s) preceding ';'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.h(22,10): error C2061: syntax error: identifier 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6,1): error C2236: unexpected token 'class'. Did you forget a ';'?
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6,14): error C2059: syntax error: ':'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.h(23,3): error C2065: 'sapper': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.h(23,12): error C2065: 's': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.h(24,12): error C2065: '_planet': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Explorer.h(25,10): error C2065: '_planet': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6,16): error C2059: syntax error: 'public'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6,29): error C2143: syntax error: missing ';' before '{'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6,29): error C2447: '{': missing function header (old-style formal list?)
+  View.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(8,16): error C2238: unexpected token(s) preceding ';'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(16,8): error C2061: syntax error: identifier 'Explorer'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,27): error C2061: syntax error: identifier 'Explorer'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(17,9): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(17,16): error C2065: 'ex': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(27,35): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,40): error C2039: 'expl': is not a member of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(6): message : see declaration of 'Sapper'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Sapper.h(32,47): error C2065: 'e': undeclared identifier
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\cmath(22,34): error C2628: 'Explorer' followed by 'double' is illegal (did you forget a ';'?)
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\cmath(24,25): error C2440: 'return': cannot convert from 'double' to 'Explorer'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\cmath(24,25): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\cmath(27,52): error C2440: 'return': cannot convert from 'double' to 'Explorer'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\cmath(27,52): message : No constructor could take the source type, or constructor overload resolution was ambiguous
   Generating Code...
-  lab3_robots.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\x64\Debug\lab3_robots.exe
