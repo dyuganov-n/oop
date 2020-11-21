@@ -1,5 +1,7 @@
 #pragma once
 
+
+// моды могут быть синглтонами
 class IMode {
 public:
 	void virtual setMode() = 0;
@@ -14,7 +16,7 @@ class ScanMode : public IMode {
 };
 class AutoMode : public IMode {};
 
-
+class Ideling : public IMode{};
 // sapper modes
 //class OnMode : public Mode {};
 //class OffMode : public Mode {};

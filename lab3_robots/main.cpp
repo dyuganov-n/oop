@@ -3,6 +3,8 @@
 
 #include "Map.h"
 #include "View.h"
+
+//#include "Sapper.h"
 #include "Explorer.h"
 
 using namespace std;
@@ -22,7 +24,7 @@ int main(int argc, char* argv[]) {
 		ConsoleView v;
 		Map m;
 		Sapper s;
-		Explorer e(&s, m);
+		Explorer e(m);
 		e.setLocation(1, 1);
 		v.showMap(&e, &s, 20);
 	}
