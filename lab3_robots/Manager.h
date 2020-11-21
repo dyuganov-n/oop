@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include "Sapper.h"
 #include "Explorer.h"
 #include "Mode.h"

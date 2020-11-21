@@ -1,61 +1,52 @@
 #pragma once
 
 #include "Robot.h"
-//#include "Sapper.h"
-#include "Mode.h"
 #include "Map.h"
 
-class Explorer : public Robot {
+class Explorer : public IRobot {
 private:
-	
-	Map planet;
-	Map* _map;
-
-	//Sapper* sapper = nullptr;
-
-	size_t resourcesOnMap = 0;
-
-	size_t currX = 0;
-	size_t currY = 0;
+	Map map;
+	Coordinates coordinates = { 0, 0 };
+	// Repeater repeater; // singletone
 
 public:
-	Explorer(const Map* _planet) { // Explorer(Sapper* s, const Map& _planet)
-		//sapper = s;
-		//planet = _planet;
-		//_map = _planet;
-		_map->clear();
+	Explorer() {
+		this->coordinates = { 0, 0 };
+	}
+	Explorer(Map _map) {
+		this->map = _map;
+		this->coordinates = { 0, 0 };
+	}
+	Explorer(Map _map, const Coordinates& coords) {
+		this->map = _map;
+		this->coordinates = coords;
 	}
 
-	//Explorer() {}
 
 	// interface 
-	size_t getCurrX() { return this->currX; }
-	size_t getCurrY() { return this->currY; }
-	void setCurrX(const size_t& x) { this->currX = x; }
-	void setCurrY(const size_t& y) { this->currY = y; }
-	object** getMap() { return this->_map.getMap(); }
-	void move(const Direction& dir);
+	Coordinates getCoordinates() {
+		return this->coordinates;
+	}
+	void setCoordinates(const Coordinates& coords) { this->coordinates = coords; }
+	Map& getMap() { return this->map; }
+	void updateMap(Map updatedMap) {
+		this->map = updatedMap;
+	}
 
-	//void setMode(const IMode& md); // scan or auto or manual
+	void move(const Direction& dir) {
+		// check cell is not out of map
+		// cell is discovered && avaliable check 
+		// move (change coords)
+		// ask manager to check other robots 
+	}
+
+	void notify() {
+		//repeater.notifyAll(); // sends its map version
+	}
 
 	// other
 	void collect();
 	void scan();
-	
 
-
-	void setLocation(const size_t& x, const size_t& y) {
-		this->currX = x;
-		this->currY = y;
-	}
-
-	Map* getMapPtr() { return &_map; }
-
-	void scan() {
-		//if(this->currX == )
-	}
-
-	
-
+	//void setMode(const IMode& md); // scan or auto or manual
 }
-

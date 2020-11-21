@@ -4,22 +4,30 @@
 #include "Mode.h"
 #include "Command.h"
 
-class Robot {
+enum class Direction : int {
+	up = 1,
+	down = -1,
+	left = -1,
+	right = 1
+};
+struct Coordinates {
+	size_t x = 0;
+	size_t y = 0;
+};
+
+class IRobot {
 public:
-	size_t virtual getCurrX() = 0;
-	size_t virtual getCurrY() = 0;
+	// map, coordinates
+	virtual Coordinates getCoordinates() = 0;
+	void virtual setCoordinates(const Coordinates& coords) = 0;
+	void virtual updateMap(Map updatedMap) = 0;
+	virtual Map& getMap() = 0; // use reciever for this?
 
-	void virtual setCurrX(const size_t& x) = 0;
-	void virtual setCurrY(const size_t& y) = 0;
-
-	enum class Direction { up, down, left, right };
+	// movement
 	void virtual move(const Direction& dir) = 0;
 
-	void virtual updateWorld();
-	//void virtual setMode(const Mode& md) = 0;
-
-	virtual object** getMap() = 0;
-
+	// notification system
+	void virtual notify()
 };
 
 

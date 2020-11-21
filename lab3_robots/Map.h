@@ -11,54 +11,45 @@ enum class object : char {
 };
 
 class Map {
-private:
-	const size_t minMapSize = 1000;
-
-	size_t mapLength;
-	size_t mapWidth;
-	object** _map;
-
 public:
 	Map() {
 		mapLength = minMapSize;
 		mapWidth = minMapSize;
 
-		_map = new object* [mapLength];
+		map = new object* [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
-			_map[i] = new object[mapWidth];
+			map[i] = new object[mapWidth];
 		}
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				this->_map[i][j] = object::unknown;
+				this->map[i][j] = object::unknown;
 			}
 		}
 	}
-
 	Map(const size_t& length, const size_t& width) {
 		mapLength = length;
 		mapWidth = width;
 
-		_map = new object * [mapLength];
+		map = new object * [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
-			_map[i] = new object[mapWidth];
+			map[i] = new object[mapWidth];
 		}
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				this->_map[i][j] = object::unknown;
+				this->map[i][j] = object::unknown;
 			}
 		}
 	}
-
 	virtual ~Map() {
 		for (size_t i = 0; i < this->getMapLength(); ++i) {
-			delete[] _map[i];
-			_map[i] = nullptr;
+			delete[] map[i];
+			map[i] = nullptr;
 		}
-		delete[] _map;
-		_map = nullptr;
+		delete[] map;
+		map = nullptr;
 	}
 
-	object** getMap() { return this->_map; }
+	const object** getMap() { return this->map; }
 	size_t getMapLength() { return this->mapLength; }
 	size_t getMapWidth() { return this->mapWidth; }
 
@@ -67,14 +58,14 @@ public:
 			if (x > this->mapLength || y > this->mapWidth) {
 				throw std::exception("Wrong index in SetCell");
 			}
-			this->_map[x][y] = obj;
+			this->map[x][y] = obj;
 		}
 		catch (const std::exception& e) { throw e; }
 	}
 	void fill(const object &obj) {
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				this->_map[i][j] = obj;
+				this->map[i][j] = obj;
 			}
 		}
 	}
@@ -82,30 +73,39 @@ public:
 		this->fill(object::unknown);
 	}
 
-	Map operator=(const Map& val) {
+	Map operator=(const Map& other) {
 		// cleaning mem
 		for (size_t i = 0; i < minMapSize; ++i) {
-			delete[] _map[i];
-			_map[i] = nullptr;
+			delete[] map[i];
+			map[i] = nullptr;
 		}
-		delete[] _map;
-		_map = nullptr;
+		delete[] map;
+		map = nullptr;
 
 		// copying
-		this->mapLength = val.mapLength;
-		this->mapWidth = val.mapWidth;
+		this->mapLength = other.mapLength;
+		this->mapWidth = other.mapWidth;
 
-		_map = new object * [mapLength];
+		map = new object * [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
-			_map[i] = new object[mapWidth];
+			map[i] = new object[mapWidth];
 		}
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				this->_map[i][j] = val._map[i][j];
+				this->map[i][j] = other.map[i][j];
 			}
 		}
 		return *this;
 	}
+
+private:
+	const size_t minMapSize = 1000;
+	size_t mapLength = minMapSize;
+	size_t mapWidth = minMapSize;
+
+	object** map = nullptr;
+
+	// size_t resourcesOnMap = 0; // don't need?
 
 };
 

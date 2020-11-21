@@ -1,39 +1,58 @@
 #pragma once
 
 #include "Robot.h"
-//#include "Explorer.h"
 
-class Sapper : public Robot {
+class Sapper : public IRobot {
 private:
-	//Explorer* expl;
-	
-	Map* ExplorersMap;
-	size_t currX = 0;
-	size_t currY = 0;
-
-	Repeater repeater;
+	Map map;
+	Coordinates coordinates = { 0, 0 };
+	// Repeater repeater; // singletone
 
 public:
-
-	//Sapper(Explorer* ex) {this->expl = ex;}
-	//Sapper();
+	Sapper() { 
+		Coordinates coordinates = { 0, 0 }; 
+	}
+	Sapper(Map _map) {
+		this->map = _map;
+		Coordinates coordinates = { 0, 0 };
+	}
+	Sapper(Map _map, const Coordinates& coords) {
+		this->map = _map;
+		Coordinates coordinates = coords;
+	}
+	virtual ~Sapper() {}
 	
 	// interface 
-	size_t getCurrX() { return this->currX; }
-	size_t getCurrY() { return this->currY; }
-	void setCurrX(const size_t& x) { this->currX = x; }
-	void setCurrY(const size_t& y) { this->currY = y; }
-	void move(const Direction& dir);
-	//object** getMap() { return {}; } // dont need this map here at all
+	Coordinates getCoordinates() {
+		return this->coordinates;
+	}
+	void setCoordinates(const Coordinates& coords) { 
+		this->coordinates = coords; 
+	}
+	void updateMap(Map updatedMap) {
+		this->map = updatedMap;
+	}
+	Map& getMap() { 
+		return this->map; 
+	}
 
-	//void setMode(IMode& md); // on or off
-
-	// other
-	//void setExploter(Explorer* e) { this->expl = e; }
-	void defuse();
+	void move(const Direction& dir) {
+		// check cell is not out of map
+		// cell is discovered && avaliable check 
+		// move (change coords)
+		// ask manager to check other robots 
+	}
 
 	void notify() {
-		repeater.notifyAll(); // отправляет свою версию карты 
+		//repeater.notifyAll(); // sends its map version
 	}
+
+	// other
+	void defuse() {
+		if (map.getMap()[coordinates.x][coordinates.y] == object::bomb) {
+			map.setCell(coordinates.x, coordinates.y, object::empty);
+		}
+	}
+
 };
 
