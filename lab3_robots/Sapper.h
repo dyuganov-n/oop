@@ -6,7 +6,7 @@ class Sapper : public IRobot {
 private:
 	Map map;
 	Coordinates coordinates = { 0, 0 };
-	// Repeater repeater; // singletone
+	// Repeater repeater; // singleton  
 
 public:
 	Sapper() { 
@@ -35,6 +35,7 @@ public:
 	Map& getMap() { 
 		return this->map; 
 	}
+	const object** getField() { this->getMap().getMap(); }
 
 	void move(const Direction& dir) {
 		// check cell is not out of map

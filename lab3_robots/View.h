@@ -32,23 +32,23 @@ private:
 public:
 	// two robots
 	void showMap(const int& oneSideViewField) {
-		Explorer* WALLE = mngr->getExplorer();
-		Sapper* EVE = mngr->getSapper();
+		Explorer* _explorer = mngr->getExplorer();
+		Sapper* _sapper = mngr->getSapper();
 
 		for (size_t i = -oneSideViewField; i < oneSideViewField; ++i) {
 			for (size_t j = oneSideViewField; j < oneSideViewField; ++j) {
 
 				// x, y generation 
 				size_t x = 0, y = 0;
-				x = WALLE->getCoordinates().x + i;
-				y = WALLE->getCoordinates().y + j;
+				x = _explorer->getCoordinates().x + i;
+				y = _explorer->getCoordinates().y + j;
 
 				// point is robot check
-				if (x == WALLE->getCoordinates().x && y == WALLE->getCoordinates().y) {
+				if (x == _explorer->getCoordinates().x && y == _explorer->getCoordinates().y) {
 					std::cout << "E ";
 					continue;
 				}
-				else if (x == EVE->getCoordinates().x && y == EVE->getCoordinates().y) {
+				else if (x == _sapper->getCoordinates().x && y == _sapper->getCoordinates().y) {
 					std::cout << "S ";
 					continue;
 				}
@@ -64,11 +64,11 @@ public:
 				}				
 
 				// map display
-				if (WALLE->getMap().getMap()[x][y] == object::unknown) std::cout << "? ";
-				else if (WALLE->getMap().getMap()[x][y] == object::apple) std::cout << "A ";
-				else if (WALLE->getMap().getMap()[x][y] == object::bomb) std::cout << "B ";
-				else if (WALLE->getMap().getMap()[x][y] == object::empty) std::cout << ". ";
-				else if (WALLE->getMap().getMap()[x][y] == object::rock) std::cout << "# ";
+				if (_explorer->getField()[x][y] == object::unknown) std::cout << "? ";
+				else if (_explorer->getField()[x][y] == object::apple) std::cout << "A ";
+				else if (_explorer->getField()[x][y] == object::bomb) std::cout << "B ";
+				else if (_explorer->getField()[x][y] == object::empty) std::cout << ". ";
+				else if (_explorer->getField()[x][y] == object::rock) std::cout << "# ";
 			}
 			std::cout << std::endl;
 		}

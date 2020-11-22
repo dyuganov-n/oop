@@ -32,6 +32,7 @@ public:
 	void updateMap(Map updatedMap) {
 		this->map = updatedMap;
 	}
+	const object** getField() { this->getMap().getMap(); }
 
 	void move(const Direction& dir) {
 		// check cell is not out of map

@@ -31,6 +31,8 @@ public:
 		this->explorer = ex;
 		this->sapper = sp;
 	}
+
+
 	
 	void handleCommand(); // void changeMode();
 

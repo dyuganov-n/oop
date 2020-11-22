@@ -22,6 +22,7 @@ public:
 	void virtual setCoordinates(const Coordinates& coords) = 0;
 	void virtual updateMap(Map updatedMap) = 0;
 	virtual Map& getMap() = 0; // use reciever for this?
+	virtual const object** getField() = 0;
 
 	// movement
 	void virtual move(const Direction& dir) = 0;
