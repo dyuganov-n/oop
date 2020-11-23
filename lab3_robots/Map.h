@@ -1,6 +1,7 @@
 #pragma once
 
 #include <exception>
+using std::exception;
 
 enum class object : char {
 	rock = 'r',
@@ -49,9 +50,17 @@ public:
 		map = nullptr;
 	}
 
-	const object** getMap() { return this->map; }
-	size_t getMapLength() { return this->mapLength; }
-	size_t getMapWidth() { return this->mapWidth; }
+	object** getField() const { return this->map; } // const object** !!!
+
+	const size_t& getMapLength() const { return this->mapLength; }
+	const size_t& getMapWidth() const { return this->mapWidth; }
+
+	void resourceFound() { ++resourcesOnMap; }
+	void resourceCollected() { 
+		if (resourcesOnMap) --resourcesOnMap;
+		else throw exception("All resources of the map were collected");
+	}
+	const size_t& getResourcesOnMap() const { return this->resourcesOnMap; }
 
 	void setCell(const size_t& x, const size_t& y, object obj) {
 		try {
@@ -105,7 +114,6 @@ private:
 
 	object** map = nullptr;
 
-	// size_t resourcesOnMap = 0; // don't need?
-
+	size_t resourcesOnMap = 0; // don't need?
 };
 

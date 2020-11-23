@@ -1,38 +1,52 @@
 #pragma once
 
+#include "Repeater.h"
 #include "Robot.h"
-#include "Map.h"
+
+#include <vector>
+using std::vector;
 
 class Explorer : public IRobot {
 private:
-	Map map;
-	Coordinates coordinates = { 0, 0 };
-	// Repeater repeater; // singletone
+	const RobotClass _class = RobotClass::explorer;
+
+	Map map; // or Map ptr?
+	Coordinates coords = { 0, 0 };
+
+	vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
+
+	Repeater* repeater = nullptr;
 
 public:
 	Explorer() {
-		this->coordinates = { 0, 0 };
+		this->coords = { 0, 0 };
+		// init repeater
 	}
 	Explorer(Map _map) {
 		this->map = _map;
-		this->coordinates = { 0, 0 };
+		this->coords = { 0, 0 };
+		// init repeater
 	}
 	Explorer(Map _map, const Coordinates& coords) {
 		this->map = _map;
-		this->coordinates = coords;
+		this->coords = coords;
+		// init repeater
 	}
-
 
 	// interface 
-	Coordinates getCoordinates() {
-		return this->coordinates;
+	const RobotClass& getRobotClass() const {
+		return this->_class;
 	}
-	void setCoordinates(const Coordinates& coords) { this->coordinates = coords; }
-	Map& getMap() { return this->map; }
+	const Coordinates& getCoordinates() const {
+		return this->coords;
+	}
+	void setCoordinates(const Coordinates& coords) { this->coords = coords; }
+	const Map& getMap() const { return this->map; }
 	void updateMap(Map updatedMap) {
 		this->map = updatedMap;
 	}
-	const object** getField() { this->getMap().getMap(); }
+
+	const object** getField() { this->getMap().getField(); }
 
 	void move(const Direction& dir) {
 		// check cell is not out of map
@@ -41,13 +55,14 @@ public:
 		// ask manager to check other robots 
 	}
 
-	void notify() {
-		//repeater.notifyAll(); // sends its map version
+	// other
+	void collect() {
+		this->resStorage.push_back({ coords.x, coords.y });
+		this->repeater->notifyCollect({ coords.x, coords.y });
 	}
 
-	// other
-	void collect();
-	void scan();
-
-	//void setMode(const IMode& md); // scan or auto or manual
-}
+	void scan() {
+		// scan
+		this->repeater->notifyScan({ coords.x, coords.y }, { {}, {}, {}, {} });
+	}
+};

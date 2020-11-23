@@ -1,29 +1,39 @@
 #pragma once
 
 #include "Robot.h"
+#include "Repeater.h"
 
 class Sapper : public IRobot {
 private:
-	Map map;
-	Coordinates coordinates = { 0, 0 };
-	// Repeater repeater; // singleton  
+	const RobotClass _class = RobotClass::sapper;
 
+	Map map;// or Map ptr?
+	Coordinates coordinates = { 0, 0 };
+
+	Repeater* repeater = nullptr;
+	
 public:
 	Sapper() { 
-		Coordinates coordinates = { 0, 0 }; 
+		Coordinates coordinates = { 0, 0 };
+		// init repeater
 	}
-	Sapper(Map _map) {
+	Sapper(const Map& _map) {
 		this->map = _map;
 		Coordinates coordinates = { 0, 0 };
+		// init repeater
 	}
-	Sapper(Map _map, const Coordinates& coords) {
+	Sapper(const Map& _map, const Coordinates& coords) {
 		this->map = _map;
 		Coordinates coordinates = coords;
+		// init repeater
 	}
 	virtual ~Sapper() {}
 	
 	// interface 
-	Coordinates getCoordinates() {
+	const RobotClass& getRobotClass() const {
+		return this->_class;
+	}
+	const Coordinates& getCoordinates() const  {
 		return this->coordinates;
 	}
 	void setCoordinates(const Coordinates& coords) { 
@@ -32,10 +42,10 @@ public:
 	void updateMap(Map updatedMap) {
 		this->map = updatedMap;
 	}
-	Map& getMap() { 
+	const Map& getMap() const  { 
 		return this->map; 
 	}
-	const object** getField() { this->getMap().getMap(); }
+	const object** getField() const { this->getMap().getField(); }
 
 	void move(const Direction& dir) {
 		// check cell is not out of map
@@ -44,14 +54,11 @@ public:
 		// ask manager to check other robots 
 	}
 
-	void notify() {
-		//repeater.notifyAll(); // sends its map version
-	}
-
 	// other
 	void defuse() {
-		if (map.getMap()[coordinates.x][coordinates.y] == object::bomb) {
+		if (map.getField()[coordinates.x][coordinates.y] == object::bomb) {
 			map.setCell(coordinates.x, coordinates.y, object::empty);
+			repeater->notifyDefuse({ coordinates.x, coordinates.y });
 		}
 	}
 

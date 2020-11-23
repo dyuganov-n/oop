@@ -11,34 +11,32 @@
 // control interaction between sapper and explorer
 class Manager {
 private:
-	vector<pair<IMode*, Explorer*>> explorers;
+	//vector<pair<IMode*, Explorer*>> explorers;
+	//vector<pair<IMode*, Sapper*>> sappers;
+	vector<pair<IMode*, IRobot*>> robots;
 	Sapper* sapper;
 
 	Map globalMap;
 
-	IMode* mode;
+	IMode* mode; // Manager work 
 	Parser* parser;
+	Repeater* repeater;
+
+	void changeMode(IMode* mode){}
 
 	void step() {
-		mode.invokeCommand(cmd);
+		for (auto rbt : robots){
+			rbt.first->invokeCommand(rbt.second);
+		}
+		
 	}
 	// авто мод общий
 	// нужен обработчик команд для робота и для самого менеджера 
 	//void commandMandler();
 
-public:
-	Manager(Explorer* ex, Sapper* sp) {
-		this->explorer = ex;
-		this->sapper = sp;
-	}
-
-
-	
-	void handleCommand(); // void changeMode();
-
-
-	void setExplorer(Explorer* ex) { this->explorer = ex; }
-	void setSapper(Sapper* sp) { this->sapper = sp; }
-
+public:	
+	void handleCommand();
+	Sapper* getSapper();
+	Explorer* getExplorer();
 };
 

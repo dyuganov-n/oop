@@ -1,23 +1,43 @@
 #pragma once
 
+#include "Robot.h"
 
-// моды могут быть синглтонами
+// modes could be singletones
+
 class IMode {
 public:
-	void virtual setMode() = 0;
-	//void virtual setCommand(const ICommand&) = 0;
+	void virtual invokeCommand(IRobot* robot) = 0;
 };
 
-//explorer modes
-class ManualMode : public IMode {};
+
+class ManualMode : public IMode {
+public:
+	void invokeCommand(IRobot* robot) {
+		// code
+	}
+};
 
 class ScanMode : public IMode {
-	//void setCommand(const ICommand& c){	}
+public:
+	void invokeCommand(IRobot* robot) {
+		// 
+	}
 };
-class AutoMode : public IMode {};
 
-class Ideling : public IMode{};
-// sapper modes
-//class OnMode : public Mode {};
-//class OffMode : public Mode {};
+class AutoMode : public IMode {
+public:
+	void invokeCommand(IRobot* robot) {
+		// find closest item (bomb or apple) and move
+	}
+};
+
+/*
+class Ideling : public IMode{ // need it?
+public:
+	void invokeCommand(IRobot* robot) {
+		// code
+	}
+};
+*/
+
 
