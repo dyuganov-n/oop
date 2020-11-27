@@ -26,7 +26,10 @@ public:
 	void notifyCollect(const Coordinates& coords) {
 		changes.push_back({coords, Object::empty});
 	}
-	vector<pair<Coordinates, Object>> getMapUpdates() {
+	const vector<pair<Coordinates, Object>>& getMapUpdates() {
 		return this->changes;
+	}
+	void deleteElem(const size_t& idx) {
+		this->changes.erase(changes.begin() + idx, changes.end() + idx);
 	}
 };

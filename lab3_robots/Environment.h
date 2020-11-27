@@ -17,11 +17,11 @@ public:
 	}
 
 	const Object getObject(const Coordinates& coords) {
-
+		return this->globalMap->getField()[coords.x][coords.y];
 	}
-
+	
 private:
-	Map* globalMap = nullptr;
+	Map* globalMap;
 
 };
 

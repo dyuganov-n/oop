@@ -1,12 +1,12 @@
 #pragma once
 
-
 // карту при необходимости запрашивает сам
 // нужен еще класс окружения, из которого он подсасывает инфу о карте 
 // (только не всю карту)
 
 #include "Repeater.h"
 #include "Robot.h"
+//#include "Environment.h"
 
 #include <vector>
 using std::vector;
@@ -17,10 +17,12 @@ private:
 
 	Map map;
 	Coordinates coords = { 0, 0 };
-
+	Environment* environment = nullptr;
 	vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
 
 	Repeater* repeater = nullptr;
+
+	const Object** getField() { this->getMap().getField(); }
 
 public:
 	Explorer() {
@@ -56,21 +58,41 @@ public:
 	const Coordinates& getCoordinates() const {
 		return this->coords;
 	}
-	void setCoordinates(const Coordinates& coords) { this->coords = coords; }
-	const Map& getMap() const { return this->map; }
-	void setMap(Map& mp) { this->map = mp; }
-	void updateMap() {
-		
+	void setCoordinates(const Coordinates& coords) { 
+		this->coords = coords; 
+	}
+	const Map& getMap() const { 
+		return this->map; 
+	}
+	void setMap(Map& mp) {
+		this->map = mp;
+	}
+	void setEnvironment(Environment* env) {
+		this->environment = env;
 	}
 
-	const Object** getField() { this->getMap().getField(); }
+	void updateMap() {
+		for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
+			size_t _x = repeater->getMapUpdates()[i].first.x;
+			size_t _y = repeater->getMapUpdates()[i].first.y;
+			Object obj = repeater->getMapUpdates()[i].second;
 
+			// cell is up to date check (all robots already have this cell in their maps)
+			if (getField()[_x][_y] == obj) {
+				repeater->deleteElem(i);
+			}
+			else {
+				this->map.setCell({ _x, _y }, obj);
+			}
+		}
+	}
 	void move(const Direction& dir) {
 		// check cell is not out of map
 		// cell is discovered && avaliable check 
 		// move (change coords)
 		// ask manager to check other robots 
 	}
+	
 
 	// other
 	void collect() {
@@ -79,7 +101,25 @@ public:
 	}
 
 	void scan() {
-		// scan
-		this->repeater->notifyScan({ {}, {}, {}, {} });
+		vector<pair<Coordinates, Object>> scanResult;
+		pair<Coordinates, Object> upObj;
+		pair<Coordinates, Object> downObj;
+		pair<Coordinates, Object> leftObj;
+		pair<Coordinates, Object> rightObj;
+
+		if (coords.y != 0) {// up
+			
+		}
+		if (coords.y != map.getMapLength()) {// down
+			
+		}
+		if (coords.x != 0) {//left
+			
+		}
+		if (coords.x != map.getMapWidth()) {// right
+			
+		}
+
+		this->repeater->notifyScan(scanResult);
 	}
 };

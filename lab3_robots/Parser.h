@@ -8,6 +8,9 @@ public:
 	Parser(){}
 	~Parser(){}
 	void getCommand();
+	const string& getFileName() {
+		// get file name from app args
+	}
 
 private:
 	//ICommand* cmd = nullptr;

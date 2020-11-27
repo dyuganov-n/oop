@@ -4,6 +4,7 @@
 #include "Explorer.h"
 #include "Mode.h"
 #include "Parser.h"
+#include "Environment.h"
 
 #include <iostream>
 #include <fstream>
@@ -22,7 +23,9 @@ private:
 
 	IMode* mode = nullptr; // Manager work 
 	Parser* parser = nullptr;
-	Repeater repeater;
+	
+	Environment* environment = nullptr; // global map is here
+	Repeater* repeater = nullptr;
 	// data source 
 	// delegate
 
@@ -39,15 +42,22 @@ private:
 	//void commandMandler();
 
 public:	
-
 	Manager(Parser* prsr) {
-
+		this->parser = prsr;
+		setGlobalMap(parser->getFileName());
+		this->repeater = new Repeater;
+		this->environment = new Environment(&globalMap);
 	}
 	~Manager() {
-		
-	}
+		delete environment;
+		environment = nullptr;
 
-	
+		delete repeater;
+		repeater = nullptr;
+
+		parser = nullptr;
+		mode = nullptr;
+	}
 
 	void handleCommand() {
 		parser->getCommand();
