@@ -5,10 +5,12 @@
 
 class Parser {
 public:
+	Parser(){}
+	~Parser(){}
 	void getCommand();
-private:
-	ICommand* cmd = nullptr;
 
+private:
+	//ICommand* cmd = nullptr;
 
 };
 

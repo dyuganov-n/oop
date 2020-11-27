@@ -10,6 +10,10 @@ enum class Object : char {
 	apple = 'a',
 	unknown = 'u'
 };
+struct Coordinates {
+	size_t x = 0;
+	size_t y = 0;
+};
 
 class Map {
 public:
@@ -62,12 +66,12 @@ public:
 	}
 	const size_t& getResourcesOnMap() const { return this->resourcesOnMap; }
 
-	void setCell(const size_t& x, const size_t& y, Object obj) {
+	void setCell(const Coordinates& coords, Object obj) {
 		try {
-			if (x > this->mapLength || y > this->mapWidth) {
+			if (coords.x > this->mapLength || coords.y > this->mapWidth) {
 				throw std::exception("Wrong index in SetCell");
 			}
-			this->field[x][y] = obj;
+			this->field[coords.x][coords.y] = obj;
 		}
 		catch (const std::exception& e) { throw e; }
 	}

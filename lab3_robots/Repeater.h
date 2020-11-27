@@ -2,54 +2,31 @@
 
 #include <map>
 #include <vector>
-
-#include "Robot.h"
 using std::pair;
 using std::vector;
 
+#include "Map.h"
 
 class Repeater {
 private:
 	vector<pair<Coordinates, Object>> changes;
-	Manager* mngr = nullptr;
 
-	//Repeater& operator=(Repeater& other) {}
 public:
 	Repeater() {}
 	~Repeater() {}
 
 	void notifyDefuse(const Coordinates& coords) {
-
+		changes.push_back({ coords, Object::empty });
 	}
-	void notifyScan(const Coordinates& center, 
-					const std::map<Direction, Object>) {
-
+	void notifyScan(const vector<pair<Coordinates, Object>>& objects) {
+		for (const auto& item : objects) {
+			this->changes.push_back(item);
+		}
 	}
 	void notifyCollect(const Coordinates& coords) {
-
+		changes.push_back({coords, Object::empty});
 	}
-
 	vector<pair<Coordinates, Object>> getMapUpdates() {
 		return this->changes;
 	}
-
-	
 };
-
-// singleton version
-/*
-class Repeater {
-private:
-	static Repeater* ptrInstance;
-	Repeater(){}
-	~Repeater(){}
-	Repeater& operator=(Repeater& other) {}
-public:
-	static Repeater* getInstance() {
-		if (!ptrInstance) {
-			ptrInstance = new Repeater();
-		}
-		return ptrInstance;
-	}
-};
-*/

@@ -5,7 +5,12 @@
 #include "Mode.h"
 #include "Parser.h"
 
+#include <iostream>
+#include <fstream>
 #include <vector>
+#include <string>
+
+using std::cin;
 
 // control interaction between sapper and explorer
 class Manager {
@@ -15,8 +20,8 @@ private:
 	Map robotsMap;
 	Map globalMap;
 
-	IMode* mode; // Manager work 
-	Parser* parser;
+	IMode* mode = nullptr; // Manager work 
+	Parser* parser = nullptr;
 	Repeater repeater;
 	// data source 
 	// delegate
@@ -34,6 +39,16 @@ private:
 	//void commandMandler();
 
 public:	
+
+	Manager(Parser* prsr) {
+
+	}
+	~Manager() {
+		
+	}
+
+	
+
 	void handleCommand() {
 		parser->getCommand();
 	}
@@ -50,8 +65,44 @@ public:
 		return result;
 	}
 
+	void setGlobalMap(const string &fileName) {
+		size_t stringsCnt = 0;
+		size_t symbolsInStrCnt = 0;
+		char c;
+
+		ifstream in(fileName);
+		if (!in.good()) throw std::exception("Some problems with opening a file");
+
+		// symbols cnt
+		in >> c;
+		while (c != '/n' || c != EOF) {
+			if (c != ' ') ++symbolsInStrCnt;
+		}
+		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
+
+		// strings cnt
+		in >> c;
+		while (c != EOF) {
+			if (c == '\n') ++stringsCnt;
+		}
+		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
+
+		// creating map
+		this->globalMap = Map(stringsCnt, symbolsInStrCnt);
+		for (size_t i = 0; i < stringsCnt; ++i) {
+			for (size_t j = 0; j < symbolsInStrCnt; ++j) {
+				in >> c;
+				if (c != ' ') globalMap.setCell({i, j}, (Object)c);
+			}
+		}
+
+		in.close();
+	}
+
 	const Map* getMap() {
 		return &(this->robotsMap);
 	}
+
+
 };
 

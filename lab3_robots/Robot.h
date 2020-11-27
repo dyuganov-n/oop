@@ -1,17 +1,16 @@
 #pragma once
 
 #include "Map.h"
+#include "Environment.h"
+#include "Repeater.h"
 
-enum class Direction : int { // need out of class
-	up = 1,
-	down = -1,
-	left = -1,
-	right = 1
+enum class Direction { // need out of class
+	up,
+	down,
+	left,
+	right
 };
-struct Coordinates { // need out of class
-	size_t x = 0;
-	size_t y = 0;
-};
+
 enum class RobotClass {
 	explorer,
 	sapper
@@ -19,16 +18,23 @@ enum class RobotClass {
 
 class IRobot {
 public:
+	// getting information about robot
 	virtual const RobotClass& getRobotClass() const = 0;
 
+	// position
 	virtual const Coordinates& getCoordinates() = 0;
-	void virtual setCoordinates(const Coordinates& coords) = 0;
-	//void virtual updateMap(Map updatedMap) = 0;
-	//virtual const Map& getMap() = 0; // use reciever for this?
-	//virtual const object** getField() = 0;
+	virtual void setCoordinates(const Coordinates& coords) = 0;
 
-	void virtual move(const Direction& dir) = 0;
+	// map
+	virtual void setMap(Map mp) = 0;
+	virtual const Map& getMap() = 0;
 
-	void virtual updateMap() = 0; // use factory method?
-	void virtual notifyAll() = 0;
+	// main action for all robots
+	virtual void move(const Direction& dir) = 0;
+
+	// unteraction with other robots and manager
+	virtual void setEnvironment(Environment* env) = 0;
+	virtual void setRepeater(Repeater* rep) = 0;
+	virtual void updateMap() = 0; // use factory method? // No. I don't remember 
+	virtual void notifyAll() = 0;
 };

@@ -1,5 +1,10 @@
 #pragma once
 
+
+// карту при необходимости запрашивает сам
+// нужен еще класс окружения, из которого он подсасывает инфу о карте 
+// (только не всю карту)
+
 #include "Repeater.h"
 #include "Robot.h"
 
@@ -10,7 +15,7 @@ class Explorer : public IRobot {
 private:
 	const RobotClass _class = RobotClass::explorer;
 
-	Map map; // or Map ptr?
+	Map map;
 	Coordinates coords = { 0, 0 };
 
 	vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
@@ -18,22 +23,43 @@ private:
 	Repeater* repeater = nullptr;
 
 public:
-	Explorer(Map _map, const Coordinates& coords, Repeater* rep) {
+	Explorer() {
+		this->repeater = nullptr;
+	}
+	Explorer(const Map& _map) {
 		this->map = _map;
-		this->coords = coords;
-		// init repeater
+		this->repeater = nullptr;
+	}
+	Explorer(const Coordinates& _coords) {
+		this->coords = _coords;
+		this->repeater = nullptr;
+	}
+	Explorer(const Map& _map, const Coordinates& _coords) {
+		this->coords = _coords;
+		this->map = _map;
+		this->repeater = nullptr;
+	}
+	Explorer(const Map& _map, const Coordinates& _coords, Repeater* rep) {
+		this->map = _map;
+		this->coords = _coords;
+		this->repeater = rep;
+	}
+	~Explorer() {
+		this->repeater = nullptr;
 	}
 
 	// interface 
 	const RobotClass& getRobotClass() const {
 		return this->_class;
 	}
+
 	const Coordinates& getCoordinates() const {
 		return this->coords;
 	}
 	void setCoordinates(const Coordinates& coords) { this->coords = coords; }
 	const Map& getMap() const { return this->map; }
-	void updateMap(vector<pair<Coordinates, Object>>) {
+	void setMap(Map& mp) { this->map = mp; }
+	void updateMap() {
 		
 	}
 
@@ -54,6 +80,6 @@ public:
 
 	void scan() {
 		// scan
-		this->repeater->notifyScan({ coords.x, coords.y }, { {}, {}, {}, {} });
+		this->repeater->notifyScan({ {}, {}, {}, {} });
 	}
 };

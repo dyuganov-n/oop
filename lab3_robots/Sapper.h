@@ -11,7 +11,7 @@ private:
 	Coordinates pos = { 0, 0 };
 
 	Repeater* repeater = nullptr;
-	Manager* mngr = nullptr;
+	//Manager* mngr = nullptr;
 	
 public:
 	Sapper() { 
@@ -60,7 +60,7 @@ public:
 	// other
 	void defuse() {
 		if (map.getField()[pos.x][pos.y] == Object::bomb) {
-			map.setCell(pos.x, pos.y, Object::empty);
+			map.setCell({ pos.x, pos.y }, Object::empty);
 			repeater->notifyDefuse({ pos.x, pos.y });
 		}
 	}
