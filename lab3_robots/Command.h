@@ -7,7 +7,6 @@ using namespace std;
 class ICommand {
 public:	
 	void virtual setCommand(const string& cmd) = 0;
-	//string virtual getCommand() = 0;
 };
 
 class ChangeModeCommand : public ICommand {

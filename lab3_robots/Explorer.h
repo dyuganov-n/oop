@@ -18,16 +18,7 @@ private:
 	Repeater* repeater = nullptr;
 
 public:
-	Explorer() {
-		this->coords = { 0, 0 };
-		// init repeater
-	}
-	Explorer(Map _map) {
-		this->map = _map;
-		this->coords = { 0, 0 };
-		// init repeater
-	}
-	Explorer(Map _map, const Coordinates& coords) {
+	Explorer(Map _map, const Coordinates& coords, Repeater* rep) {
 		this->map = _map;
 		this->coords = coords;
 		// init repeater
@@ -42,11 +33,11 @@ public:
 	}
 	void setCoordinates(const Coordinates& coords) { this->coords = coords; }
 	const Map& getMap() const { return this->map; }
-	void updateMap(Map updatedMap) {
-		this->map = updatedMap;
+	void updateMap(vector<pair<Coordinates, Object>>) {
+		
 	}
 
-	const object** getField() { this->getMap().getField(); }
+	const Object** getField() { this->getMap().getField(); }
 
 	void move(const Direction& dir) {
 		// check cell is not out of map

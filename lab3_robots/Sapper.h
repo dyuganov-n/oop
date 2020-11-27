@@ -8,9 +8,10 @@ private:
 	const RobotClass _class = RobotClass::sapper;
 
 	Map map;// or Map ptr?
-	Coordinates coordinates = { 0, 0 };
+	Coordinates pos = { 0, 0 };
 
 	Repeater* repeater = nullptr;
+	Manager* mngr = nullptr;
 	
 public:
 	Sapper() { 
@@ -22,9 +23,9 @@ public:
 		Coordinates coordinates = { 0, 0 };
 		// init repeater
 	}
-	Sapper(const Map& _map, const Coordinates& coords) {
+	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* r) {
 		this->map = _map;
-		Coordinates coordinates = coords;
+		pos = startPosition;
 		// init repeater
 	}
 	virtual ~Sapper() {}
@@ -33,21 +34,23 @@ public:
 	const RobotClass& getRobotClass() const {
 		return this->_class;
 	}
-	const Coordinates& getCoordinates() const  {
-		return this->coordinates;
+	const Coordinates& getPosition() const  {
+		return this->pos;
 	}
 	void setCoordinates(const Coordinates& coords) { 
-		this->coordinates = coords; 
+		this->pos = coords; 
 	}
-	void updateMap(Map updatedMap) {
-		this->map = updatedMap;
+	void updateMap() {
+		
 	}
 	const Map& getMap() const  { 
 		return this->map; 
 	}
-	const object** getField() const { this->getMap().getField(); }
+	const Object** getField() const { this->getMap().getField(); }
 
 	void move(const Direction& dir) {
+		updateMap();
+		
 		// check cell is not out of map
 		// cell is discovered && avaliable check 
 		// move (change coords)
@@ -56,9 +59,9 @@ public:
 
 	// other
 	void defuse() {
-		if (map.getField()[coordinates.x][coordinates.y] == object::bomb) {
-			map.setCell(coordinates.x, coordinates.y, object::empty);
-			repeater->notifyDefuse({ coordinates.x, coordinates.y });
+		if (map.getField()[pos.x][pos.y] == Object::bomb) {
+			map.setCell(pos.x, pos.y, Object::empty);
+			repeater->notifyDefuse({ pos.x, pos.y });
 		}
 	}
 

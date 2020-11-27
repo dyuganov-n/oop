@@ -7,6 +7,8 @@ class Parser {
 public:
 	void getCommand();
 private:
-	//Command cmd;
+	ICommand* cmd = nullptr;
+
+
 };
 

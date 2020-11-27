@@ -1,13 +1,19 @@
 #pragma once
 
 #include <map>
+#include <vector>
+
 #include "Robot.h"
+using std::pair;
+using std::vector;
+
 
 class Repeater {
 private:
-	vector<pair<Coordinates, object>> changes;
+	vector<pair<Coordinates, Object>> changes;
+	Manager* mngr = nullptr;
 
-	Repeater& operator=(Repeater& other) {}
+	//Repeater& operator=(Repeater& other) {}
 public:
 	Repeater() {}
 	~Repeater() {}
@@ -16,12 +22,18 @@ public:
 
 	}
 	void notifyScan(const Coordinates& center, 
-					const std::map<Direction, object>) {
+					const std::map<Direction, Object>) {
 
 	}
 	void notifyCollect(const Coordinates& coords) {
 
 	}
+
+	vector<pair<Coordinates, Object>> getMapUpdates() {
+		return this->changes;
+	}
+
+	
 };
 
 // singleton version

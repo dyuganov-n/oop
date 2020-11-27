@@ -13,7 +13,7 @@ public:
 class ManualMode : public IMode {
 public:
 	void invokeCommand(IRobot* robot) {
-		// code
+		
 	}
 };
 

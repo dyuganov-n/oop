@@ -3,7 +3,7 @@
 #include <exception>
 using std::exception;
 
-enum class object : char {
+enum class Object : char {
 	rock = 'r',
 	bomb = 'b',
 	empty = 'e',
@@ -17,13 +17,13 @@ public:
 		mapLength = minMapSize;
 		mapWidth = minMapSize;
 
-		map = new object* [mapLength];
+		field = new Object* [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
-			map[i] = new object[mapWidth];
+			field[i] = new Object[mapWidth];
 		}
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				this->map[i][j] = object::unknown;
+				this->field[i][j] = Object::unknown;
 			}
 		}
 	}
@@ -31,26 +31,26 @@ public:
 		mapLength = length;
 		mapWidth = width;
 
-		map = new object * [mapLength];
+		field = new Object * [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
-			map[i] = new object[mapWidth];
+			field[i] = new Object[mapWidth];
 		}
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				this->map[i][j] = object::unknown;
+				this->field[i][j] = Object::unknown;
 			}
 		}
 	}
 	virtual ~Map() {
 		for (size_t i = 0; i < this->getMapLength(); ++i) {
-			delete[] map[i];
-			map[i] = nullptr;
+			delete[] field[i];
+			field[i] = nullptr;
 		}
-		delete[] map;
-		map = nullptr;
+		delete[] field;
+		field = nullptr;
 	}
 
-	object** getField() const { return this->map; } // const object** !!!
+	Object** getField() const { return this->field; } // const object** !!!
 
 	const size_t& getMapLength() const { return this->mapLength; }
 	const size_t& getMapWidth() const { return this->mapWidth; }
@@ -62,46 +62,46 @@ public:
 	}
 	const size_t& getResourcesOnMap() const { return this->resourcesOnMap; }
 
-	void setCell(const size_t& x, const size_t& y, object obj) {
+	void setCell(const size_t& x, const size_t& y, Object obj) {
 		try {
 			if (x > this->mapLength || y > this->mapWidth) {
 				throw std::exception("Wrong index in SetCell");
 			}
-			this->map[x][y] = obj;
+			this->field[x][y] = obj;
 		}
 		catch (const std::exception& e) { throw e; }
 	}
-	void fill(const object &obj) {
+	void fill(const Object &obj) {
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				this->map[i][j] = obj;
+				this->field[i][j] = obj;
 			}
 		}
 	}
 	void clear() {
-		this->fill(object::unknown);
+		this->fill(Object::unknown);
 	}
 
 	Map operator=(const Map& other) {
 		// cleaning mem
 		for (size_t i = 0; i < minMapSize; ++i) {
-			delete[] map[i];
-			map[i] = nullptr;
+			delete[] field[i];
+			field[i] = nullptr;
 		}
-		delete[] map;
-		map = nullptr;
+		delete[] field;
+		field = nullptr;
 
 		// copying
 		this->mapLength = other.mapLength;
 		this->mapWidth = other.mapWidth;
 
-		map = new object * [mapLength];
+		field = new Object * [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
-			map[i] = new object[mapWidth];
+			field[i] = new Object[mapWidth];
 		}
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				this->map[i][j] = other.map[i][j];
+				this->field[i][j] = other.field[i][j];
 			}
 		}
 		return *this;
@@ -112,7 +112,7 @@ private:
 	size_t mapLength = minMapSize;
 	size_t mapWidth = minMapSize;
 
-	object** map = nullptr;
+	Object** field = nullptr;
 
 	size_t resourcesOnMap = 0; // don't need?
 };

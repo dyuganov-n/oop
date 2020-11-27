@@ -1,6 +1,8 @@
 ﻿  Explorer.cpp
-  Manager.cpp
-  View.cpp
   main.cpp
+  Manager.cpp
+  Repeater.cpp
+  Sapper.cpp
+  View.cpp
   Generating Code...
   lab3_robots.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\x64\Debug\lab3_robots.exe

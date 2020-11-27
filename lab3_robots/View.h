@@ -15,11 +15,7 @@
 // апрашивает у менеджера карту с роботами
 class IView {
 public:
-	// one robot
-	void virtual showMap(IRobot* robot, const int& oneSideViewField) = 0;
-	
-	// two robots
-	void virtual showMap(Explorer* WALLE, Sapper* EVE, const int& oneSideViewField) = 0;
+	void virtual showMap(const vector<const IRobot*> robots, const int& oneSideViewField) = 0;
 
 	// could be version with main robot (in the center) + all other around
 };
@@ -31,6 +27,7 @@ private:
 
 public:
 	// two robots
+	/*
 	void showMap(const int& oneSideViewField) {
 		Explorer* _explorer = mngr->getExplorer();
 		Sapper* _sapper = mngr->getSapper();
@@ -48,7 +45,7 @@ public:
 					std::cout << "E ";
 					continue;
 				}
-				else if (x == _sapper->getCoordinates().x && y == _sapper->getCoordinates().y) {
+				else if (x == _sapper->getPosition().x && y == _sapper->getPosition().y) {
 					std::cout << "S ";
 					continue;
 				}
@@ -73,6 +70,7 @@ public:
 			std::cout << std::endl;
 		}
 	}
+	*/
 
 	// could be version with main robot (in the center) + all other around
 };

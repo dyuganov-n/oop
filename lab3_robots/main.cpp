@@ -4,8 +4,6 @@
 #include "Map.h"
 #include "View.h"
 
-
-
 using namespace std;
 
 int main(int argc, char* argv[]) {
