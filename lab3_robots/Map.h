@@ -59,12 +59,14 @@ public:
 	const size_t& getMapLength() const { return this->mapLength; }
 	const size_t& getMapWidth() const { return this->mapWidth; }
 
+	/*
 	void resourceFound() { ++resourcesOnMap; }
 	void resourceCollected() { 
 		if (resourcesOnMap) --resourcesOnMap;
 		else throw exception("All resources of the map were collected");
 	}
 	const size_t& getResourcesOnMap() const { return this->resourcesOnMap; }
+	*/
 
 	void setCell(const Coordinates& coords, Object obj) {
 		try {

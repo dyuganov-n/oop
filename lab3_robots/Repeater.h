@@ -30,6 +30,14 @@ public:
 		return this->changes;
 	}
 	void deleteElem(const size_t& idx) {
-		this->changes.erase(changes.begin() + idx);
+		try {
+			if (idx >= this->changes.size()) {
+				throw exception("Can't delete this element in changes vector");
+			}
+			this->changes.erase(changes.begin() + idx);
+		}
+		catch (const exception& e) {
+			throw e;
+		}
 	}
 };

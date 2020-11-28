@@ -2,15 +2,19 @@
 
 #include "Map.h"
 
-
 /// <summary>
 /// Interaction with planet (global map).
 /// </summary>
 class Environment {
 public:
 	Environment(Map* _globalMap) {
-		if (_globalMap == nullptr) throw std::exception("Environment map ptr is empty");
-		this->globalMap = _globalMap;
+		try {
+			if (_globalMap == nullptr) throw std::exception("Environment map ptr is empty");
+			this->globalMap = _globalMap;
+		}
+		catch (const exception& e) {
+			throw e;
+		}
 	}
 	Environment() {
 		this->globalMap = nullptr;

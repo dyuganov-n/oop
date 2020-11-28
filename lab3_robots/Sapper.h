@@ -5,10 +5,6 @@
 
 class Sapper : public IRobot {
 private:
-	const RobotClass _class = RobotClass::sapper;
-	Map _map;
-	Coordinates pos = { 0, 0 };
-	Repeater* repeater = nullptr;
 	
 	
 public:

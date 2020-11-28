@@ -7,7 +7,8 @@
 
 enum class RobotClass {
 	explorer,
-	sapper
+	sapper, 
+	unknown
 };
 
 class IRobot {
@@ -29,6 +30,13 @@ public:
 	// unteraction with other robots and manager
 	virtual void setEnvironment(Environment* env) = 0;
 	virtual void setRepeater(Repeater* rep) = 0;
-	virtual void updateMap() = 0; // use factory method? // No. I don't remember 
-	virtual void notifyAll() = 0;
+	virtual void updateMap() = 0;
+
+protected:
+	/*
+	const RobotClass _class = RobotClass::unknown;
+	Map _map;
+	Coordinates pos = { 0, 0 };
+	Repeater* repeater = nullptr;
+	*/
 };

@@ -11,9 +11,9 @@ private:
 	const RobotClass _class = RobotClass::explorer;
 	Map _map;
 	Coordinates pos = { 0, 0 };
+	Repeater* repeater = nullptr;
 	Environment* environment = nullptr; // global map is here
 	vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
-	Repeater* repeater = nullptr;
 
 	const Object** getField() { this->getMap().getField(); }
 
@@ -93,6 +93,7 @@ public:
 			this->resStorage.push_back({ pos.x, pos.y });
 			this->repeater->notifyCollect({ pos.x, pos.y });
 			this->_map.setCell(pos, Object::empty);
+			//this->_map.resourceCollected();
 		}
 	}
 
@@ -103,30 +104,35 @@ public:
 		pair<Coordinates, Object> leftObj;
 		pair<Coordinates, Object> rightObj;
 
-		if (pos.y != 0) {// up
+		// up
+		if (pos.y != 0) {
 			Coordinates objCoords = { pos.x, pos.y - 1 };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({objCoords, obj});
 			this->_map.setCell(objCoords, obj);
 		}
-		if (pos.y != _map.getMapLength()) {// down
+		// down
+		if (pos.y != _map.getMapLength()) {
 			Coordinates objCoords = { pos.x, pos.y + 1 };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
 			this->_map.setCell(objCoords, obj);
 		}
-		if (pos.x != 0) {//left
+		//left
+		if (pos.x != 0) {
 			Coordinates objCoords = { pos.x - 1, pos.y };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
 			this->_map.setCell(objCoords, obj);
 		}
-		if (pos.x != _map.getMapWidth()) {// right
+		// right
+		if (pos.x != _map.getMapWidth()) {
 			Coordinates objCoords = { pos.x + 1, pos.y };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
 			this->_map.setCell(objCoords, obj);
 		}
+
 		this->repeater->notifyScan(scanResult);
 	}
 };
