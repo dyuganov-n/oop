@@ -6,7 +6,6 @@
 class Sapper : public IRobot {
 private:
 	
-	
 public:
 	Sapper() { 
 		Coordinates coordinates = { 0, 0 };
@@ -25,6 +24,7 @@ public:
 	virtual ~Sapper() {}
 	
 	// interface 
+	/*
 	const RobotClass& getRobotClass() const {
 		return this->_class;
 	}
@@ -51,6 +51,7 @@ public:
 		// move (change coords)
 		// ask manager to check other robots 
 	}
+	*/
 
 	// other
 	void defuse() {

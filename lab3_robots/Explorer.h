@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Repeater.h"
+//#include "Repeater.h"
 #include "Robot.h"
 
 #include <vector>
@@ -8,14 +8,12 @@ using std::vector;
 
 class Explorer : public IRobot {
 private:
-	const RobotClass _class = RobotClass::explorer;
-	Map _map;
-	Coordinates pos = { 0, 0 };
-	Repeater* repeater = nullptr;
-	Environment* environment = nullptr; // global map is here
-	vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
-
-	const Object** getField() { this->getMap().getField(); }
+	Environment* environment = nullptr;
+	//const RobotClass _class = RobotClass::explorer;
+	//Map _map;
+	//Coordinates pos = { 0, 0 };
+	//Repeater* repeater = nullptr;
+	//vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
 
 public:
 	Explorer() {
@@ -39,15 +37,22 @@ public:
 		this->pos = _coords;
 		this->repeater = rep;
 	}
+	Explorer(const Map& _map, const Coordinates& _coords, Repeater* rep, Environment* env) {
+		this->_map = _map;
+		this->pos = _coords;
+		this->repeater = rep;
+		this->environment = env;
+	}
+
 	~Explorer() {
 		this->repeater = nullptr;
 	}
 
 	// interface 
+	/*
 	const RobotClass& getRobotClass() const override {
 		return this->_class;
 	}
-
 	const Coordinates& getCoordinates() const override {
 		return this->pos;
 	}
@@ -60,10 +65,6 @@ public:
 	void setMap(Map& mp) override {
 		this->_map = mp;
 	}
-	void setEnvironment(Environment* env) {
-		this->environment = env;
-	}
-
 	void updateMap() {
 		for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
 			size_t _x = repeater->getMapUpdates()[i].first.x;
@@ -85,12 +86,16 @@ public:
 		// move (change coords)
 		// ask manager to check other robots 
 	}
-	
+	*/
 
 	// other
+	void setEnvironment(Environment* env) {
+		this->environment = env;
+	}
+
 	void collect() {
 		if (_map.getField()[pos.x][pos.y] == Object::apple) {
-			this->resStorage.push_back({ pos.x, pos.y });
+			//this->resStorage.push_back({ pos.x, pos.y });
 			this->repeater->notifyCollect({ pos.x, pos.y });
 			this->_map.setCell(pos, Object::empty);
 			//this->_map.resourceCollected();

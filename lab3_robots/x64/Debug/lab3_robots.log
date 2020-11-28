@@ -1,7 +1,6 @@
 ﻿  Explorer.cpp
   Manager.cpp
   Mode.cpp
-  Repeater.cpp
   Robot.cpp
   Sapper.cpp
   View.cpp
