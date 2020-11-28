@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <string>
+
 #include "Sapper.h"
 #include "Explorer.h"
 #include "Mode.h"
@@ -8,12 +11,12 @@
 
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <string>
-
 using std::cin;
 
-// control interaction between sapper and explorer
+
+/// <summary>
+/// Control interaction between sapper and explorer
+/// </summary>
 class Manager {
 private:
 	vector<pair<IMode*, IRobot*>> robots; // can Mode use their unique functions?
@@ -25,7 +28,7 @@ private:
 	Parser* parser = nullptr;
 	
 	Environment* environment = nullptr; // global map is here
-	Repeater* repeater = nullptr;
+	Repeater* repeater = nullptr; // information exchange between robots 
 	// data source 
 	// delegate
 
@@ -33,18 +36,31 @@ private:
 
 	void step() {
 		for (auto rbt : robots){
-			rbt.first->invokeCommand(rbt.second);
+			this->updateGlobalMap();
+			this->updateRobotsMap();
+			//rbt.first->invokeCommand(rbt.second);
 		}
-		
 	}
 	// авто мод общий
 	// нужен обработчик команд для робота и для самого менеджера 
 	//void commandMandler();
 
+	void updateGlobalMap() {
+		for (const auto& item : repeater->getMapUpdates()) {
+			globalMap.setCell(item.first, item.second);
+			// this->environment->setObject(item.first, item.second);
+		}
+	}
+	void updateRobotsMap() {
+		for (const auto& item : repeater->getMapUpdates()) {
+			robotsMap.setCell(item.first, item.second);
+		}
+	}
+
 public:	
 	Manager(Parser* prsr) {
 		this->parser = prsr;
-		setGlobalMap(parser->getFileName());
+		setGlobalMap(parser->getMapFileName());
 		this->repeater = new Repeater;
 		this->environment = new Environment(&globalMap);
 	}
@@ -58,6 +74,8 @@ public:
 		parser = nullptr;
 		mode = nullptr;
 	}
+
+	
 
 	void handleCommand() {
 		parser->getCommand();
@@ -75,17 +93,17 @@ public:
 		return result;
 	}
 
-	void setGlobalMap(const string &fileName) {
+	void setGlobalMap(const string& fileName) {
 		size_t stringsCnt = 0;
 		size_t symbolsInStrCnt = 0;
 		char c;
 
 		ifstream in(fileName);
-		if (!in.good()) throw std::exception("Some problems with opening a file");
+		if (!in.is_open()) throw std::exception("Some problems with opening a file");
 
 		// symbols cnt
 		in >> c;
-		while (c != '/n' || c != EOF) {
+		while ((c != '\n') || (c != EOF)) {
 			if (c != ' ') ++symbolsInStrCnt;
 		}
 		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
@@ -105,7 +123,6 @@ public:
 				if (c != ' ') globalMap.setCell({i, j}, (Object)c);
 			}
 		}
-
 		in.close();
 	}
 
@@ -113,6 +130,12 @@ public:
 		return &(this->robotsMap);
 	}
 
-
+	void addRobot(IRobot* rb, IMode* md) {
+		this->robots.push_back({ md, rb });
+	}
+	void createExplorer(IMode* md) {
+		//Explorer* ex = new Explorer();
+		//this->robots.push_back({ md, ex});
+	}
 };
 

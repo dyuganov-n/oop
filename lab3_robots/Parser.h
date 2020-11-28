@@ -8,12 +8,18 @@ public:
 	Parser(){}
 	~Parser(){}
 	void getCommand();
-	const string& getFileName() {
+	void setMapFileName() {
 		// get file name from app args
+	}
+
+	const string& getMapFileName() {
+		return this->mapFileName;
 	}
 
 private:
 	//ICommand* cmd = nullptr;
+
+	string mapFileName;
 
 };
 

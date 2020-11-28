@@ -6,12 +6,10 @@
 class Sapper : public IRobot {
 private:
 	const RobotClass _class = RobotClass::sapper;
-
-	Map map;// or Map ptr?
+	Map _map;
 	Coordinates pos = { 0, 0 };
-
 	Repeater* repeater = nullptr;
-	//Manager* mngr = nullptr;
+	
 	
 public:
 	Sapper() { 
@@ -19,12 +17,12 @@ public:
 		// init repeater
 	}
 	Sapper(const Map& _map) {
-		this->map = _map;
+		this->_map = _map;
 		Coordinates coordinates = { 0, 0 };
 		// init repeater
 	}
 	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* r) {
-		this->map = _map;
+		this->_map = _map;
 		pos = startPosition;
 		// init repeater
 	}
@@ -40,11 +38,12 @@ public:
 	void setCoordinates(const Coordinates& coords) { 
 		this->pos = coords; 
 	}
-	void updateMap() {
+
+	void updateMap() { // factory method
 		
 	}
 	const Map& getMap() const  { 
-		return this->map; 
+		return this->_map; 
 	}
 	const Object** getField() const { this->getMap().getField(); }
 
@@ -59,9 +58,10 @@ public:
 
 	// other
 	void defuse() {
-		if (map.getField()[pos.x][pos.y] == Object::bomb) {
-			map.setCell({ pos.x, pos.y }, Object::empty);
+		if (_map.getField()[pos.x][pos.y] == Object::bomb) {
+			_map.setCell({ pos.x, pos.y }, Object::empty);
 			repeater->notifyDefuse({ pos.x, pos.y });
+			this->_map.setCell(pos, Object::empty);
 		}
 	}
 

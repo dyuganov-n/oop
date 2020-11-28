@@ -1,8 +1,6 @@
-﻿  Environment.cpp
-  Explorer.cpp
+﻿  Explorer.cpp
   Manager.cpp
   Mode.cpp
-  Parser.cpp
   Repeater.cpp
   Robot.cpp
   Sapper.cpp

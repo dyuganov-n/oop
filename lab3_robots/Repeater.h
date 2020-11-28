@@ -30,6 +30,6 @@ public:
 		return this->changes;
 	}
 	void deleteElem(const size_t& idx) {
-		this->changes.erase(changes.begin() + idx, changes.end() + idx);
+		this->changes.erase(changes.begin() + idx);
 	}
 };

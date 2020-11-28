@@ -1,12 +1,7 @@
 #pragma once
 
-// карту при необходимости запрашивает сам
-// нужен еще класс окружения, из которого он подсасывает инфу о карте 
-// (только не всю карту)
-
 #include "Repeater.h"
 #include "Robot.h"
-//#include "Environment.h"
 
 #include <vector>
 using std::vector;
@@ -14,12 +9,10 @@ using std::vector;
 class Explorer : public IRobot {
 private:
 	const RobotClass _class = RobotClass::explorer;
-
-	Map map;
-	Coordinates coords = { 0, 0 };
-	Environment* environment = nullptr;
+	Map _map;
+	Coordinates pos = { 0, 0 };
+	Environment* environment = nullptr; // global map is here
 	vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
-
 	Repeater* repeater = nullptr;
 
 	const Object** getField() { this->getMap().getField(); }
@@ -29,21 +22,21 @@ public:
 		this->repeater = nullptr;
 	}
 	Explorer(const Map& _map) {
-		this->map = _map;
+		this->_map = _map;
 		this->repeater = nullptr;
 	}
 	Explorer(const Coordinates& _coords) {
-		this->coords = _coords;
+		this->pos = _coords;
 		this->repeater = nullptr;
 	}
 	Explorer(const Map& _map, const Coordinates& _coords) {
-		this->coords = _coords;
-		this->map = _map;
+		this->pos = _coords;
+		this->_map = _map;
 		this->repeater = nullptr;
 	}
 	Explorer(const Map& _map, const Coordinates& _coords, Repeater* rep) {
-		this->map = _map;
-		this->coords = _coords;
+		this->_map = _map;
+		this->pos = _coords;
 		this->repeater = rep;
 	}
 	~Explorer() {
@@ -51,21 +44,21 @@ public:
 	}
 
 	// interface 
-	const RobotClass& getRobotClass() const {
+	const RobotClass& getRobotClass() const override {
 		return this->_class;
 	}
 
-	const Coordinates& getCoordinates() const {
-		return this->coords;
+	const Coordinates& getCoordinates() const override {
+		return this->pos;
 	}
-	void setCoordinates(const Coordinates& coords) { 
-		this->coords = coords; 
+	void setCoordinates(const Coordinates& coords) override {
+		this->pos = coords; 
 	}
-	const Map& getMap() const { 
-		return this->map; 
+	const Map& getMap() const override { 
+		return this->_map; 
 	}
-	void setMap(Map& mp) {
-		this->map = mp;
+	void setMap(Map& mp) override {
+		this->_map = mp;
 	}
 	void setEnvironment(Environment* env) {
 		this->environment = env;
@@ -82,7 +75,7 @@ public:
 				repeater->deleteElem(i);
 			}
 			else {
-				this->map.setCell({ _x, _y }, obj);
+				this->_map.setCell({ _x, _y }, obj);
 			}
 		}
 	}
@@ -96,8 +89,11 @@ public:
 
 	// other
 	void collect() {
-		this->resStorage.push_back({ coords.x, coords.y });
-		this->repeater->notifyCollect({ coords.x, coords.y });
+		if (_map.getField()[pos.x][pos.y] == Object::apple) {
+			this->resStorage.push_back({ pos.x, pos.y });
+			this->repeater->notifyCollect({ pos.x, pos.y });
+			this->_map.setCell(pos, Object::empty);
+		}
 	}
 
 	void scan() {
@@ -107,19 +103,30 @@ public:
 		pair<Coordinates, Object> leftObj;
 		pair<Coordinates, Object> rightObj;
 
-		if (coords.y != 0) {// up
-			
+		if (pos.y != 0) {// up
+			Coordinates objCoords = { pos.x, pos.y - 1 };
+			Object obj = this->environment->getObject(objCoords);
+			scanResult.push_back({objCoords, obj});
+			this->_map.setCell(objCoords, obj);
 		}
-		if (coords.y != map.getMapLength()) {// down
-			
+		if (pos.y != _map.getMapLength()) {// down
+			Coordinates objCoords = { pos.x, pos.y + 1 };
+			Object obj = this->environment->getObject(objCoords);
+			scanResult.push_back({ objCoords, obj });
+			this->_map.setCell(objCoords, obj);
 		}
-		if (coords.x != 0) {//left
-			
+		if (pos.x != 0) {//left
+			Coordinates objCoords = { pos.x - 1, pos.y };
+			Object obj = this->environment->getObject(objCoords);
+			scanResult.push_back({ objCoords, obj });
+			this->_map.setCell(objCoords, obj);
 		}
-		if (coords.x != map.getMapWidth()) {// right
-			
+		if (pos.x != _map.getMapWidth()) {// right
+			Coordinates objCoords = { pos.x + 1, pos.y };
+			Object obj = this->environment->getObject(objCoords);
+			scanResult.push_back({ objCoords, obj });
+			this->_map.setCell(objCoords, obj);
 		}
-
 		this->repeater->notifyScan(scanResult);
 	}
 };

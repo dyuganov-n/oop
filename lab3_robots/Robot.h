@@ -3,13 +3,7 @@
 #include "Map.h"
 #include "Environment.h"
 #include "Repeater.h"
-
-enum class Direction { // need out of class
-	up,
-	down,
-	left,
-	right
-};
+#include "Direction.h"
 
 enum class RobotClass {
 	explorer,
@@ -22,12 +16,12 @@ public:
 	virtual const RobotClass& getRobotClass() const = 0;
 
 	// position
-	virtual const Coordinates& getCoordinates() = 0;
+	virtual const Coordinates& getCoordinates() const  = 0;
 	virtual void setCoordinates(const Coordinates& coords) = 0;
 
 	// map
-	virtual void setMap(Map mp) = 0;
-	virtual const Map& getMap() = 0;
+	virtual void setMap(Map& mp) = 0;
+	virtual const Map& getMap() const = 0;
 
 	// main action for all robots
 	virtual void move(const Direction& dir) = 0;
