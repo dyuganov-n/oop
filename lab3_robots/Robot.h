@@ -6,18 +6,13 @@
 #include "Direction.h"
 
 enum class RobotClass {
-	unknown, 
+	//unknown, 
 	explorer,
 	sapper
 };
 
 class IRobot {
 public:
-	// getting information about robot
-	const RobotClass& getRobotClass() const {
-		return this->_class;
-	}
-
 	// position
 	virtual const Coordinates& getCoordinates() const {
 		return this->pos;
@@ -36,10 +31,15 @@ public:
 
 	// main action for all robots
 	virtual void move(const Direction& dir) {
+		updateMap();
 		// check cell is not out of map
 		// cell is discovered && avaliable check 
 		// move (change coords)
 		// ask manager to check other robots 
+	}
+	void idling() {
+		updateMap();
+		// 
 	}
 
 	// unteraction with other robots and manager
@@ -63,7 +63,7 @@ public:
 	}
 
 protected:
-	const RobotClass _class = RobotClass::unknown;
+	
 
 	Map _map;
 	Coordinates pos = { 0, 0 };

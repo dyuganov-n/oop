@@ -33,6 +33,7 @@ public:
 	}
 };
 
+
 /*
 class Ideling : public IMode{ // need it?
 public:

@@ -16,9 +16,9 @@ public:
 
 	void getCommand() {
 		try {
-			string command = input->getCommand();
+			string command = input->getString();
 			if (command == "SET_MODE") {
-				string arg = input->getCommand();
+				string arg = input->getString();
 				if (arg == "manual") {
 
 				}
@@ -35,7 +35,7 @@ public:
 
 			}
 			else if (command == "MOVE") {
-				string arg = input->getCommand();
+				string arg = input->getString();
 				if (arg == "U") {
 
 				}
@@ -59,7 +59,7 @@ public:
 
 			}
 			else if (command == "SAPPER") {
-				string sapperMode = input->getCommand();
+				string sapperMode = input->getString();
 				if (sapperMode == "ON") {
 
 				}

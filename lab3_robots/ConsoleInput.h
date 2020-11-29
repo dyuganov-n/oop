@@ -7,7 +7,7 @@ using std::string;
 
 class ConsoleInput {
 public:
-	const string& getCommand() {
+	const string& getString() {
 		string c;
 		cin >> c;
 		return c;

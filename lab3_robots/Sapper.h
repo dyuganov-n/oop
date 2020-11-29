@@ -5,7 +5,8 @@
 
 class Sapper : public IRobot {
 private:
-	
+	const RobotClass _class = RobotClass::sapper;
+
 public:
 	Sapper() { 
 		Coordinates coordinates = { 0, 0 };
@@ -22,38 +23,13 @@ public:
 		// init repeater
 	}
 	virtual ~Sapper() {}
-	
-	// interface 
-	/*
+
+	// getting information about robot
 	const RobotClass& getRobotClass() const {
 		return this->_class;
 	}
-	const Coordinates& getPosition() const  {
-		return this->pos;
-	}
-	void setCoordinates(const Coordinates& coords) { 
-		this->pos = coords; 
-	}
 
-	void updateMap() { // factory method
-		
-	}
-	const Map& getMap() const  { 
-		return this->_map; 
-	}
-	const Object** getField() const { this->getMap().getField(); }
 
-	void move(const Direction& dir) {
-		updateMap();
-		
-		// check cell is not out of map
-		// cell is discovered && avaliable check 
-		// move (change coords)
-		// ask manager to check other robots 
-	}
-	*/
-
-	// other
 	void defuse() {
 		if (_map.getField()[pos.x][pos.y] == Object::bomb) {
 			_map.setCell({ pos.x, pos.y }, Object::empty);

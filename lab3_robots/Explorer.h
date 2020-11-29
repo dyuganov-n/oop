@@ -8,6 +8,8 @@ using std::vector;
 
 class Explorer : public IRobot {
 private:
+	const RobotClass _class = RobotClass::explorer;
+
 	Environment* environment = nullptr;
 	//const RobotClass _class = RobotClass::explorer;
 	//Map _map;
@@ -46,47 +48,13 @@ public:
 
 	~Explorer() {
 		this->repeater = nullptr;
+		this->environment = nullptr;
 	}
 
-	// interface 
-	/*
-	const RobotClass& getRobotClass() const override {
+	// getting information about robot
+	const RobotClass& getRobotClass() const {
 		return this->_class;
 	}
-	const Coordinates& getCoordinates() const override {
-		return this->pos;
-	}
-	void setCoordinates(const Coordinates& coords) override {
-		this->pos = coords; 
-	}
-	const Map& getMap() const override { 
-		return this->_map; 
-	}
-	void setMap(Map& mp) override {
-		this->_map = mp;
-	}
-	void updateMap() {
-		for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
-			size_t _x = repeater->getMapUpdates()[i].first.x;
-			size_t _y = repeater->getMapUpdates()[i].first.y;
-			Object obj = repeater->getMapUpdates()[i].second;
-
-			// cell is up to date check (all robots already have this cell in their maps)
-			if (getField()[_x][_y] == obj) {
-				repeater->deleteElem(i);
-			}
-			else {
-				this->_map.setCell({ _x, _y }, obj);
-			}
-		}
-	}
-	void move(const Direction& dir) {
-		// check cell is not out of map
-		// cell is discovered && avaliable check 
-		// move (change coords)
-		// ask manager to check other robots 
-	}
-	*/
 
 	// other
 	void setEnvironment(Environment* env) {

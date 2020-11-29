@@ -34,13 +34,7 @@ private:
 
 	void changeMode(IMode* mode){}
 
-	void step() {
-		for (auto rbt : robots){
-			this->updateGlobalMap();
-			this->updateRobotsMap();
-			//rbt.first->invokeCommand(rbt.second);
-		}
-	}
+	
 	// авто мод общий
 	// нужен обработчик команд для робота и для самого менеджера 
 	//void commandMandler();
@@ -74,8 +68,6 @@ public:
 		parser = nullptr;
 		mode = nullptr;
 	}
-
-	
 
 	void handleCommand() {
 		parser->getCommand();
@@ -111,7 +103,7 @@ public:
 		// strings cnt
 		in >> c;
 		while (c != EOF) {
-			if (c == '\n') ++stringsCnt;
+			if (c == '\n') ++stringsCnt; // begin with 1?
 		}
 		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
 
@@ -130,12 +122,22 @@ public:
 		return &(this->robotsMap);
 	}
 
-	void addRobot(IRobot* rb, IMode* md) {
-		this->robots.push_back({ md, rb });
-	}
 	void createExplorer(IMode* md) {
 		//Explorer* ex = new Explorer();
 		//this->robots.push_back({ md, ex});
+	}
+
+	void createSapper() {
+		Sapper* sp = new Sapper(this->robotsMap);
+
+	}
+
+	void step() {
+		for (auto rbt : robots) {
+			this->updateGlobalMap();
+			this->updateRobotsMap();
+			//rbt.first->invokeCommand(rbt.second);
+		}
 	}
 };
 
