@@ -29,7 +29,7 @@ public:
 		return this->_class;
 	}
 
-
+	// unique actions
 	void defuse() {
 		if (_map.getField()[pos.x][pos.y] == Object::bomb) {
 			_map.setCell({ pos.x, pos.y }, Object::empty);

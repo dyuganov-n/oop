@@ -61,6 +61,7 @@ public:
 		this->environment = env;
 	}
 
+	// unique actions
 	void collect() {
 		if (_map.getField()[pos.x][pos.y] == Object::apple) {
 			//this->resStorage.push_back({ pos.x, pos.y });

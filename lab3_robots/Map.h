@@ -1,5 +1,11 @@
 #pragma once
 
+/// TODO:
+/// dynamic externtion
+/// int coordinates 
+/// static method of global map creation
+
+
 #include <exception>
 using std::exception;
 

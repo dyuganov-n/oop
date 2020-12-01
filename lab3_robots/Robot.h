@@ -6,13 +6,14 @@
 #include "Direction.h"
 
 enum class RobotClass {
-	//unknown, 
 	explorer,
 	sapper
 };
 
 class IRobot {
 public:
+	virtual const RobotClass& getRobotClass() const = 0;
+
 	// position
 	virtual const Coordinates& getCoordinates() const {
 		return this->pos;
@@ -29,13 +30,18 @@ public:
 		return this->_map;
 	}
 
-	// main action for all robots
+	// main actions for all robots
+
+	// no object check
 	virtual void move(const Direction& dir) {
 		updateMap();
-		// check cell is not out of map
-		// cell is discovered && avaliable check 
-		// move (change coords)
-		// ask manager to check other robots 
+		if (cellIsEmpty(buildNewPosition(dir))) {
+			pos = buildNewPosition(dir);
+			this->repeater->notifyMove(pos, pos);
+		}
+		else {
+			throw exception("Can't move. There is a robot in this cell");
+		}
 	}
 	void idling() {
 		updateMap();
@@ -46,6 +52,86 @@ public:
 	virtual void setRepeater(Repeater* rep) {
 		this->repeater = rep;
 	}
+
+protected:
+	Map _map;
+	Coordinates pos = { 0, 0 };
+	Repeater* repeater = nullptr;
+
+	const Object** getField() { this->getMap().getField(); }
+
+private:
+
+	bool cellIsEmpty(const Coordinates& coords) {
+		return this->repeater->isEmptyCell(coords);
+	}
+
+	const Coordinates& buildNewPosition(const Direction& dir) {
+		try {
+			Coordinates newPosition;
+			switch (dir) {
+			case Direction::down:
+				if (pos.y != _map.getMapLength()) { // or max val
+					newPosition = { pos.x, pos.y + 1 };
+					if (this->getField()[newPosition.x][newPosition.y] != Object::unknown) {
+						return newPosition;
+					}
+					else {
+						throw exception("Can't move. This area was not explored.");
+					}
+				}
+				else {
+					throw exception("Can't move. It is the end of explored map.");
+				}
+			case Direction::up:
+				if (pos.y != 0) { // or min val
+					newPosition = { pos.x, pos.y - 1 };
+					if (this->getField()[newPosition.x][newPosition.y] != Object::unknown) {
+						return newPosition;
+					}
+					else {
+						throw exception("Can't move. This area was not explored.");
+					}
+				}
+				else {
+					throw exception("Can't move. It is the end of explored map.");
+				}
+			case Direction::left:
+				if (pos.x != 0) { // or min val
+					newPosition = { pos.x - 1, pos.y };
+					if (this->getField()[newPosition.x][newPosition.y] != Object::unknown) {
+						return newPosition;
+					}
+					else {
+						throw exception("Can't move. This area was not explored.");
+					}
+				}
+				else {
+					throw exception("Can't move. It is the end of explored map.");
+				}
+			case Direction::right:
+				if (pos.x != _map.getMapLength()) {// or max val
+					newPosition = { pos.x + 1, pos.y };
+					if (this->getField()[newPosition.x][newPosition.y] != Object::unknown) {
+						return newPosition;
+					}
+					else {
+						throw exception("Can't move. This area was not explored.");
+					}
+				}
+				else {
+					throw exception("Can't move. It is the end of explored map.");
+				}
+			default:
+				throw exception("Wrong direction while trying to move");
+			}
+		}
+		catch (const exception& e) {
+			throw e;
+		}
+	}
+
+
 	virtual void updateMap() {
 		for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
 			size_t _x = repeater->getMapUpdates()[i].first.x;
@@ -62,15 +148,5 @@ public:
 		}
 	}
 
-protected:
-	
 
-	Map _map;
-	Coordinates pos = { 0, 0 };
-	Repeater* repeater = nullptr;
-
-	const Object** getField() { this->getMap().getField(); }
-
-private:
-	
 };

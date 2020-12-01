@@ -123,12 +123,14 @@ public:
 	}
 
 	void createExplorer(IMode* md) {
+		// find good coords + explore this sell tp stand in it
 		//Explorer* ex = new Explorer();
 		//this->robots.push_back({ md, ex});
 	}
 
 	void createSapper() {
 		Sapper* sp = new Sapper(this->robotsMap);
+		// find good coords + explore this sell tp stand in it
 
 	}
 

@@ -17,6 +17,7 @@ public:
 	void invokeCommand(Explorer* robot, ManualModeCommand* cmd) {
 		
 	}
+	
 };
 
 class ScanMode : public IMode {
