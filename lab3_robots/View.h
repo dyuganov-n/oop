@@ -15,63 +15,56 @@
 // апрашивает у менеджера карту с роботами
 class IView {
 public:
-	void virtual showMap(const vector<const IRobot*> robots, const int& oneSideViewField) = 0;
-
-	// could be version with main robot (in the center) + all other around
+	virtual void showMap(Manager* mngr, const int& oneSideViewField) = 0;
 };
 
-
 class ConsoleView : public IView {
-private:
-	Manager* mngr;
-
 public:
-	// two robots
-	/*
-	void showMap(const int& oneSideViewField) {
-		Explorer* _explorer = mngr->getExplorer();
-		Sapper* _sapper = mngr->getSapper();
+	void showMap(Manager* mngr, const int& oneSideViewField) {
+		//IRobot* _explorer = mngr->getRobots()[0];
+		const IRobot* mainRobot = mngr->getRobots()[0];
 
 		for (size_t i = -oneSideViewField; i < oneSideViewField; ++i) {
 			for (size_t j = oneSideViewField; j < oneSideViewField; ++j) {
 
 				// x, y generation 
 				size_t x = 0, y = 0;
-				x = _explorer->getCoordinates().x + i;
-				y = _explorer->getCoordinates().y + j;
+				x = mainRobot->getCoordinates().x + i;
+				y = mainRobot->getCoordinates().y + j;
 
 				// point is robot check
-				if (x == _explorer->getCoordinates().x && y == _explorer->getCoordinates().y) {
-					std::cout << "E ";
-					continue;
+				for (auto item : mngr->getRobots()) {
+					if (item->getCoordinates().x == x && item->getCoordinates().y == y) {
+						if (item->getRobotClass() == RobotClass::explorer) {
+							std::cout << "E ";
+							continue;
+						}
+						else if (item->getRobotClass() == RobotClass::sapper) {
+							std::cout << "S ";
+							continue;
+						}
+					}
 				}
-				else if (x == _sapper->getPosition().x && y == _sapper->getPosition().y) {
-					std::cout << "S ";
-					continue;
-				}
-				
+
 				// map edge
-				if (x < 0) {
+				if (x < 0 || x > mngr->getRobotsMap()->getMapLength()) {
 					std::cout << "  ";
 					continue;
 				}
-				if (y < 0) {
+				if (y < 0 || y > mngr->getRobotsMap()->getMapWidth()) {
 					std::cout << "  ";
 					continue;
 				}				
 
 				// map display
-				if (_explorer->getField()[x][y] == object::unknown) std::cout << "? ";
-				else if (_explorer->getField()[x][y] == object::apple) std::cout << "A ";
-				else if (_explorer->getField()[x][y] == object::bomb) std::cout << "B ";
-				else if (_explorer->getField()[x][y] == object::empty) std::cout << ". ";
-				else if (_explorer->getField()[x][y] == object::rock) std::cout << "# ";
+				if (mngr->getRobotsField()[x][y] == Object::unknown) std::cout << "? ";
+				else if (mngr->getRobotsField()[x][y] == Object::apple) std::cout << "A ";
+				else if (mngr->getRobotsField()[x][y] == Object::bomb) std::cout << "B ";
+				else if (mngr->getRobotsField()[x][y] == Object::empty) std::cout << ". ";
+				else if (mngr->getRobotsField()[x][y] == Object::rock) std::cout << "# ";
 			}
 			std::cout << std::endl;
 		}
 	}
-	*/
-
-	// could be version with main robot (in the center) + all other around
 };
 

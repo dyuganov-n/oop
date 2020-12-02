@@ -2,19 +2,20 @@
 
 #include "Robot.h"
 #include "Explorer.h"
-#include "Command.h"
+//#include "Sapper.h"
+//#include "Command.h"
 
 // modes could be singletones
 
 class IMode {
 public:
-	void virtual invokeCommand(IRobot* robot, ICommand* cmd) = 0; // or use command inside?
+	void virtual invokeCommand(IRobot* robot) = 0; // or use command inside?
 };
 
 
 class ManualMode : public IMode {
 public:
-	void invokeCommand(Explorer* robot, ManualModeCommand* cmd) {
+	void invokeCommand(Explorer* robot) {
 		
 	}
 	
@@ -22,14 +23,14 @@ public:
 
 class ScanMode : public IMode {
 public:
-	void invokeCommandinvokeCommand(Explorer* robot, ICommand* cmd) {
+	void invokeCommandinvokeCommand(Explorer* robot) {
 		// 
 	}
 };
 
 class AutoMode : public IMode {
 public:
-	void invokeCommandinvokeCommand(Explorer* robot, ICommand* cmd) {
+	void invokeCommandinvokeCommand(Explorer* robot) {
 		// find closest item (bomb or apple) and move
 	}
 };

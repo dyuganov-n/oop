@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Direction.h"
+#include "Manager.h"
 
 #include <string>
 using namespace std;
 
 class ICommand {
 public:	
-	virtual void setCommand(const string& cmd) = 0;
-	virtual const string& getCommand() = 0;
+	virtual void execute() = 0;
 };
 
 // Manager
@@ -18,11 +18,8 @@ public:
 class ChangeModeCommand : public ICommand {
 public:
 	// interface
-	void setCommand(const string& cmd) {
-		newMode = cmd;
-	}
-	const string& getCommand() {
-		return this->newMode;
+	void execute() {
+		// code
 	}
 
 	// other
@@ -45,21 +42,35 @@ private:
 class ManualModeCommand : public ICommand {
 public:
 	// interface
-	void setCommand(const string& cmd) {
-		this->command = cmd;
-	}
-	const string& getCommand() {
-		return this->command;
-	}
+	void execute() = 0;
 
 protected:
 	string command;
 };
 
-class GrabManualCommand : public ManualModeCommand {}; // no unique info here
-class ScanManualCommand : public ManualModeCommand {}; // no unique info here
+class GrabManualCommand : public ManualModeCommand {
+public:
+	// interface
+	void execute() {
+		// code
+	}
+};
+class ScanManualCommand : public ManualModeCommand {
+public:
+	// interface
+	void execute() {
+		// code
+	}
+};
+
 class MoveManualCommand : public ManualModeCommand { 
 public:
+	// interface
+	void execute() {
+		// code
+	}
+
+	// other
 	void setDirection(const Direction& _dir) {
 		this->direction = _dir;
 	}

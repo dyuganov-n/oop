@@ -1,14 +1,14 @@
 #pragma once
 
+#include "Parser.h" // Command, ConsoleInput inside
+#include "Sapper.h" // IRobot, Repeater, Map, Environment, Direction inside
+#include "Mode.h"
+#include "Explorer.h"
+//#include "Command.h"
+
 #include <vector>
 #include <string>
-
-#include "Sapper.h"
-#include "Explorer.h"
-#include "Mode.h"
-#include "Parser.h"
-#include "Environment.h"
-
+#include <memory> // for smart pointes
 #include <iostream>
 #include <fstream>
 using std::cin;
@@ -69,8 +69,8 @@ public:
 		mode = nullptr;
 	}
 
-	void handleCommand() {
-		parser->getCommand();
+	void handleCommand(ICommand* command) {
+		
 	}
 	
 	const Object getObject(const Coordinates& coords) {
@@ -118,8 +118,11 @@ public:
 		in.close();
 	}
 
-	const Map* getMap() {
+	const Map* getRobotsMap() {
 		return &(this->robotsMap);
+	}
+	const Object** getRobotsField() {
+		return this->robotsMap.getField();
 	}
 
 	void createExplorer(IMode* md) {
@@ -139,6 +142,8 @@ public:
 			this->updateGlobalMap();
 			this->updateRobotsMap();
 			//rbt.first->invokeCommand(rbt.second);
+			handleCommand(parser->parseCommand(this));
+			
 		}
 	}
 };

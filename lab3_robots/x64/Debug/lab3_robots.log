@@ -1,9 +1,166 @@
-﻿  Explorer.cpp
-  Manager.cpp
-  Mode.cpp
-  Robot.cpp
-  Sapper.cpp
-  View.cpp
+﻿  Command.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,40): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(73,29): error C2061: syntax error: identifier 'ICommand'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(143,26): error C2039: 'parseCommand': is not a member of 'Parser'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(9): message : see declaration of 'Parser'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(143,1): error C2660: 'Manager::handleCommand': function does not take 1 arguments
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(73,7): message : see declaration of 'Manager::handleCommand'
+  Explorer.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(127,22): error C2676: binary '<': 'const _Ty' does not define this operator or a conversion to a type acceptable to the predefined operator
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(126): message : while compiling class template member function 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const'
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xutility(1546): message : see reference to function template instantiation 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const' being compiled
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to class template instantiation 'std::less<Coordinates>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to variable template 'const bool is_empty_v<std::less<Coordinates> >' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\set(54): message : see reference to class template instantiation 'std::_Tree<std::_Tset_traits<_Kty,_Pr,_Alloc,false>>' being compiled
+          with
+          [
+              _Kty=Coordinates,
+              _Pr=std::less<Coordinates>,
+              _Alloc=std::allocator<Coordinates>
+          ]
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.h(16): message : see reference to class template instantiation 'std::set<Coordinates,std::less<Coordinates>,std::allocator<Coordinates>>' being compiled
   main.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,32): error C2061: syntax error: identifier 'Manager'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(143,1): error C2660: 'Parser::parseCommand': function does not take 1 arguments
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,12): message : see declaration of 'Parser::parseCommand'
+  Manager.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,32): error C2061: syntax error: identifier 'Manager'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(143,1): error C2660: 'Parser::parseCommand': function does not take 1 arguments
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,12): message : see declaration of 'Parser::parseCommand'
+  Mode.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(127,22): error C2676: binary '<': 'const _Ty' does not define this operator or a conversion to a type acceptable to the predefined operator
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(126): message : while compiling class template member function 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const'
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xutility(1546): message : see reference to function template instantiation 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const' being compiled
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to class template instantiation 'std::less<Coordinates>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to variable template 'const bool is_empty_v<std::less<Coordinates> >' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\set(54): message : see reference to class template instantiation 'std::_Tree<std::_Tset_traits<_Kty,_Pr,_Alloc,false>>' being compiled
+          with
+          [
+              _Kty=Coordinates,
+              _Pr=std::less<Coordinates>,
+              _Alloc=std::allocator<Coordinates>
+          ]
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.h(16): message : see reference to class template instantiation 'std::set<Coordinates,std::less<Coordinates>,std::allocator<Coordinates>>' being compiled
+  Parser.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(29,8): error C2143: syntax error: missing ';' before '*'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(29,8): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(29,26): error C2238: unexpected token(s) preceding ';'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(56,9): error C2061: syntax error: identifier 'Parser'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(73,29): error C2061: syntax error: identifier 'ICommand'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(57,9): error C2039: 'parser': is not a member of 'Manager'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(21): message : see declaration of 'Manager'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(57,18): error C2065: 'prsr': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(58,16): error C2065: 'parser': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(69,3): error C2065: 'parser': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(143,18): error C2065: 'parser': undeclared identifier
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(143,1): error C2660: 'Manager::handleCommand': function does not take 1 arguments
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(73,7): message : see declaration of 'Manager::handleCommand'
+  Repeater.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(127,22): error C2676: binary '<': 'const _Ty' does not define this operator or a conversion to a type acceptable to the predefined operator
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(126): message : while compiling class template member function 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const'
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xutility(1546): message : see reference to function template instantiation 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const' being compiled
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to class template instantiation 'std::less<Coordinates>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to variable template 'const bool is_empty_v<std::less<Coordinates> >' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\set(54): message : see reference to class template instantiation 'std::_Tree<std::_Tset_traits<_Kty,_Pr,_Alloc,false>>' being compiled
+          with
+          [
+              _Kty=Coordinates,
+              _Pr=std::less<Coordinates>,
+              _Alloc=std::allocator<Coordinates>
+          ]
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.h(16): message : see reference to class template instantiation 'std::set<Coordinates,std::less<Coordinates>,std::allocator<Coordinates>>' being compiled
+  Robot.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(127,22): error C2676: binary '<': 'const _Ty' does not define this operator or a conversion to a type acceptable to the predefined operator
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(126): message : while compiling class template member function 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const'
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xutility(1546): message : see reference to function template instantiation 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const' being compiled
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to class template instantiation 'std::less<Coordinates>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to variable template 'const bool is_empty_v<std::less<Coordinates> >' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\set(54): message : see reference to class template instantiation 'std::_Tree<std::_Tset_traits<_Kty,_Pr,_Alloc,false>>' being compiled
+          with
+          [
+              _Kty=Coordinates,
+              _Pr=std::less<Coordinates>,
+              _Alloc=std::allocator<Coordinates>
+          ]
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.h(16): message : see reference to class template instantiation 'std::set<Coordinates,std::less<Coordinates>,std::allocator<Coordinates>>' being compiled
+  Sapper.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(127,22): error C2676: binary '<': 'const _Ty' does not define this operator or a conversion to a type acceptable to the predefined operator
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstddef(126): message : while compiling class template member function 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const'
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xutility(1546): message : see reference to function template instantiation 'bool std::less<Coordinates>::operator ()(const _Ty &,const _Ty &) const' being compiled
+          with
+          [
+              _Ty=Coordinates
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to class template instantiation 'std::less<Coordinates>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xmemory(1326): message : see reference to variable template 'const bool is_empty_v<std::less<Coordinates> >' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\set(54): message : see reference to class template instantiation 'std::_Tree<std::_Tset_traits<_Kty,_Pr,_Alloc,false>>' being compiled
+          with
+          [
+              _Kty=Coordinates,
+              _Pr=std::less<Coordinates>,
+              _Alloc=std::allocator<Coordinates>
+          ]
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.h(16): message : see reference to class template instantiation 'std::set<Coordinates,std::less<Coordinates>,std::allocator<Coordinates>>' being compiled
+  View.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,32): error C2061: syntax error: identifier 'Manager'
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Manager.h(143,1): error C2660: 'Parser::parseCommand': function does not take 1 arguments
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(19,12): message : see declaration of 'Parser::parseCommand'
   Generating Code...
-  lab3_robots.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\x64\Debug\lab3_robots.exe

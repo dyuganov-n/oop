@@ -37,15 +37,16 @@ public:
 		updateMap();
 		if (cellIsEmpty(buildNewPosition(dir))) {
 			pos = buildNewPosition(dir);
-			this->repeater->notifyMove(pos, pos);
+			this->repeater->notifyMove(pos, pos); // add to position track if it is not there
 		}
 		else {
 			throw exception("Can't move. There is a robot in this cell");
 		}
 	}
+
 	void idling() {
 		updateMap();
-		// 
+		this->repeater->notifyMove(pos, pos); // add to position track if it is not there
 	}
 
 	// unteraction with other robots and manager
@@ -61,7 +62,6 @@ protected:
 	const Object** getField() { this->getMap().getField(); }
 
 private:
-
 	bool cellIsEmpty(const Coordinates& coords) {
 		return this->repeater->isEmptyCell(coords);
 	}
@@ -131,7 +131,6 @@ private:
 		}
 	}
 
-
 	virtual void updateMap() {
 		for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
 			size_t _x = repeater->getMapUpdates()[i].first.x;
@@ -147,6 +146,4 @@ private:
 			}
 		}
 	}
-
-
 };

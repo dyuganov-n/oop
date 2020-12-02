@@ -2,6 +2,7 @@
 
 #include "ConsoleInput.h"
 #include "Command.h"
+
 #include "optionparser/optionparser.h"
 
 class Parser {
@@ -12,20 +13,20 @@ public:
 	Parser(ConsoleInput* _input) {
 		input = _input;
 	}
-	~Parser(){}
+	
 
-	void getCommand() {
+	ICommand* parseCommand(Manager* mngr) {
 		try {
 			string command = input->getString();
 			if (command == "SET_MODE") {
-				string arg = input->getString();
-				if (arg == "manual") {
+				string command = input->getString();
+				if (command == "manual") {
+					
+				}
+				else if (command == "auto") {
 
 				}
-				else if (arg == "auto") {
-
-				}
-				else if (arg == "scan") {
+				else if (command == "scan") {
 					size_t stepsN = input->getNumber();
 
 				}
@@ -35,17 +36,17 @@ public:
 
 			}
 			else if (command == "MOVE") {
-				string arg = input->getString();
-				if (arg == "U") {
+				string dir = input->getString();
+				if (dir == "U") {
 
 				}
-				else if (arg == "R") {
+				else if (dir == "R") {
 
 				}
-				else if (arg == "D") {
+				else if (dir == "D") {
 
 				}
-				else if (arg == "L") {
+				else if (dir == "L") {
 
 				}
 				else {
@@ -56,7 +57,7 @@ public:
 
 			}
 			else if (command == "GRAB") {
-
+				
 			}
 			else if (command == "SAPPER") {
 				string sapperMode = input->getString();
@@ -85,14 +86,11 @@ public:
 	void setConsoleInput(ConsoleInput* _input) {
 		this->input = _input;
 	}
-
 	const string& getMapFileName() {
 		return this->mapFileName;
 	}
 
 private:
-	//ICommand* cmd = nullptr;
-
 	string mapFileName;
 	ConsoleInput* input = nullptr;
 };

@@ -5,14 +5,19 @@
 using std::cin;
 using std::string;
 
+#include <algorithm>
+#include <cctype>
+//using namespace std;
+
 class ConsoleInput {
 public:
-	const string& getString() {
-		string c;
-		cin >> c;
-		return c;
+	string getString() {
+		string str;
+		cin >> str;
+		//std::transform(str.begin(), str.end(), str.begin(), tolower);
+		return str;
 	}
-	const size_t& getNumber() {
+	size_t getNumber() {
 		size_t n;
 		cin >> n;
 		return n;
