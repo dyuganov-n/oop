@@ -21,7 +21,6 @@ public:
 class ConsoleView : public IView {
 public:
 	void showMap(Manager* mngr, const int& oneSideViewField) {
-		//IRobot* _explorer = mngr->getRobots()[0];
 		const IRobot* mainRobot = mngr->getRobots()[0];
 
 		for (size_t i = -oneSideViewField; i < oneSideViewField; ++i) {

@@ -20,6 +20,7 @@ using std::cin;
 class Manager {
 private:
 	vector<pair<IMode*, IRobot*>> robots; // can Mode use their unique functions?
+	// add shared_ptr?
 
 	Map robotsMap;
 	Map globalMap;
@@ -34,15 +35,10 @@ private:
 
 	void changeMode(IMode* mode){}
 
-	
-	// авто мод общий
-	// нужен обработчик команд для робота и для самого менеджера 
-	//void commandMandler();
-
 	void updateGlobalMap() {
 		for (const auto& item : repeater->getMapUpdates()) {
-			globalMap.setCell(item.first, item.second);
-			// this->environment->setObject(item.first, item.second);
+			//globalMap.setCell(item.first, item.second);
+			this->environment->setObject(item.first, item.second);
 		}
 	}
 	void updateRobotsMap() {
@@ -51,10 +47,12 @@ private:
 		}
 	}
 
+	
+
 public:	
 	Manager(Parser* prsr) {
 		this->parser = prsr;
-		setGlobalMap(parser->getMapFileName());
+		globalMap = Map(parser->getMapFileName());
 		this->repeater = new Repeater;
 		this->environment = new Environment(&globalMap);
 	}
@@ -67,10 +65,6 @@ public:
 
 		parser = nullptr;
 		mode = nullptr;
-	}
-
-	void handleCommand(ICommand* command) {
-		
 	}
 	
 	const Object getObject(const Coordinates& coords) {
@@ -85,47 +79,20 @@ public:
 		return result;
 	}
 
-	void setGlobalMap(const string& fileName) {
-		size_t stringsCnt = 0;
-		size_t symbolsInStrCnt = 0;
-		char c;
+	// for console view & creating new robots
+	const Map* getRobotsMap() { return &(this->robotsMap); }
+	const Object** getRobotsField() { return this->robotsMap.getField(); }
 
-		ifstream in(fileName);
-		if (!in.is_open()) throw std::exception("Some problems with opening a file");
-
-		// symbols cnt
-		in >> c;
-		while ((c != '\n') || (c != EOF)) {
-			if (c != ' ') ++symbolsInStrCnt;
-		}
-		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
-
-		// strings cnt
-		in >> c;
-		while (c != EOF) {
-			if (c == '\n') ++stringsCnt; // begin with 1?
-		}
-		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
-
-		// creating map
-		this->globalMap = Map(stringsCnt, symbolsInStrCnt);
-		for (size_t i = 0; i < stringsCnt; ++i) {
-			for (size_t j = 0; j < symbolsInStrCnt; ++j) {
-				in >> c;
-				if (c != ' ') globalMap.setCell({i, j}, (Object)c);
+	Coordinates findEmptySpace() {
+		for (int i = 0; i < globalMap.getMapLength(); ++i) {
+			for (int j = 0; j < globalMap.getMapWidth(); ++j) {
+				
 			}
 		}
-		in.close();
-	}
-
-	const Map* getRobotsMap() {
-		return &(this->robotsMap);
-	}
-	const Object** getRobotsField() {
-		return this->robotsMap.getField();
 	}
 
 	void createExplorer(IMode* md) {
+		
 		// find good coords + explore this sell tp stand in it
 		//Explorer* ex = new Explorer();
 		//this->robots.push_back({ md, ex});
@@ -137,13 +104,17 @@ public:
 
 	}
 
+	void handleCommand(shared_ptr<ICommand> command) {
+		command->execute();
+		// sth else?
+	}
+
 	void step() {
 		for (auto rbt : robots) {
 			this->updateGlobalMap();
 			this->updateRobotsMap();
 			//rbt.first->invokeCommand(rbt.second);
 			handleCommand(parser->parseCommand(this));
-			
 		}
 	}
 };

@@ -51,6 +51,44 @@ public:
 			}
 		}
 	}
+	Map(const string& fileName) {
+		size_t stringsCnt = 0;
+		size_t symbolsInStrCnt = 0;
+		char c;
+
+		ifstream in(fileName);
+		if (!in.is_open()) throw std::exception("Some problems with opening a file");
+
+		// symbols cnt
+		in >> c;
+		while ((c != '\n') || (c != EOF)) {
+			if (c != ' ') ++symbolsInStrCnt;
+		}
+		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
+
+		// strings cnt
+		in >> c;
+		while (c != EOF) {
+			if (c == '\n') ++stringsCnt; // begin with 1?
+		}
+		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
+
+		this->mapLength = stringsCnt;
+		this->mapWidth = symbolsInStrCnt;
+
+		field = new Object * [mapLength];
+		for (size_t i = 0; i < mapLength; ++i) {
+			field[i] = new Object[mapWidth];
+		}
+
+		for (size_t i = 0; i < mapLength; ++i) {
+			for (size_t j = 0; j < mapWidth; ++j) {
+				in >> c;
+				this->field[i][j] = static_cast<Object>(c);
+			}
+		}
+		in.close();
+	}
 	virtual ~Map() {
 		for (size_t i = 0; i < this->getMapLength(); ++i) {
 			delete[] field[i];
@@ -62,8 +100,8 @@ public:
 
 	Object** getField() const { return this->field; } // const object** !!!
 
-	const size_t& getMapLength() const { return this->mapLength; }
-	const size_t& getMapWidth() const { return this->mapWidth; }
+	size_t getMapLength() const { return this->mapLength; }
+	size_t getMapWidth() const { return this->mapWidth; }
 
 	/*
 	void resourceFound() { ++resourcesOnMap; }

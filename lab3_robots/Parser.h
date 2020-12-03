@@ -15,7 +15,7 @@ public:
 	}
 	
 
-	ICommand* parseCommand(Manager* mngr) {
+	shared_ptr<ICommand> parseCommand(Manager* mngr) {
 		try {
 			string command = input->getString();
 			if (command == "SET_MODE") {

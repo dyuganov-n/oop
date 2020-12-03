@@ -29,6 +29,10 @@ public:
 	void setObject(const Coordinates& coords, const Object& obj) {
 		this->globalMap->setCell(coords, obj);
 	}
+
+	//size_t getMapLength() { return this->globalMap->getMapLength(); }
+	//size_t getMapWidth() { return this->globalMap->getMapWidth(); }
+
 	
 private:
 	Map* globalMap = nullptr;
