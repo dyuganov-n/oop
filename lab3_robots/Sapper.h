@@ -7,15 +7,6 @@ private:
 	const RobotClass _class = RobotClass::sapper;
 
 public:
-	Sapper() { 
-		Coordinates coordinates = { 0, 0 };
-		// init repeater
-	}
-	Sapper(const Map& _map) {
-		this->_map = _map;
-		Coordinates coordinates = { 0, 0 };
-		// init repeater
-	}
 	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* r) {
 		this->_map = _map;
 		pos = startPosition;

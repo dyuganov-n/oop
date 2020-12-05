@@ -3,11 +3,15 @@
 /// TODO:
 /// dynamic externtion
 /// int coordinates 
-/// static method of global map creation
-
 
 #include <exception>
-using std::exception;
+#include <string>
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+#include "Coordinates.h"
 
 enum class Object : char {
 	rock = 'r',
@@ -15,10 +19,6 @@ enum class Object : char {
 	empty = 'e',
 	apple = 'a',
 	unknown = 'u'
-};
-struct Coordinates {
-	size_t x = 0;
-	size_t y = 0;
 };
 
 class Map {

@@ -2,8 +2,6 @@
 
 #include "Robot.h"
 #include "Explorer.h"
-//#include "Sapper.h"
-//#include "Command.h"
 
 // modes could be singletones
 
@@ -13,9 +11,15 @@ public:
 };
 
 
+class IdelingMode : public IMode {
+	void invokeCommand(IRobot* robot) {
+		// sync map and coords
+	}
+};
+
 class ManualMode : public IMode {
 public:
-	void invokeCommand(Explorer* robot) {
+	void invokeCommand(IRobot* robot) {
 		
 	}
 	
@@ -34,15 +38,5 @@ public:
 		// find closest item (bomb or apple) and move
 	}
 };
-
-
-/*
-class Ideling : public IMode{ // need it?
-public:
-	void invokeCommand(IRobot* robot) {
-		// code
-	}
-};
-*/
 
 

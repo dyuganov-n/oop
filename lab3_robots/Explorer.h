@@ -17,27 +17,6 @@ private:
 	//vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
 
 public:
-	Explorer() {
-		this->repeater = nullptr;
-	}
-	Explorer(const Map& _map) {
-		this->_map = _map;
-		this->repeater = nullptr;
-	}
-	Explorer(const Coordinates& _coords) {
-		this->pos = _coords;
-		this->repeater = nullptr;
-	}
-	Explorer(const Map& _map, const Coordinates& _coords) {
-		this->pos = _coords;
-		this->_map = _map;
-		this->repeater = nullptr;
-	}
-	Explorer(const Map& _map, const Coordinates& _coords, Repeater* rep) {
-		this->_map = _map;
-		this->pos = _coords;
-		this->repeater = rep;
-	}
 	Explorer(const Map& _map, const Coordinates& _coords, Repeater* rep, Environment* env) {
 		this->_map = _map;
 		this->pos = _coords;

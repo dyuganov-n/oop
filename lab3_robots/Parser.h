@@ -2,7 +2,9 @@
 
 #include "ConsoleInput.h"
 #include "Command.h"
+#include <vector>
 
+using namespace std;
 #include "optionparser/optionparser.h"
 
 class Parser {
@@ -13,9 +15,12 @@ public:
 	Parser(ConsoleInput* _input) {
 		input = _input;
 	}
-	
+	~Parser() {
+		delete input;
+		input = nullptr;
+	}
 
-	shared_ptr<ICommand> parseCommand(Manager* mngr) {
+	ICommand* parseCommand(vector<pair<IMode*, IRobot*>>& robots) {
 		try {
 			string command = input->getString();
 			if (command == "SET_MODE") {
@@ -80,9 +85,8 @@ public:
 		}
 	}
 
-	void setMapFileName() {
-		// get file name from app args
-	}
+	void setMapFileName(int argc, char* argv[]) {} // get file name from app args (use option parser)
+
 	void setConsoleInput(ConsoleInput* _input) {
 		this->input = _input;
 	}
@@ -93,5 +97,6 @@ public:
 private:
 	string mapFileName;
 	ConsoleInput* input = nullptr;
+
 };
 

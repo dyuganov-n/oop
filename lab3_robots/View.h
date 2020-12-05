@@ -21,7 +21,7 @@ public:
 class ConsoleView : public IView {
 public:
 	void showMap(Manager* mngr, const int& oneSideViewField) {
-		const IRobot* mainRobot = mngr->getRobots()[0];
+		IRobot* mainRobot = mngr->getRobots()[0];
 
 		for (size_t i = -oneSideViewField; i < oneSideViewField; ++i) {
 			for (size_t j = oneSideViewField; j < oneSideViewField; ++j) {
@@ -44,7 +44,7 @@ public:
 						}
 					}
 				}
-
+				
 				// map edge
 				if (x < 0 || x > mngr->getRobotsMap()->getMapLength()) {
 					std::cout << "  ";
@@ -54,7 +54,7 @@ public:
 					std::cout << "  ";
 					continue;
 				}				
-
+				
 				// map display
 				if (mngr->getRobotsField()[x][y] == Object::unknown) std::cout << "? ";
 				else if (mngr->getRobotsField()[x][y] == Object::apple) std::cout << "A ";

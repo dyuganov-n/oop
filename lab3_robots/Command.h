@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Direction.h"
-#include "Manager.h"
+#include "Mode.h"
+
 
 #include <string>
 using namespace std;
@@ -17,10 +18,9 @@ public:
 /// </summary>
 class ChangeModeCommand : public ICommand {
 public:
+	ChangeModeCommand(vector<pair<IMode*, IRobot*>> robots) {	}
 	// interface
-	void execute() {
-		// code
-	}
+	void execute() {}
 
 	// other
 	void setAutoScanSteps(const size_t& n) {

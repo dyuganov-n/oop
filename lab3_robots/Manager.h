@@ -4,11 +4,9 @@
 #include "Sapper.h" // IRobot, Repeater, Map, Environment, Direction inside
 #include "Mode.h"
 #include "Explorer.h"
-//#include "Command.h"
 
 #include <vector>
 #include <string>
-#include <memory> // for smart pointes
 #include <iostream>
 #include <fstream>
 using std::cin;
@@ -47,12 +45,15 @@ private:
 		}
 	}
 
-	
 
 public:	
 	Manager(Parser* prsr) {
 		this->parser = prsr;
-		globalMap = Map(parser->getMapFileName());
+		if (!prsr->getMapFileName().empty()) {
+			globalMap = Map(parser->getMapFileName());
+		}
+		else throw exception("Global map name is not in parser");
+		
 		this->repeater = new Repeater;
 		this->environment = new Environment(&globalMap);
 	}
@@ -71,8 +72,8 @@ public:
 		return this->globalMap.getField()[coords.x][coords.y];
 	}
 	
-	const vector<const IRobot*> getRobots() {
-		vector<const IRobot*> result;
+	vector<IRobot*> getRobots() {
+		vector<IRobot*> result;
 		for (auto r : robots) {
 			result.push_back(r.second);
 		}
@@ -81,30 +82,42 @@ public:
 
 	// for console view & creating new robots
 	const Map* getRobotsMap() { return &(this->robotsMap); }
-	const Object** getRobotsField() { return this->robotsMap.getField(); }
+	Object** getRobotsField() { return this->robotsMap.getField(); }
 
-	Coordinates findEmptySpace() {
-		for (int i = 0; i < globalMap.getMapLength(); ++i) {
-			for (int j = 0; j < globalMap.getMapWidth(); ++j) {
-				
+	Coordinates findEmptySpace(const Map* map) {
+		
+		Coordinates res = { 0, 0 };
+		for (int i = 0; i < map->getMapLength(); ++i) {
+			for (int j = 0; j < map->getMapWidth(); ++j) {
+				if (map->getField()[i][j] == Object::empty ||
+					map->getField()[i][j] == Object::apple) {
+					res.x = i;
+					res.y = j;
+					if(repeater->isEmptyCell(res)) return res;
+				}
 			}
 		}
+		throw exception("Can't find empty place for robot.");
+		return res;
 	}
 
-	void createExplorer(IMode* md) {
-		
-		// find good coords + explore this sell tp stand in it
-		//Explorer* ex = new Explorer();
-		//this->robots.push_back({ md, ex});
+	void createExplorer() {
+		Coordinates newCoords = findEmptySpace(&globalMap);
+		IMode* newMode = new IdelingMode;
+		Explorer* newExplorer = new Explorer(robotsMap, newCoords, repeater, environment);
+		this->repeater->notifyMove(newCoords, newCoords);
+		this->robots.push_back({newMode, newExplorer});
 	}
 
 	void createSapper() {
-		Sapper* sp = new Sapper(this->robotsMap);
-		// find good coords + explore this sell tp stand in it
-
+		Coordinates newCoords = findEmptySpace(&globalMap);
+		IMode* newMode = new IdelingMode;
+		Sapper* newSapper = new Sapper(robotsMap, newCoords, repeater);
+		this->repeater->notifyMove(newCoords, newCoords);
+		this->robots.push_back({ newMode, newSapper });
 	}
 
-	void handleCommand(shared_ptr<ICommand> command) {
+	void handleCommand(ICommand* command) {
 		command->execute();
 		// sth else?
 	}
@@ -114,7 +127,9 @@ public:
 			this->updateGlobalMap();
 			this->updateRobotsMap();
 			//rbt.first->invokeCommand(rbt.second);
-			handleCommand(parser->parseCommand(this));
+			ICommand* command = parser->parseCommand(robots);
+			handleCommand(command);
+			delete command;
 		}
 	}
 };

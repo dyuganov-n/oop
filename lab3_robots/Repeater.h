@@ -6,14 +6,22 @@
 #include <vector>
 using std::pair;
 using std::vector;
-using std::set;
-
-
 
 class Repeater {
 private:
 	vector<pair<Coordinates, Object>> changes;
-	set<Coordinates> robotsPositions;
+	vector<Coordinates> robotsPositions;
+
+	bool isEqual(const Coordinates& l, const Coordinates& r) const{
+		if (l.x == r.x) {
+			if (l.y == r.y) {
+				return true;
+			}
+		}
+		else {
+			return false;
+		}
+	}
 	
 public:
 	Repeater() {}
@@ -36,11 +44,13 @@ public:
 	/// </summary>
 	/// <param name="prevCoords"></param>
 	/// <param name="newCoords"></param>
-	void notifyMove(const Coordinates& prevCoords, const Coordinates& newCoords) {
-		if (robotsPositions.count(prevCoords) > 0) {
-			robotsPositions.erase(prevCoords);
+	void notifyMove(Coordinates& prevCoords, Coordinates& newCoords) {
+		for (size_t i = 0; i < robotsPositions.size(); ++i) {
+			if (isEqual(robotsPositions[i], prevCoords)) {
+				robotsPositions.erase(robotsPositions.begin() + i);
+			}
+			robotsPositions.push_back(newCoords);
 		}
-		robotsPositions.insert(newCoords);
 	}
 
 	/// <summary>
@@ -49,8 +59,10 @@ public:
 	/// <param name="coords"></param>
 	/// <returns></returns>
 	bool isEmptyCell(const Coordinates& coords) {
-		if (robotsPositions.count(coords) != 0) return false;
-		else return true;
+		for (const auto& i : robotsPositions) {
+			if (isEqual(i, coords)) return false;
+		}
+		return true;
 	}
 
 	const vector<pair<Coordinates, Object>>& getMapUpdates() {

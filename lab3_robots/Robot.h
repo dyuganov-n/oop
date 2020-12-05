@@ -59,14 +59,14 @@ protected:
 	Coordinates pos = { 0, 0 };
 	Repeater* repeater = nullptr;
 
-	const Object** getField() { this->getMap().getField(); }
+	Object** getField() { return this->getMap().getField(); }
 
 private:
 	bool cellIsEmpty(const Coordinates& coords) {
 		return this->repeater->isEmptyCell(coords);
 	}
 
-	const Coordinates& buildNewPosition(const Direction& dir) {
+	Coordinates buildNewPosition(const Direction& dir) {
 		try {
 			Coordinates newPosition;
 			switch (dir) {
