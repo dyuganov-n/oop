@@ -23,13 +23,13 @@ public:
 	void showMap(Manager* mngr, const int& oneSideViewField) {
 		IRobot* mainRobot = mngr->getRobots()[0];
 
-		for (size_t i = -oneSideViewField; i < oneSideViewField; ++i) {
-			for (size_t j = oneSideViewField; j < oneSideViewField; ++j) {
+		for (ptrdiff_t i = -oneSideViewField; i < oneSideViewField; ++i) {
+			for (ptrdiff_t j = -oneSideViewField; j < oneSideViewField; ++j) {
 
 				// x, y generation 
-				size_t x = 0, y = 0;
-				x = mainRobot->getCoordinates().x + i;
-				y = mainRobot->getCoordinates().y + j;
+				ptrdiff_t x = 0, y = 0;
+				x = static_cast<ptrdiff_t>(mainRobot->getCoordinates().x) + i;
+				y = static_cast<ptrdiff_t>(mainRobot->getCoordinates().y) + j;
 
 				// point is robot check
 				for (auto item : mngr->getRobots()) {

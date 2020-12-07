@@ -12,9 +12,7 @@
 using std::cin;
 
 
-/// <summary>
-/// Control interaction between sapper and explorer
-/// </summary>
+//Control interaction between sapper and explorer
 class Manager {
 private:
 	vector<pair<IMode*, IRobot*>> robots; // can Mode use their unique functions?
@@ -23,7 +21,7 @@ private:
 	Map robotsMap;
 	Map globalMap;
 
-	IMode* mode = nullptr; // Manager work 
+	//IMode* mode = nullptr; // Manager work 
 	Parser* parser = nullptr;
 	
 	Environment* environment = nullptr; // global map is here
@@ -49,11 +47,13 @@ private:
 public:	
 	Manager(Parser* prsr) {
 		this->parser = prsr;
+		
 		if (!prsr->getMapFileName().empty()) {
 			globalMap = Map(parser->getMapFileName());
 		}
 		else throw exception("Global map name is not in parser");
 		
+		globalMap = Map(parser->getMapFileName());
 		this->repeater = new Repeater;
 		this->environment = new Environment(&globalMap);
 	}
@@ -65,7 +65,6 @@ public:
 		repeater = nullptr;
 
 		parser = nullptr;
-		mode = nullptr;
 	}
 	
 	const Object getObject(const Coordinates& coords) {
@@ -85,12 +84,12 @@ public:
 	Object** getRobotsField() { return this->robotsMap.getField(); }
 
 	Coordinates findEmptySpace(const Map* map) {
-		
 		Coordinates res = { 0, 0 };
-		for (int i = 0; i < map->getMapLength(); ++i) {
-			for (int j = 0; j < map->getMapWidth(); ++j) {
-				if (map->getField()[i][j] == Object::empty ||
-					map->getField()[i][j] == Object::apple) {
+		Object ob;
+		for (size_t i = 0; i < map->getMapLength(); ++i) {
+			for (size_t j = 0; j < map->getMapWidth(); ++j) {
+				ob = map->getField()[i][j];
+				if (ob == Object::empty || ob == Object::apple) {
 					res.x = i;
 					res.y = j;
 					if(repeater->isEmptyCell(res)) return res;
@@ -110,7 +109,7 @@ public:
 	}
 
 	void createSapper() {
-		Coordinates newCoords = findEmptySpace(&globalMap);
+		Coordinates newCoords = findEmptySpace(&robotsMap);
 		IMode* newMode = new IdelingMode;
 		Sapper* newSapper = new Sapper(robotsMap, newCoords, repeater);
 		this->repeater->notifyMove(newCoords, newCoords);

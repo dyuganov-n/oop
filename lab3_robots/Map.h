@@ -52,45 +52,52 @@ public:
 		}
 	}
 	Map(const string& fileName) {
-		size_t stringsCnt = 0;
-		size_t symbolsInStrCnt = 0;
-		char c;
 
-		ifstream in(fileName);
-		if (!in.is_open()) throw std::exception("Some problems with opening a file");
+		ifstream in;
+		in.open(fileName);
+		//ifstream in("in.txt");
+		if (!in.is_open() || !in.good() || in.fail()) throw std::exception("Some problems with opening a file");
+		
+		// symbols in str (mapWidth) cnt
+		string width;
+		std::getline(in, width);
+		this->mapWidth = width.size();
+		in.seekg(0, ios_base::beg);
 
-		// symbols cnt
-		in >> c;
-		while ((c != '\n') || (c != EOF)) {
-			if (c != ' ') ++symbolsInStrCnt;
+		// strings (mapLength) cnt
+		string str;
+		this->mapLength = 0;
+		while (std::getline(in, str)) {
+			++(this->mapLength);
 		}
-		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
+		in.seekg(0, ios_base::beg);
 
-		// strings cnt
-		in >> c;
-		while (c != EOF) {
-			if (c == '\n') ++stringsCnt; // begin with 1?
-		}
-		in.seekg(0, ios_base::beg); // in.seekg(0, std::ios::beg);
-
-		this->mapLength = stringsCnt;
-		this->mapWidth = symbolsInStrCnt;
-
-		field = new Object * [mapLength];
+		this->field = new Object * [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
 			field[i] = new Object[mapWidth];
 		}
 
+		Object ob; 
+		char cell;
 		for (size_t i = 0; i < mapLength; ++i) {
 			for (size_t j = 0; j < mapWidth; ++j) {
-				in >> c;
-				this->field[i][j] = static_cast<Object>(c);
+				if (in.eof()) {
+					in.close();
+					throw exception("File read was not finished");
+					return;
+				} 
+				else {
+					in >> cell;
+				ob = static_cast<Object>(cell);
+				this->field[i][j] = ob;
+				if (ob == Object::apple) ++resourcesOnMap;
+				}
 			}
 		}
 		in.close();
 	}
 	virtual ~Map() {
-		for (size_t i = 0; i < this->getMapLength(); ++i) {
+		for (size_t i = 0; i < this->mapLength; ++i) {
 			delete[] field[i];
 			field[i] = nullptr;
 		}
@@ -113,13 +120,10 @@ public:
 	*/
 
 	void setCell(const Coordinates& coords, Object obj) {
-		try {
-			if (coords.x > this->mapLength || coords.y > this->mapWidth) {
-				throw std::exception("Wrong index in SetCell");
-			}
-			this->field[coords.x][coords.y] = obj;
+		if (coords.x > this->mapLength || coords.y > this->mapWidth) {
+			throw std::exception("Wrong index in SetCell");
 		}
-		catch (const std::exception& e) { throw e; }
+		this->field[coords.x][coords.y] = obj;
 	}
 	void fill(const Object &obj) {
 		for (size_t i = 0; i < mapLength; ++i) {
@@ -159,7 +163,11 @@ public:
 
 private:
 	const size_t minMapSize = 1000;
+
+	// symbols cnt in column
 	size_t mapLength = minMapSize;
+
+	// symbols cnt in line
 	size_t mapWidth = minMapSize;
 
 	Object** field = nullptr;

@@ -39,11 +39,7 @@ public:
 		changes.push_back({coords, Object::empty});
 	}
 
-	/// <summary>
-	/// Delete prev position and add new to positions set.
-	/// </summary>
-	/// <param name="prevCoords"></param>
-	/// <param name="newCoords"></param>
+	// Delete prev position and add new to positions set.
 	void notifyMove(Coordinates& prevCoords, Coordinates& newCoords) {
 		for (size_t i = 0; i < robotsPositions.size(); ++i) {
 			if (isEqual(robotsPositions[i], prevCoords)) {
@@ -53,11 +49,8 @@ public:
 		}
 	}
 
-	/// <summary>
-	/// Check that there is no other robot in this position
-	/// </summary>
-	/// <param name="coords"></param>
-	/// <returns></returns>
+
+	// Check that there is no other robot in this position
 	bool isEmptyCell(const Coordinates& coords) {
 		for (const auto& i : robotsPositions) {
 			if (isEqual(i, coords)) return false;
@@ -69,14 +62,9 @@ public:
 		return this->changes;
 	}
 	void deleteElem(const size_t& idx) {
-		try {
-			if (idx >= this->changes.size()) {
-				throw exception("Can't delete this element in changes vector");
-			}
-			this->changes.erase(changes.begin() + idx);
+		if (idx >= this->changes.size() || idx < 0) {
+			throw exception("Can't delete this element in changes vector");
 		}
-		catch (const exception& e) {
-			throw e;
-		}
+		this->changes.erase(changes.begin() + idx);
 	}
 };

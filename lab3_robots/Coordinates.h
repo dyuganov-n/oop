@@ -9,8 +9,6 @@ struct Coordinates {
 
 // if problems with operator<, just dont use sorted containers
 
-
-
 /*
 bool operator==(const Coordinates& l, const Coordinates& r) {
 	if (l.x == r.x) {

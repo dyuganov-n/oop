@@ -9,8 +9,11 @@
   Robot.cpp
   Sapper.cpp
   View.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.h(49,20): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.h(53,20): warning C4018: '>': signed/unsigned mismatch
   main.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.h(49,20): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.h(53,20): warning C4018: '>': signed/unsigned mismatch
   Generating Code...
 C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(86): warning C4715: 'Parser::parseCommand': not all control paths return a value
-C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.h(25): warning C4715: 'Repeater::isEqual': not all control paths return a value
   lab3_robots.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\x64\Debug\lab3_robots.exe

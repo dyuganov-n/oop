@@ -22,9 +22,9 @@ public:
 	// unique actions
 	void defuse() {
 		if (_map.getField()[pos.x][pos.y] == Object::bomb) {
-			_map.setCell({ pos.x, pos.y }, Object::empty);
+			//_map.setCell({ pos.x, pos.y }, Object::empty);
+			_map.setCell(pos, Object::empty);
 			repeater->notifyDefuse({ pos.x, pos.y });
-			this->_map.setCell(pos, Object::empty);
 		}
 	}
 

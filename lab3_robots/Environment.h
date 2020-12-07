@@ -8,13 +8,8 @@
 class Environment {
 public:
 	Environment(Map* _globalMap) {
-		try {
-			if (_globalMap == nullptr) throw std::exception("Environment map ptr is empty");
-			this->globalMap = _globalMap;
-		}
-		catch (const exception& e) {
-			throw e;
-		}
+		if (_globalMap == nullptr) throw std::exception("Environment map ptr is empty");
+		this->globalMap = _globalMap;
 	}
 	Environment() {
 		this->globalMap = nullptr;
@@ -23,6 +18,7 @@ public:
 		this->globalMap = nullptr;
 	}
 
+	// global coords and robot coords are different!!!
 	const Object& getObject(const Coordinates& coords) const  {
 		return this->globalMap->getField()[coords.x][coords.y];
 	}
