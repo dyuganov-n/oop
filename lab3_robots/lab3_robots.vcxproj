@@ -148,6 +148,7 @@
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mode.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Repeater.h" />
     <ClInclude Include="Robot.h" />
@@ -168,6 +169,10 @@
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="Sapper.cpp" />
     <ClCompile Include="View.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="in.txt" />
+    <Text Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,12 +5,14 @@
 class Sapper : public IRobot {
 private:
 	const RobotClass _class = RobotClass::sapper;
+	Environment* environment = nullptr;
 
 public:
-	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* r) {
-		this->_map = _map;
-		pos = startPosition;
-		// init repeater
+	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep, Environment* env) {
+		this->internalMap = _map;
+		position = startPosition;
+		this->environment = env;
+		this->repeater = rep;
 	}
 	virtual ~Sapper() {}
 
@@ -21,10 +23,10 @@ public:
 
 	// unique actions
 	void defuse() {
-		if (_map.getField()[pos.x][pos.y] == Object::bomb) {
-			//_map.setCell({ pos.x, pos.y }, Object::empty);
-			_map.setCell(pos, Object::empty);
-			repeater->notifyDefuse({ pos.x, pos.y });
+		if (internalMap.getObject(position) == Object::bomb) {
+			internalMap.setCell(position, Object::empty);
+			repeater->notifyDefuse(position);
+			this->environment->bombDefused(position);
 		}
 	}
 

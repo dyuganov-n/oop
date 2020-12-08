@@ -1,0 +1,41 @@
+Modes
+	- manual 
+		- move u/d/l/r
+		- scan
+		- collect
+	- scan N
+		find closest unscanned cell 
+		make steps and scan
+		go to manual
+	- auto collect
+		find closest apple
+		make steps and collect
+		stop, if all collected
+		go to manual
+
+Commands:
+
+- IRobotCommand
+	- move u/d/l/r
+	- scan
+	- collect
+	
+- IManagerCommand
+	- ChamgeModeCommand (manual, scan N, auto)
+
+
+Dynamic map for all robots
+
+finding empty space fix
+// main with wring answer
+		ConsoleView view;
+		Parser parser(new ConsoleInput);
+		parser.setMapFileName(argc, argv);
+		Manager manager(&parser);
+		manager.createExplorer();
+		manager.createSapper();
+		view.displayMap(&manager, 21);
+		while (1) {
+			manager.step();
+			view.displayMap(&manager, 21);
+		}

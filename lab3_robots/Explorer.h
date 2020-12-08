@@ -8,20 +8,19 @@ using std::vector;
 class Explorer : public IRobot {
 private:
 	const RobotClass _class = RobotClass::explorer;
-
 	Environment* environment = nullptr;
-	//const RobotClass _class = RobotClass::explorer;
-	//Map _map;
-	//Coordinates pos = { 0, 0 };
-	//Repeater* repeater = nullptr;
-	//vector<Coordinates> resStorage; // coordinatees of collected apples + cnt
 
 public:
-	Explorer(const Map& _map, const Coordinates& _coords, Repeater* rep, Environment* env) {
-		this->_map = _map;
-		this->pos = _coords;
+	Explorer(const Coordinates& startPosition, Repeater* rep, Environment* env) {
+		this->position = startPosition;
 		this->repeater = rep;
 		this->environment = env;
+	}
+	Explorer(const Map& _map, const Coordinates& startPosition, Repeater* rep, Environment* env) {
+		this->position = startPosition;
+		this->repeater = rep;
+		this->environment = env;
+		this->internalMap = _map;
 	}
 
 	~Explorer() {
@@ -41,10 +40,11 @@ public:
 
 	// unique actions
 	void collect() {
-		if (_map.getField()[pos.x][pos.y] == Object::apple) {
+		if (internalMap.getObject(position) == Object::apple) {
 			//this->resStorage.push_back({ pos.x, pos.y });
-			this->repeater->notifyCollect({ pos.x, pos.y });
-			this->_map.setCell(pos, Object::empty);
+			this->repeater->notifyCollect({ position.x, position.y });
+			this->internalMap.setCell(position, Object::empty);
+			this->environment->appleCollected(position);
 			//this->_map.resourceCollected();
 		}
 	}
@@ -57,32 +57,32 @@ public:
 		pair<Coordinates, Object> rightObj;
 
 		// up
-		if (pos.y != 0) {
-			Coordinates objCoords = { pos.x, pos.y - 1 };
+		if (position.y != 0) {
+			Coordinates objCoords = { position.x, position.y - 1 };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({objCoords, obj});
-			this->_map.setCell(objCoords, obj);
+			this->internalMap.setCell(objCoords, obj);
 		}
 		// down
-		if (pos.y != _map.getMapLength()) {
-			Coordinates objCoords = { pos.x, pos.y + 1 };
+		if (position.y != internalMap.getMapLength()) {
+			Coordinates objCoords = { position.x, position.y + 1 };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
-			this->_map.setCell(objCoords, obj);
+			this->internalMap.setCell(objCoords, obj);
 		}
 		//left
-		if (pos.x != 0) {
-			Coordinates objCoords = { pos.x - 1, pos.y };
+		if (position.x != 0) {
+			Coordinates objCoords = { position.x - 1, position.y };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
-			this->_map.setCell(objCoords, obj);
+			this->internalMap.setCell(objCoords, obj);
 		}
 		// right
-		if (pos.x != _map.getMapWidth()) {
-			Coordinates objCoords = { pos.x + 1, pos.y };
+		if (position.x != internalMap.getMapWidth()) {
+			Coordinates objCoords = { position.x + 1, position.y };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
-			this->_map.setCell(objCoords, obj);
+			this->internalMap.setCell(objCoords, obj);
 		}
 
 		this->repeater->notifyScan(scanResult);

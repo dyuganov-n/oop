@@ -16,18 +16,18 @@ public:
 
 	// position
 	virtual const Coordinates& getCoordinates() const {
-		return this->pos;
+		return this->position;
 	}
 	virtual void setCoordinates(const Coordinates& coords) {
-		this->pos = coords;
+		this->position = coords;
 	}
 
 	// map
 	void setMap(Map& mp) {
-		this->_map = mp;
+		this->internalMap = mp;
 	}
-	const Map& getMap() const {
-		return this->_map;
+	const Map& getMap() {
+		return this->internalMap;
 	}
 
 	// main actions for all robots
@@ -36,8 +36,8 @@ public:
 	virtual void move(const Direction& dir) {
 		updateMap();
 		if (cellIsEmpty(buildNewPosition(dir))) {
-			pos = buildNewPosition(dir);
-			this->repeater->notifyMove(pos, pos); // add to position track if it is not there
+			position = buildNewPosition(dir);
+			this->repeater->notifyMove(position, position); // add to position track if it is not there
 		}
 		else {
 			throw exception("Can't move. There is a robot in this cell");
@@ -46,7 +46,7 @@ public:
 
 	void idling() {
 		updateMap();
-		this->repeater->notifyMove(pos, pos); // add to position track if it is not there
+		this->repeater->notifyMove(position, position); // add to position track if it is not there
 	}
 
 	// unteraction with other robots and manager
@@ -55,25 +55,26 @@ public:
 	}
 
 protected:
-	Map _map;
-	Coordinates pos = { 0, 0 };
+	Map internalMap;
+	Coordinates position = { 0, 0 };
 	Repeater* repeater = nullptr;
 
-	Object** getField() { return this->getMap().getField(); }
-
+	//Object** getField() { return internalMap.getField(); }
+	
 private:
-	bool cellIsEmpty(const Coordinates& coords) {
+	bool cellIsEmpty(const Coordinates& coords) const {
 		return this->repeater->isEmptyCell(coords);
 	}
 
-	Coordinates buildNewPosition(const Direction& dir) {
+	Coordinates buildNewPosition(const Direction& dir){
 		try {
 			Coordinates newPosition;
 			switch (dir) {
 			case Direction::down:
-				if (pos.y != _map.getMapLength()) { // or max val
-					newPosition = { pos.x, pos.y + 1 };
-					if (this->getField()[newPosition.x][newPosition.y] != Object::unknown) {
+				if (position.y != internalMap.getMapLength()) { // or max val
+					newPosition = { position.x, position.y + 1 };
+					if (internalMap.getObject(newPosition) != Object::unknown && 
+						internalMap.getObject(newPosition) != Object::rock) {
 						return newPosition;
 					}
 					else {
@@ -84,9 +85,10 @@ private:
 					throw exception("Can't move. It is the end of explored map.");
 				}
 			case Direction::up:
-				if (pos.y != 0) { // or min val
-					newPosition = { pos.x, pos.y - 1 };
-					if (this->getField()[newPosition.x][newPosition.y] != Object::unknown) {
+				if (position.y != 0) { // or min val
+					newPosition = { position.x, position.y - 1 };
+					if (internalMap.getObject(newPosition) != Object::unknown &&
+						internalMap.getObject(newPosition) != Object::rock) {
 						return newPosition;
 					}
 					else {
@@ -97,9 +99,10 @@ private:
 					throw exception("Can't move. It is the end of explored map.");
 				}
 			case Direction::left:
-				if (pos.x != 0) { // or min val
-					newPosition = { pos.x - 1, pos.y };
-					if (this->getField()[newPosition.x][newPosition.y] != Object::unknown) {
+				if (position.x != 0) { // or min val
+					newPosition = { position.x - 1, position.y };
+					if (internalMap.getObject(newPosition) != Object::unknown &&
+						internalMap.getObject(newPosition) != Object::rock) {
 						return newPosition;
 					}
 					else {
@@ -110,9 +113,10 @@ private:
 					throw exception("Can't move. It is the end of explored map.");
 				}
 			case Direction::right:
-				if (pos.x != _map.getMapLength()) {// or max val
-					newPosition = { pos.x + 1, pos.y };
-					if (this->getField()[newPosition.x][newPosition.y] != Object::unknown) {
+				if (position.x != internalMap.getMapLength()) {// or max val
+					newPosition = { position.x + 1, position.y };
+					if (internalMap.getObject(newPosition) != Object::unknown &&
+						internalMap.getObject(newPosition) != Object::rock) {
 						return newPosition;
 					}
 					else {
@@ -138,11 +142,11 @@ private:
 			Object obj = repeater->getMapUpdates()[i].second;
 
 			// cell is up to date check (all robots already have this cell in their maps)
-			if (getField()[_x][_y] == obj) {
+			if (internalMap.getObject({_x, _y}) == obj) {
 				repeater->deleteElem(i);
 			}
 			else {
-				this->_map.setCell({ _x, _y }, obj);
+				this->internalMap.setCell({ _x, _y }, obj);
 			}
 		}
 	}

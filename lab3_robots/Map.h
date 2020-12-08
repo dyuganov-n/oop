@@ -12,16 +12,24 @@
 using namespace std;
 
 #include "Coordinates.h"
+#include "Object.h"
 
-enum class Object : char {
-	rock = 'r',
-	bomb = 'b',
-	empty = 'e',
-	apple = 'a',
-	unknown = 'u'
-};
 
 class Map {
+private:
+
+	Object** field = nullptr;
+
+	const size_t minMapSize = 1000;
+
+	// symbols cnt in column (x)
+	size_t mapLength = 0;
+
+	// symbols cnt in line (y)
+	size_t mapWidth = 0;
+
+	//size_t resourcesOnMap = 0; // don't need?
+
 public:
 	Map() {
 		mapLength = minMapSize;
@@ -52,11 +60,13 @@ public:
 		}
 	}
 	Map(const string& fileName) {
-
+		field = nullptr;
 		ifstream in;
 		in.open(fileName);
-		//ifstream in("in.txt");
-		if (!in.is_open() || !in.good() || in.fail()) throw std::exception("Some problems with opening a file");
+		if (!in.is_open()) {
+			throw std::exception("Can't open the file.");
+			return;
+		}
 		
 		// symbols in str (mapWidth) cnt
 		string width;
@@ -72,30 +82,43 @@ public:
 		}
 		in.seekg(0, ios_base::beg);
 
-		this->field = new Object * [mapLength];
+		field = new Object* [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
 			field[i] = new Object[mapWidth];
 		}
-
-		Object ob; 
-		char cell;
+		
+		Object obj;
 		for (size_t i = 0; i < mapLength; ++i) {
-			for (size_t j = 0; j < mapWidth; ++j) {
-				if (in.eof()) {
+			if (!std::getline(in, str)) {
+				if (str.size() < mapWidth || str.size() > mapWidth) {
 					in.close();
-					throw exception("File read was not finished");
+
+					for (size_t i = 0; i < this->mapLength; ++i) {
+						delete[] field[i];
+						field[i] = nullptr;
+					}
+					delete[] field;
+					field = nullptr;
+
+					throw exception("Wrong file content. One of the strings has wrong length."); // ERROR: unexpected exception
 					return;
-				} 
-				else {
-					in >> cell;
-				ob = static_cast<Object>(cell);
-				this->field[i][j] = ob;
-				if (ob == Object::apple) ++resourcesOnMap;
 				}
+				else {
+					for (size_t j = 0; j < str.size(); ++j) {
+						obj = static_cast<Object>(str[j]);
+						this->field[i][j] = obj;
+					}
+				}
+			}
+			else {
+				in.close();
+				throw exception("File read was not finished");
+				return;
 			}
 		}
 		in.close();
 	}
+
 	virtual ~Map() {
 		for (size_t i = 0; i < this->mapLength; ++i) {
 			delete[] field[i];
@@ -105,7 +128,15 @@ public:
 		field = nullptr;
 	}
 
-	Object** getField() const { return this->field; } // const object** !!!
+	Object getObject(const Coordinates& coords) const {
+		if (this->field == nullptr) throw exception("Can't get object. Field in map is nullptr.");
+		if (coords.x >= mapLength || coords.y >= mapWidth) {
+			throw exception("Can't get object from map. Incorrect coordinates.");
+		}
+		else {
+			return this->field[coords.x][coords.y];
+		}
+	}
 
 	size_t getMapLength() const { return this->mapLength; }
 	size_t getMapWidth() const { return this->mapWidth; }
@@ -132,13 +163,10 @@ public:
 			}
 		}
 	}
-	void clear() {
-		this->fill(Object::unknown);
-	}
 
 	Map operator=(const Map& other) {
 		// cleaning mem
-		for (size_t i = 0; i < minMapSize; ++i) {
+		for (size_t i = 0; i < mapLength; ++i) {
 			delete[] field[i];
 			field[i] = nullptr;
 		}
@@ -149,7 +177,7 @@ public:
 		this->mapLength = other.mapLength;
 		this->mapWidth = other.mapWidth;
 
-		field = new Object * [mapLength];
+		field = new Object* [mapLength];
 		for (size_t i = 0; i < mapLength; ++i) {
 			field[i] = new Object[mapWidth];
 		}
@@ -161,17 +189,5 @@ public:
 		return *this;
 	}
 
-private:
-	const size_t minMapSize = 1000;
-
-	// symbols cnt in column
-	size_t mapLength = minMapSize;
-
-	// symbols cnt in line
-	size_t mapWidth = minMapSize;
-
-	Object** field = nullptr;
-
-	size_t resourcesOnMap = 0; // don't need?
 };
 

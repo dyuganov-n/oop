@@ -2,28 +2,39 @@
 
 #include "Map.h"
 
-/// <summary>
-/// Interaction with planet (global map).
-/// </summary>
+// Interaction with planet (using global map ptr)
 class Environment {
 public:
-	Environment(Map* _globalMap) {
-		if (_globalMap == nullptr) throw std::exception("Environment map ptr is empty");
-		this->globalMap = _globalMap;
+	Environment(const string &globalMapFileName) {
+		if (!globalMapFileName.empty()) {
+			//Map tmp(globalMapFileName);
+			this->globalMap = new Map(globalMapFileName); 
+		}
+		else {
+			throw exception("Global map name is not in parser");
+		}
 	}
-	Environment() {
-		this->globalMap = nullptr;
-	}
+	Environment() = delete;
 	~Environment() {
-		this->globalMap = nullptr;
+		delete globalMap;
+		globalMap = nullptr;
 	}
+
+	const Map& getGlobalMap() { return *(this->globalMap); }
 
 	// global coords and robot coords are different!!!
 	const Object& getObject(const Coordinates& coords) const  {
-		return this->globalMap->getField()[coords.x][coords.y];
+		return this->globalMap->getObject(coords);
 	}
 	void setObject(const Coordinates& coords, const Object& obj) {
 		this->globalMap->setCell(coords, obj);
+	}
+	void appleCollected(const Coordinates& coords) {
+
+	}
+
+	void bombDefused(const Coordinates& coords) {
+
 	}
 
 	//size_t getMapLength() { return this->globalMap->getMapLength(); }
@@ -32,6 +43,5 @@ public:
 	
 private:
 	Map* globalMap = nullptr;
-
 };
 

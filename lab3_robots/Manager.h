@@ -16,46 +16,23 @@ using std::cin;
 class Manager {
 private:
 	vector<pair<IMode*, IRobot*>> robots; // can Mode use their unique functions?
-	// add shared_ptr?
 
-	Map robotsMap;
-	Map globalMap;
-
-	//IMode* mode = nullptr; // Manager work 
 	Parser* parser = nullptr;
-	
 	Environment* environment = nullptr; // global map is here
 	Repeater* repeater = nullptr; // information exchange between robots 
-	// data source 
-	// delegate
 
 	void changeMode(IMode* mode){}
-
-	void updateGlobalMap() {
-		for (const auto& item : repeater->getMapUpdates()) {
-			//globalMap.setCell(item.first, item.second);
-			this->environment->setObject(item.first, item.second);
-		}
-	}
-	void updateRobotsMap() {
-		for (const auto& item : repeater->getMapUpdates()) {
-			robotsMap.setCell(item.first, item.second);
-		}
-	}
-
 
 public:	
 	Manager(Parser* prsr) {
 		this->parser = prsr;
-		
-		if (!prsr->getMapFileName().empty()) {
-			globalMap = Map(parser->getMapFileName());
-		}
-		else throw exception("Global map name is not in parser");
-		
-		globalMap = Map(parser->getMapFileName());
+		this->environment = new Environment(prsr->getMapFileName());
 		this->repeater = new Repeater;
-		this->environment = new Environment(&globalMap);
+	}
+	Manager() {
+		this->environment = nullptr;
+		this->parser = nullptr;
+		this->repeater = new Repeater;
 	}
 	~Manager() {
 		delete environment;
@@ -66,9 +43,18 @@ public:
 
 		parser = nullptr;
 	}
-	
-	const Object getObject(const Coordinates& coords) {
-		return this->globalMap.getField()[coords.x][coords.y];
+
+	void setParser(Parser* newParser) { this->parser = newParser; }
+	void setEnvironment(Environment* newEnvironment) { this->environment = newEnvironment; }
+	bool internalPtrsNonNull() {
+		if (parser == nullptr || environment == nullptr || repeater == nullptr) {
+			return false;
+		}
+		return true;
+	}
+
+	Environment* getEnvironment() {
+		return this->environment;
 	}
 	
 	vector<IRobot*> getRobots() {
@@ -80,38 +66,40 @@ public:
 	}
 
 	// for console view & creating new robots
-	const Map* getRobotsMap() { return &(this->robotsMap); }
-	Object** getRobotsField() { return this->robotsMap.getField(); }
+	const Map& getRobotsMap() { return this->robots[0].second->getMap(); }
+	//Object** getRobotsField() { return this->robots[0].second->getMap()->getField(); }
 
-	Coordinates findEmptySpace(const Map* map) {
-		Coordinates res = { 0, 0 };
-		Object ob;
-		for (size_t i = 0; i < map->getMapLength(); ++i) {
-			for (size_t j = 0; j < map->getMapWidth(); ++j) {
-				ob = map->getField()[i][j];
-				if (ob == Object::empty || ob == Object::apple) {
-					res.x = i;
-					res.y = j;
-					if(repeater->isEmptyCell(res)) return res;
+	Coordinates findEmptySpace(const Map& map){
+		if (repeater == nullptr) {
+			throw exception("Can't find empty space. Repeater is nullptr.");
+			return { 0, 0 };
+		}
+		Object obj;
+		for (size_t i = 0; i < map.getMapLength(); ++i) {
+			for (size_t j = 0; j < map.getMapWidth(); ++j) {
+				obj = map.getObject({ i, j });
+				if (obj == Object::empty || obj == Object::apple) {
+					if (repeater->isEmptyCell({ i, j })) return { i, j };
 				}
 			}
 		}
 		throw exception("Can't find empty place for robot.");
-		return res;
+		return { 0, 0 };
 	}
 
 	void createExplorer() {
-		Coordinates newCoords = findEmptySpace(&globalMap);
+		Coordinates newCoords = findEmptySpace(environment->getGlobalMap());
 		IMode* newMode = new IdelingMode;
-		Explorer* newExplorer = new Explorer(robotsMap, newCoords, repeater, environment);
+		Explorer* newExplorer = new Explorer(newCoords, repeater, environment);
 		this->repeater->notifyMove(newCoords, newCoords);
 		this->robots.push_back({newMode, newExplorer});
 	}
 
 	void createSapper() {
-		Coordinates newCoords = findEmptySpace(&robotsMap);
+		if (robots.empty()) throw exception("Can't create sapper. There is no explorers.");
+		Coordinates newCoords = findEmptySpace(robots[0].second->getMap());
 		IMode* newMode = new IdelingMode;
-		Sapper* newSapper = new Sapper(robotsMap, newCoords, repeater);
+		Sapper* newSapper = new Sapper(robots[0].second->getMap(), newCoords, repeater, environment);
 		this->repeater->notifyMove(newCoords, newCoords);
 		this->robots.push_back({ newMode, newSapper });
 	}
@@ -122,10 +110,9 @@ public:
 	}
 
 	void step() {
+		if (!internalPtrsNonNull()) throw exception("Manager can't make step. Some of internal pointers is nullptr.");
 		for (auto rbt : robots) {
-			this->updateGlobalMap();
-			this->updateRobotsMap();
-			//rbt.first->invokeCommand(rbt.second);
+			//this->updateGlobalMap();
 			ICommand* command = parser->parseCommand(robots);
 			handleCommand(command);
 			delete command;
