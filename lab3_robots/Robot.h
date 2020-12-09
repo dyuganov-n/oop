@@ -146,7 +146,7 @@ private:
 				repeater->deleteElem(i);
 			}
 			else {
-				this->internalMap.setCell({ _x, _y }, obj);
+				this->internalMap.setObject({ _x, _y }, obj);
 			}
 		}
 	}

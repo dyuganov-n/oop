@@ -74,6 +74,7 @@ public:
 			}
 			std::cout << std::endl;
 		}
+		cout << "Apples collected: " << mngr->getEnvironment()->getCollectedCnt() << endl;
 	}
 private:
 

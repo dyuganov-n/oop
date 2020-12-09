@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Map.h"
+#include <vector>
+using std::vector;
 
 // Interaction with planet (using global map ptr)
 class Environment {
@@ -27,21 +29,38 @@ public:
 		return this->globalMap->getObject(coords);
 	}
 	void setObject(const Coordinates& coords, const Object& obj) {
-		this->globalMap->setCell(coords, obj);
-	}
-	void appleCollected(const Coordinates& coords) {
-
+		this->globalMap->setObject(coords, obj);
 	}
 
-	void bombDefused(const Coordinates& coords) {
-
+	bool appleCollected(const Coordinates& coords) {
+		if (globalMap->getObject(coords) == Object::apple) {
+			globalMap->setObject(coords, Object::empty);
+			collectedApples.push_back(coords);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
-	//size_t getMapLength() { return this->globalMap->getMapLength(); }
-	//size_t getMapWidth() { return this->globalMap->getMapWidth(); }
+	bool bombDefused(const Coordinates& coords) {
+		if (globalMap->getObject(coords) == Object::bomb) {
+			globalMap->setObject(coords, Object::empty);
+			
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
+	size_t getGlobalMapLength() { return this->globalMap->getMapLength(); }
+	size_t getGlobalMapWidth() { return this->globalMap->getMapWidth(); }
+
+	size_t getCollectedCnt() { return this->collectedApples.size(); }
 	
 private:
 	Map* globalMap = nullptr;
+	vector<Coordinates> collectedApples;
 };
 

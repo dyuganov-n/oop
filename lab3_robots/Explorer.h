@@ -41,11 +41,11 @@ public:
 	// unique actions
 	void collect() {
 		if (internalMap.getObject(position) == Object::apple) {
-			//this->resStorage.push_back({ pos.x, pos.y });
-			this->repeater->notifyCollect({ position.x, position.y });
-			this->internalMap.setCell(position, Object::empty);
-			this->environment->appleCollected(position);
-			//this->_map.resourceCollected();
+			if (environment->appleCollected(position)) {
+				internalMap.setObject(position, Object::empty);
+				repeater->notifyCollect({ position.x, position.y });
+			}
+			
 		}
 	}
 
@@ -61,28 +61,28 @@ public:
 			Coordinates objCoords = { position.x, position.y - 1 };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({objCoords, obj});
-			this->internalMap.setCell(objCoords, obj);
+			this->internalMap.setObject(objCoords, obj);
 		}
 		// down
 		if (position.y != internalMap.getMapLength()) {
 			Coordinates objCoords = { position.x, position.y + 1 };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
-			this->internalMap.setCell(objCoords, obj);
+			this->internalMap.setObject(objCoords, obj);
 		}
 		//left
 		if (position.x != 0) {
 			Coordinates objCoords = { position.x - 1, position.y };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
-			this->internalMap.setCell(objCoords, obj);
+			this->internalMap.setObject(objCoords, obj);
 		}
 		// right
 		if (position.x != internalMap.getMapWidth()) {
 			Coordinates objCoords = { position.x + 1, position.y };
 			Object obj = this->environment->getObject(objCoords);
 			scanResult.push_back({ objCoords, obj });
-			this->internalMap.setCell(objCoords, obj);
+			this->internalMap.setObject(objCoords, obj);
 		}
 
 		this->repeater->notifyScan(scanResult);

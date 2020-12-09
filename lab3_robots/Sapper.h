@@ -24,7 +24,7 @@ public:
 	// unique actions
 	void defuse() {
 		if (internalMap.getObject(position) == Object::bomb) {
-			internalMap.setCell(position, Object::empty);
+			internalMap.setObject(position, Object::empty);
 			repeater->notifyDefuse(position);
 			this->environment->bombDefused(position);
 		}
