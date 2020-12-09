@@ -8,27 +8,18 @@ private:
 	Environment* environment = nullptr;
 
 public:
-	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep, Environment* env) {
-		this->internalMap = _map;
-		position = startPosition;
-		this->environment = env;
-		this->repeater = rep;
+	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep, Environment* env);
+	Sapper() = delete;
+	virtual ~Sapper() {
+		this->environment = nullptr;
+		this->repeater = nullptr;
 	}
-	virtual ~Sapper() {}
 
 	// getting information about robot
-	const RobotClass& getRobotClass() const {
-		return this->_class;
-	}
+	const RobotClass& getRobotClass() const { return this->_class; }
 
 	// unique actions
-	void defuse() {
-		if (internalMap.getObject(position) == Object::bomb) {
-			internalMap.setObject(position, Object::empty);
-			repeater->notifyDefuse(position);
-			this->environment->bombDefused(position);
-		}
-	}
+	void defuse();
 
 };
 

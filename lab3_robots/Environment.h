@@ -16,10 +16,16 @@ public:
 			throw exception("Global map name is not in parser");
 		}
 	}
-	Environment() = delete;
+	Environment() {
+		this->globalMap = nullptr;
+	}
 	~Environment() {
 		delete globalMap;
 		globalMap = nullptr;
+	}
+
+	void setGlobalMap(Map* newGlobalMap) {
+		this->globalMap = newGlobalMap;
 	}
 
 	const Map& getGlobalMap() { return *(this->globalMap); }
@@ -46,7 +52,6 @@ public:
 	bool bombDefused(const Coordinates& coords) {
 		if (globalMap->getObject(coords) == Object::bomb) {
 			globalMap->setObject(coords, Object::empty);
-			
 			return true;
 		}
 		else {
