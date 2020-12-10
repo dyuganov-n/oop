@@ -44,7 +44,7 @@ void Manager::CreateSapper() {
 		throw exception("Can't create sapper. There is no explorers.");
 	}
 	else {
-		Coordinates newCoords = FindEmptySpace(robots.at(0).second->getMap());
+		Coordinates newCoords = FindEmptySpace(robots.at(0).second->getMap()); 
 		IMode* newMode = IdlingMode::getInstance();
 		Sapper* newSapper = new Sapper(robots.at(0).second->getMap(), newCoords, repeater, environment);
 		this->repeater->NotifyMove(newCoords, newCoords);

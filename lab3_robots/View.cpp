@@ -4,6 +4,8 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField) {
 	if (mngr->getRobots().empty()) throw exception("Can't display map. Robots vector is empty."); // exception triggered exit and error in ~Map. WHY!?
 	IRobot* mainRobot = mngr->getRobots().at(0).second;
 	if (mainRobot == nullptr) throw exception("Can't display map. Main robot pointer is nullptr.");
+	
+	system("cls");
 
 	for (ptrdiff_t i = -oneSideViewField; i < oneSideViewField; ++i) {
 		for (ptrdiff_t j = -oneSideViewField; j < oneSideViewField; ++j) {

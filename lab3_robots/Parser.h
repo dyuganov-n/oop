@@ -20,68 +20,63 @@ public:
 		input = nullptr;
 	}
 
-	ICommand* parseCommand(const vector<pair<IMode*, IRobot*>>& robots) {
-		try {
+	ICommand* parseCommand(Manager* mngr) {
+		string command = input->getString();
+		if (command == "SET_MODE") {
 			string command = input->getString();
-			if (command == "SET_MODE") {
-				string command = input->getString();
-				if (command == "manual") {
-					
-				}
-				else if (command == "auto") {
-
-				}
-				else if (command == "scan") {
-					size_t stepsN = input->getNumber();
-
-				}
-				else {
-					throw exception("Wrong mode");
-				}
+			if (command == "manual") {
 
 			}
-			else if (command == "MOVE") {
-				string dir = input->getString();
-				if (dir == "U") {
-
-				}
-				else if (dir == "R") {
-
-				}
-				else if (dir == "D") {
-
-				}
-				else if (dir == "L") {
-
-				}
-				else {
-					throw exception("Wrong direction");
-				}
-			}
-			else if (command == "SCAN") {
+			else if (command == "auto") {
 
 			}
-			else if (command == "GRAB") {
-				
-			}
-			else if (command == "SAPPER") {
-				string sapperMode = input->getString();
-				if (sapperMode == "ON") {
+			else if (command == "scan") {
+				size_t stepsN = input->getNumber();
 
-				}
-				else if (sapperMode == "OFF") {
-
-				}
-				else {
-					throw exception("Wrong sapper mode");
-				}
 			}
 			else {
-				throw exception("Wrong command");
+				throw exception("Wrong mode");
+			}
+
+		}
+		else if (command == "MOVE") {
+			string dir = input->getString();
+			if (dir == "U") {
+
+			}
+			else if (dir == "R") {
+
+			}
+			else if (dir == "D") {
+
+			}
+			else if (dir == "L") {
+
+			}
+			else {
+				throw exception("Wrong direction");
 			}
 		}
-		catch (const exception& e) {
-			throw e;
+		else if (command == "SCAN") {
+
+		}
+		else if (command == "GRAB") {
+
+		}
+		else if (command == "SAPPER") {
+			string sapperMode = input->getString();
+			if (sapperMode == "ON") {
+
+			}
+			else if (sapperMode == "OFF") {
+
+			}
+			else {
+				throw exception("Wrong sapper mode");
+			}
+		}
+		else {
+			throw exception("Wrong command");
 		}
 	}
 

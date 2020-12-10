@@ -39,6 +39,13 @@ public:
 
 	void CreateExplorer();
 	void CreateSapper();
+	void DeleteSapper() {
+		for (size_t i = 0; i < robots.size(); ++i) {
+			if (robots.at(i).second->getRobotClass() == RobotClass::sapper) {
+				robots.erase(robots.begin() + i);
+			}
+		}
+	}
 
 	void ChangeExplorerMode(IMode* newMode);
 

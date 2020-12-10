@@ -29,18 +29,19 @@ void createFile(const size_t& length, const size_t& width, const Object& obj) {
 int main(int argc, char* argv[]) {
 	try {
 		ConsoleView view;
+		const size_t cellsInView = 11;
+
 		CommandHandler comHandler;
 		Parser parser(new ConsoleInput);
 		parser.setMapFileName(argc, argv);
 
 		Manager manager(parser.getMapFileName());
 		manager.CreateExplorer();
-		view.displayMap(&manager, 21);
-		manager.CreateSapper();
-		view.displayMap(&manager, 21);
+		//manager.CreateSapper(); // no empty space because Explorers map is nor discovered at all
+		view.displayMap(&manager, cellsInView);
 
 		while (1) {
-			comHandler.HandleCommand(parser.parseCommand(manager.getRobots()));
+			comHandler.HandleCommand(parser.parseCommand(&manager));
 			if (manager.EnvironmentPtrIsNull()) {
 				throw exception("Manager can't make step. Environment pointer is nullptr.");
 			}

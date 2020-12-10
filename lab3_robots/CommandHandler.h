@@ -2,17 +2,18 @@
 
 #include "Command.h"
 
-class CommandHandler
-{
+class CommandHandler {
 public:
 	CommandHandler() = default;
 	void HandleCommand(ICommand* command) {
-		if (dynamic_cast<ChangeModeCommand*>(command)) {
-			command->execute();
+		if (command == nullptr) {
+			throw exception("Command handler error. Command is nullptr.");
 		}
 		else {
-			// what else?
+			command->execute();
 		}
+		//if (dynamic_cast<ChangeModeCommand*>(command)) { command->execute(); }
+
 	}
 };
 
