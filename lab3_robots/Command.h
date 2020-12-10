@@ -2,95 +2,95 @@
 
 #include "Direction.h"
 #include "Mode.h"
+#include "Manager.h"
 
-
-#include <string>
+//#include <string>
 using namespace std;
+
 
 class ICommand {
 public:	
+	virtual ~ICommand() = 0;
 	virtual void execute() = 0;
 };
 
 // Manager
-/// <summary>
-/// Change mode of all robots work (manual, auto collect, auto scan)
-/// </summary>
+// Change mode of all robots work (manual, auto collect, auto scan)
 class ChangeModeCommand : public ICommand {
 public:
-	ChangeModeCommand(vector<pair<IMode*, IRobot*>> robots) {	}
-	// interface
-	void execute() {}
-
-	// other
-	void setAutoScanSteps(const size_t& n) {
-		this->autoScanSteps = n;
+	ChangeModeCommand(Manager* manager, IMode* newMode) {
+		this->newMode = newMode;
+		this->manager = manager;
 	}
-	const size_t& getAutoScanSteps() {
-		return this->autoScanSteps;
+	// interface
+	virtual void execute() override {
+		manager->getRobots()[0].first = newMode;
 	}
 
 private:
-	string newMode;
-	size_t autoScanSteps = 0;
+	IMode* newMode = nullptr;
+	Manager* manager = nullptr;
 };
 
 // Explorer
-/// <summary>
-/// Commands for explorer in manaul mode (move, scan, collect)
-/// </summary>
+// Commands for explorer in manaul mode (move, scan, collect)
 class ManualModeCommand : public ICommand {
 public:
 	// interface
-	void execute() = 0;
-
-protected:
-	string command;
+	virtual void execute() = 0;
 };
 
 class GrabManualCommand : public ManualModeCommand {
 public:
 	// interface
-	void execute() {
-		// code
+	virtual void execute() {
+		
 	}
 };
 class ScanManualCommand : public ManualModeCommand {
 public:
 	// interface
-	void execute() {
+	virtual void execute() {
 		// code
 	}
 };
 
 class MoveManualCommand : public ManualModeCommand { 
 public:
-	// interface
-	void execute() {
-		// code
+	MoveManualCommand(Manager* manager, const Direction& direction) {
+		this->manager = manager;
+		this->direction = direction;
 	}
-
-	// other
-	void setDirection(const Direction& _dir) {
-		this->direction = _dir;
-	}
-	const Direction& getDirection() {
-		return this->direction;
+	virtual void execute() {
+		IMode* mode = this->manager->getRobots().at(0).first;
+		IRobot* robot = this->manager->getRobots().at(0).second;
+		mode->invokeCommand(robot);
 	}
 private:
+	Manager* manager = nullptr;
 	Direction direction;
 }; 
 
 // Sapper
-class SapperConditionCommand : public ICommand {
+class SapperONCommand : public ICommand {
 public:
-	void setCommand(const string& cmd) {
-		newMode = cmd;
+	SapperONCommand(Manager* manager) {
+		this->manager = manager;
 	}
-	const string& getCommand() {
-		return this->newMode;
+	~SapperONCommand() {
+		this->manager = nullptr;
+	}
+	virtual void execute() {
+		manager->CreateSapper();
 	}
 private:
-	string newMode; // ON | OFF
+	Manager* manager = nullptr;
+};
+
+class SapperOFFCommand : public ICommand {
+public:
+	virtual void execute() {
+
+	}
 };
 

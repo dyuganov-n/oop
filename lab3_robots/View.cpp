@@ -2,7 +2,7 @@
 
 void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField) {
 	if (mngr->getRobots().empty()) throw exception("Can't display map. Robots vector is empty."); // exception triggered exit and error in ~Map. WHY!?
-	IRobot* mainRobot = mngr->getRobots()[0];
+	IRobot* mainRobot = mngr->getRobots().at(0).second;
 	if (mainRobot == nullptr) throw exception("Can't display map. Main robot pointer is nullptr.");
 
 	for (ptrdiff_t i = -oneSideViewField; i < oneSideViewField; ++i) {
@@ -16,11 +16,11 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField) {
 			// point is robot check
 			if (robotInCell(mngr->getRobots(), x, y)) {
 				for (auto item : mngr->getRobots()) {
-					if (item->getCoordinates().x == x && item->getCoordinates().y == y) {
-						if (item->getRobotClass() == RobotClass::explorer) {
+					if (item.second->getCoordinates().x == x && item.second->getCoordinates().y == y) {
+						if (item.second->getRobotClass() == RobotClass::explorer) {
 							std::cout << "E ";
 						}
-						else if (item->getRobotClass() == RobotClass::sapper) {
+						else if (item.second->getRobotClass() == RobotClass::sapper) {
 							std::cout << "S ";
 						}
 					}
@@ -57,9 +57,9 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField) {
 	cout << "Apples collected: " << mngr->getEnvironment()->getCollectedCnt() << endl;
 }
 
-bool ConsoleView::robotInCell(vector<IRobot*> robots, ptrdiff_t x, ptrdiff_t y) {
+bool ConsoleView::robotInCell(vector<pair<IMode*, IRobot*>>& robots, ptrdiff_t x, ptrdiff_t y) {
 	for (auto item : robots) {
-		if (item->getCoordinates().x == x && item->getCoordinates().y == y) {
+		if (item.second->getCoordinates().x == x && item.second->getCoordinates().y == y) {
 			return true;
 		}
 	}

@@ -7,13 +7,14 @@
 
 class IMode {
 public:
-	void virtual invokeCommand(IRobot* robot) = 0; // or use command inside?
+	void virtual invokeCommand(IRobot* robot) = 0;
 };
 
 
-class IdelingMode : public IMode {
+class IdlingMode : public IMode {
+public:
 	void invokeCommand(IRobot* robot) {
-		// sync map and coords
+		robot->idling();// sync map and coords
 	}
 };
 
@@ -27,14 +28,14 @@ public:
 
 class ScanMode : public IMode {
 public:
-	void invokeCommandinvokeCommand(Explorer* robot) {
-		// 
+	void invokeCommand(Explorer* robot) {
+		
 	}
 };
 
 class AutoMode : public IMode {
 public:
-	void invokeCommandinvokeCommand(Explorer* robot) {
+	void invokeCommand(Explorer* robot) {
 		// find closest item (bomb or apple) and move
 	}
 };

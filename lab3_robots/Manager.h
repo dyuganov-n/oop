@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Parser.h" // Command, ConsoleInput inside
+//#include "Parser.h" // Command, ConsoleInput inside
 #include "Sapper.h" // IRobot, Repeater, Map, Environment, Direction inside
 #include "Mode.h"
 #include "Explorer.h"
@@ -12,41 +12,36 @@
 using std::cin;
 
 
-//Control interaction between sapper and explorer
 class Manager {
 private:
 	vector<pair<IMode*, IRobot*>> robots; // can Mode use their unique functions?
 
-	Parser* parser = nullptr;
+	//Parser* parser = nullptr;
 	Environment* environment = nullptr; // global map is here
 	Repeater* repeater = nullptr; // information exchange between robots 
 
-	void changeMode(IMode* mode){}
-
 public:	
-	Manager(Parser* prsr);
-	Manager();
+	//Manager(Parser* prsr);
+	Manager(const string& InputFileName);
 	~Manager();
 
-	void setParser(Parser* newParser) { this->parser = newParser; }
+	//void setParser(Parser* newParser) { this->parser = newParser; }
 	void setEnvironment(Environment* newEnvironment) { this->environment = newEnvironment; }
-	bool internalPtrsNonNull();
-
 	Environment* getEnvironment() { return this->environment; }
-	
-	vector<IRobot*> getRobots();
 
-	// for console view & creating new robots
+	bool EnvironmentPtrIsNull() { return environment == nullptr ? true : false; }
+	bool RepeaterPtrIsNull() { return repeater == nullptr ? true : false; }
+
+	vector<pair<IMode*, IRobot*>>& getRobots() { return this->robots; }
 	const Map& getRobotsMap() { return this->robots[0].second->getMap(); }
 
-	Coordinates findEmptySpace(const Map& map) const;
+	Coordinates FindEmptySpace(const Map& map) const;
 
-	void createExplorer();
+	void CreateExplorer();
+	void CreateSapper();
+	void ChangeExplorerMode(IMode* newMode);
 
-	void createSapper();
-
-	void handleCommand(ICommand* command);
-
-	void step();
+	//void handleCommand(ICommand* command);
+	//void Step();
 };
 

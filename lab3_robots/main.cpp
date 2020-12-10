@@ -3,6 +3,8 @@
 
 #include "Map.h"
 #include "View.h"
+#include "Parser.h"
+#include "CommandHandler.h"
 
 #include <iostream>
 #include <fstream>
@@ -26,17 +28,32 @@ void createFile(const size_t& length, const size_t& width, const Object& obj) {
 
 int main(int argc, char* argv[]) {
 	try {
-		
-		// main main
 		ConsoleView view;
+		CommandHandler comHandler;
 		Parser parser(new ConsoleInput);
 		parser.setMapFileName(argc, argv);
-		Manager manager(&parser);
-		manager.createExplorer();
-		//manager.createSapper();
+
+		Manager manager(parser.getMapFileName());
+		manager.CreateExplorer();
 		view.displayMap(&manager, 21);
+		manager.CreateSapper();
+		view.displayMap(&manager, 21);
+
 		while (1) {
-			manager.step();
+			comHandler.HandleCommand(parser.parseCommand(manager.getRobots()));
+			if (manager.EnvironmentPtrIsNull()) {
+				throw exception("Manager can't make step. Environment pointer is nullptr.");
+			}
+			else if (manager.RepeaterPtrIsNull()) {
+				throw exception("Manager can't make step. Repeater pointers is nullptr.");
+			}
+			else {
+				//for (auto rbt : robots) {
+					//ICommand* command = parser->parseCommand(robots);
+					//handleCommand(command);
+					//delete command;
+				//}
+			}
 			view.displayMap(&manager, 21);
 		}
 

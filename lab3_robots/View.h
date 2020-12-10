@@ -23,6 +23,6 @@ public:
 	void displayMap(Manager* mngr, const int& oneSideViewField);
 
 private:
-	bool robotInCell(vector<IRobot*> robots, ptrdiff_t x, ptrdiff_t y);
+	bool robotInCell(vector<pair<IMode*, IRobot*>>& robots, ptrdiff_t x, ptrdiff_t y);
 };
 

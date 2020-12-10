@@ -38,7 +38,7 @@ public:
 	}
 
 	// Delete prev position and add new to positions set.
-	void notifyMove(Coordinates& prevCoords, Coordinates& newCoords) {
+	void NotifyMove(Coordinates& prevCoords, Coordinates& newCoords) {
 		for (size_t i = 0; i < robotsPositions.size(); ++i) {
 			if (isEqual(robotsPositions[i], prevCoords)) {
 				robotsPositions.erase(robotsPositions.begin() + i);

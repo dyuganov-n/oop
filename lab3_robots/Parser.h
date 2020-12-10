@@ -20,7 +20,7 @@ public:
 		input = nullptr;
 	}
 
-	ICommand* parseCommand(vector<pair<IMode*, IRobot*>>& robots) {
+	ICommand* parseCommand(const vector<pair<IMode*, IRobot*>>& robots) {
 		try {
 			string command = input->getString();
 			if (command == "SET_MODE") {
@@ -108,7 +108,7 @@ public:
 	void setConsoleInput(ConsoleInput* _input) {
 		this->input = _input;
 	}
-	const string& getMapFileName() {
+	string getMapFileName() {
 		return this->mapFileName;
 	}
 

@@ -37,7 +37,7 @@ public:
 		updateMap();
 		if (cellIsEmpty(buildNewPosition(dir))) {
 			position = buildNewPosition(dir);
-			this->repeater->notifyMove(position, position); // add to position track if it is not there
+			this->repeater->NotifyMove(position, position); // add to position track if it is not there
 		}
 		else {
 			throw exception("Can't move. There is a robot in this cell");
@@ -46,7 +46,7 @@ public:
 
 	void idling() {
 		updateMap();
-		this->repeater->notifyMove(position, position); // add to position track if it is not there
+		this->repeater->NotifyMove(position, position); // add to position track if it is not there
 	}
 
 	// unteraction with other robots and manager
