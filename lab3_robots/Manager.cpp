@@ -33,20 +33,23 @@ Coordinates Manager::FindEmptySpace(const Map& map) const {
 
 void Manager::CreateExplorer() {
 	Coordinates newCoords = FindEmptySpace(environment->getGlobalMap());
-	IMode* newMode = new IdlingMode;
+	IMode* newMode = IdlingMode::getInstance();
 	Explorer* newExplorer = new Explorer(newCoords, repeater, environment);
 	this->repeater->NotifyMove(newCoords, newCoords);
-
 	this->robots.push_back({ newMode, newExplorer });
 }
 
 void Manager::CreateSapper() {
-	if (robots.empty()) throw exception("Can't create sapper. There is no explorers.");
-	Coordinates newCoords = FindEmptySpace(robots.at(0).second->getMap());
-	IMode* newMode = new IdlingMode;
-	Sapper* newSapper = new Sapper(robots.at(0).second->getMap(), newCoords, repeater, environment);
-	this->repeater->NotifyMove(newCoords, newCoords);
-	this->robots.push_back({ newMode, newSapper });
+	if (robots.empty()) {
+		throw exception("Can't create sapper. There is no explorers.");
+	}
+	else {
+		Coordinates newCoords = FindEmptySpace(robots.at(0).second->getMap());
+		IMode* newMode = IdlingMode::getInstance();
+		Sapper* newSapper = new Sapper(robots.at(0).second->getMap(), newCoords, repeater, environment);
+		this->repeater->NotifyMove(newCoords, newCoords);
+		this->robots.push_back({ newMode, newSapper });
+	}
 }
 
 /*

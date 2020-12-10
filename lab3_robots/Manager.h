@@ -39,6 +39,7 @@ public:
 
 	void CreateExplorer();
 	void CreateSapper();
+
 	void ChangeExplorerMode(IMode* newMode);
 
 	//void handleCommand(ICommand* command);

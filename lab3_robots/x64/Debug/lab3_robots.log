@@ -1,7 +1,6 @@
-﻿  Command.cpp
-  CommandHandler.cpp
-  Parser.cpp
-  main.cpp
+﻿  main.cpp
+  Manager.cpp
+  Mode.cpp
   Generating Code...
 C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Parser.h(86): warning C4715: 'Parser::parseCommand': not all control paths return a value
   lab3_robots.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\x64\Debug\lab3_robots.exe

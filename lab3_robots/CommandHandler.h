@@ -7,7 +7,12 @@ class CommandHandler
 public:
 	CommandHandler() = default;
 	void HandleCommand(ICommand* command) {
-		command->execute();
+		if (dynamic_cast<ChangeModeCommand*>(command)) {
+			command->execute();
+		}
+		else {
+			// what else?
+		}
 	}
 };
 
