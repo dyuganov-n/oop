@@ -12,8 +12,6 @@ public:
 		else {
 			command->execute();
 		}
-		//if (dynamic_cast<ChangeModeCommand*>(command)) { command->execute(); }
-
 	}
 };
 

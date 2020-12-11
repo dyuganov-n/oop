@@ -24,10 +24,21 @@ private:
 
 class ManualMode : public IMode {
 public:
+	enum class ManualModeAction {move, scan, collect, unknown};
 	void invokeCommand(IRobot* robot) override;
 	static ManualMode* getInstance();
 
+	void setAction(const ManualModeAction &act){
+		this->action = act;
+	}
+	void setDirection(const Direction& dir) {
+		this->direction = dir;
+	}
+
 private:
+	ManualModeAction action = ManualModeAction::unknown;
+	Direction direction = Direction::unknown;
+
 	static ManualMode* p_instance;
 	ManualMode() = default;
 	~ManualMode() {

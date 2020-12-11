@@ -1,4 +1,5 @@
 #include "Mode.h"
+#include "Command.h"
 
 ManualMode* ManualMode::p_instance = NULL;
 IdlingMode* IdlingMode::p_instance = NULL;
@@ -44,7 +45,27 @@ void ManualMode::invokeCommand(IRobot* robot) {
 	}
 	else {
 		Explorer* explorer = dynamic_cast<Explorer*>(robot);
-		// logics
+		switch (action) {
+		case ManualModeAction::collect:
+			explorer->collect();
+			this->action = ManualModeAction::unknown;
+
+		case ManualModeAction::scan:
+			explorer->scan();
+			this->action = ManualModeAction::unknown;
+
+		case ManualModeAction::move:
+			if (direction == Direction::unknown) {
+				throw exception("ManualMode error. Move direction was not defined.");
+			}
+			else {
+				explorer->move(direction);
+				this->direction = Direction::unknown;
+			}
+
+		default:
+			throw exception("ManualMode error. Action was not defined.");
+		}
 	}
 }
 

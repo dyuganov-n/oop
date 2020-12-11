@@ -7,15 +7,8 @@
 //#include <string>
 using namespace std;
 
-
 class ICommand {
 public:	
-	//virtual ~ICommand() = 0;
-	virtual void execute() = 0;
-};
-
-class IManagerCommand : public ICommand {
-public:
 	virtual void execute() = 0;
 };
 
@@ -24,7 +17,6 @@ class IModeCommand : public ICommand {
 };
 
 // Explorer
-// Commands for explorer in manaul mode (move, scan, collect)
 class ManualModeCommand : public IModeCommand {
 public:
 	// interface
@@ -44,6 +36,9 @@ public:
 			IMode* mode = this->manager->getRobots().at(0).first;
 			IRobot* robot = this->manager->getRobots().at(0).second;
 			if (dynamic_cast<ManualMode*>(mode)) mode->invokeCommand(robot);
+			else {
+				throw exception("GrabManualCommand error. Wrong robot mode for this command.");
+			}
 		}
 	}
 private:
@@ -60,7 +55,12 @@ public:
 		else {
 			IMode* mode = this->manager->getRobots().at(0).first;
 			IRobot* robot = this->manager->getRobots().at(0).second;
-			if (dynamic_cast<ManualMode*>(mode)) mode->invokeCommand(robot);
+			if (dynamic_cast<ManualMode*>(mode)) {
+				dynamic_cast<ManualMode*>(mode)->invokeCommand(robot);
+			}
+			else {
+				throw exception("ScanManualCommand error. Wrong robot mode for this command.");
+			}
 		}
 	}
 private:
@@ -132,8 +132,13 @@ private:
 	Manager* manager = nullptr;
 };
 
+
 // Manager
-// Change mode of all robots work (manual, auto collect, auto scan)
+class IManagerCommand : public ICommand {
+public:
+	virtual void execute() = 0;
+};
+
 class ChangeModeCommand : public ICommand {
 public:
 	ChangeModeCommand(Manager* manager, IMode* newMode) {
