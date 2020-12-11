@@ -33,39 +33,45 @@ void Explorer::collect() {
 
 void Explorer::scan() {
 	vector<pair<Coordinates, Object>> scanResult;
-	pair<Coordinates, Object> upObj;
-	pair<Coordinates, Object> downObj;
-	pair<Coordinates, Object> leftObj;
-	pair<Coordinates, Object> rightObj;
 
-	// up
+	// left
 	if (position.y != 0) {
 		Coordinates objCoords = { position.x, position.y - 1 };
 		Object obj = this->environment->getObject(objCoords);
 		scanResult.push_back({ objCoords, obj });
 		this->internalMap.setObject(objCoords, obj);
 	}
-	// down
+	// right
 	if (position.y != internalMap.getMapLength()) {
 		Coordinates objCoords = { position.x, position.y + 1 };
 		Object obj = this->environment->getObject(objCoords);
 		scanResult.push_back({ objCoords, obj });
 		this->internalMap.setObject(objCoords, obj);
 	}
-	//left
+	//up
 	if (position.x != 0) {
 		Coordinates objCoords = { position.x - 1, position.y };
 		Object obj = this->environment->getObject(objCoords);
 		scanResult.push_back({ objCoords, obj });
 		this->internalMap.setObject(objCoords, obj);
 	}
-	// right
+	// down
 	if (position.x != internalMap.getMapWidth()) {
 		Coordinates objCoords = { position.x + 1, position.y };
 		Object obj = this->environment->getObject(objCoords);
 		scanResult.push_back({ objCoords, obj });
 		this->internalMap.setObject(objCoords, obj);
 	}
+
+	//it's own cell
+	{
+		Coordinates objCoords = position;
+		Object obj = this->environment->getObject(objCoords);
+		scanResult.push_back({ objCoords, obj });
+		this->internalMap.setObject(objCoords, obj);
+	}
+	
+
 	this->repeater->notifyScan(scanResult);
 }
 

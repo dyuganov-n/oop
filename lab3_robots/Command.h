@@ -35,7 +35,10 @@ public:
 		else {
 			IMode* mode = this->manager->getRobots().at(0).first;
 			IRobot* robot = this->manager->getRobots().at(0).second;
-			if (dynamic_cast<ManualMode*>(mode)) mode->invokeCommand(robot);
+			if (dynamic_cast<ManualMode*>(mode)) {
+				dynamic_cast<ManualMode*>(mode)->setAction(ManualModeAction::collect);
+				mode->invokeCommand(robot);
+			}
 			else {
 				throw exception("GrabManualCommand error. Wrong robot mode for this command.");
 			}
@@ -56,6 +59,7 @@ public:
 			IMode* mode = this->manager->getRobots().at(0).first;
 			IRobot* robot = this->manager->getRobots().at(0).second;
 			if (dynamic_cast<ManualMode*>(mode)) {
+				dynamic_cast<ManualMode*>(mode)->setAction(ManualModeAction::scan);
 				dynamic_cast<ManualMode*>(mode)->invokeCommand(robot);
 			}
 			else {
@@ -80,7 +84,11 @@ public:
 		else {
 			IMode* mode = this->manager->getRobots().at(0).first;
 			IRobot* robot = this->manager->getRobots().at(0).second;
-			if (dynamic_cast<ManualMode*>(mode)) mode->invokeCommand(robot);
+			if (dynamic_cast<ManualMode*>(mode)) {
+				dynamic_cast<ManualMode*>(mode)->setAction(ManualModeAction::move);
+				dynamic_cast<ManualMode*>(mode)->setDirection(direction);
+				mode->invokeCommand(robot);
+			}
 		}
 	}
 private:
@@ -102,7 +110,10 @@ public:
 		else {
 			IMode* mode = this->manager->getRobots().at(0).first;
 			IRobot* robot = this->manager->getRobots().at(0).second;
-			if (dynamic_cast<ScanMode*>(mode)) mode->invokeCommand(robot);
+			if (dynamic_cast<ScanMode*>(mode)) {
+				dynamic_cast<ScanMode*>(mode)->setStepsNumber(this->stepsNumber);
+				mode->invokeCommand(robot);
+			}
 		}
 	}
 
@@ -124,7 +135,9 @@ public:
 		else {
 			IMode* mode = this->manager->getRobots().at(0).first;
 			IRobot* robot = this->manager->getRobots().at(0).second;
-			if (dynamic_cast<AutoMode*>(mode)) mode->invokeCommand(robot);
+			if (dynamic_cast<AutoMode*>(mode)) {
+				mode->invokeCommand(robot);
+			}
 		}
 	}
 
@@ -145,9 +158,10 @@ public:
 		this->newMode = newMode;
 		this->manager = manager;
 	}
-	// interface
+	
 	virtual void execute() override {
-		manager->getRobots()[0].first = newMode;
+		//manager->getRobots()[0].first = newMode;
+		manager->ChangeExplorerMode(newMode);
 	}
 
 private:

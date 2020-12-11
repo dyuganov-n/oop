@@ -1,6 +1,6 @@
 #include "View.h"
 
-void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField) {
+void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const ViewMode& VMode) {
 	if (mngr->getRobots().empty()) throw exception("Can't display map. Robots vector is empty."); // exception triggered exit and error in ~Map. WHY!?
 	IRobot* mainRobot = mngr->getRobots().at(0).second;
 	if (mainRobot == nullptr) throw exception("Can't display map. Main robot pointer is nullptr.");
@@ -48,11 +48,27 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField) {
 			else throw exception("Console view error. Coordinates can't be negative.");
 
 			// map display
-			if (mngr->getEnvironment()->getObject({ _x, _y }) == Object::unknown) std::cout << "? ";
-			else if (mngr->getEnvironment()->getObject({ _x, _y }) == Object::apple) std::cout << "A ";
-			else if (mngr->getEnvironment()->getObject({ _x, _y }) == Object::bomb) std::cout << "B ";
-			else if (mngr->getEnvironment()->getObject({ _x, _y }) == Object::empty) std::cout << ". ";
-			else if (mngr->getEnvironment()->getObject({ _x, _y }) == Object::rock) std::cout << "# ";
+			
+			if (VMode == ViewMode::GlobalMap) {
+				const Object& obj = mngr->getEnvironment()->getObject({ _x, _y });
+				if (obj == Object::unknown) std::cout << "? ";
+				else if (obj == Object::apple) std::cout << "A ";
+				else if (obj == Object::bomb) std::cout << "B ";
+				else if (obj == Object::empty) std::cout << ". ";
+				else if (obj == Object::rock) std::cout << "# ";
+			}
+			else if(VMode == ViewMode::LocalMap) {
+				const Object& obj = mngr->getRobotsMap().getObject({ _x, _y });
+				if (obj == Object::unknown) std::cout << "? ";
+				else if (obj == Object::apple) std::cout << "A ";
+				else if (obj == Object::bomb) std::cout << "B ";
+				else if (obj == Object::empty) std::cout << ". ";
+				else if (obj == Object::rock) std::cout << "# ";
+			}
+			else {
+				throw exception("ConsoleView displayMap error. Unknown view mode.");
+			}
+			
 		}
 		std::cout << std::endl;
 	}

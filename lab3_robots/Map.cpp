@@ -71,7 +71,7 @@ Map::Map(const string& fileName) {
 				delete[] field;
 				field = nullptr;
 
-				throw exception("Wrong file content. One of the strings has wrong length."); // ERROR: unexpected exception
+				throw exception("Wrong file content. One of the strings has wrong length.");
 				return;
 			}
 			else {

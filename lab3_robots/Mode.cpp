@@ -39,9 +39,11 @@ void IdlingMode::invokeCommand(IRobot* robot) {
 void ManualMode::invokeCommand(IRobot* robot) {
 	if (robot == nullptr) {
 		throw exception("Manual mode error. Robot is nullptr.");
+		return;
 	}
 	else if (!dynamic_cast<Explorer*>(robot)) {
 		throw exception("Manual mode error. Robot is not Explorer.");
+		return;
 	}
 	else {
 		Explorer* explorer = dynamic_cast<Explorer*>(robot);
@@ -49,22 +51,27 @@ void ManualMode::invokeCommand(IRobot* robot) {
 		case ManualModeAction::collect:
 			explorer->collect();
 			this->action = ManualModeAction::unknown;
+			return;
 
 		case ManualModeAction::scan:
 			explorer->scan();
 			this->action = ManualModeAction::unknown;
+			return;
 
 		case ManualModeAction::move:
 			if (direction == Direction::unknown) {
 				throw exception("ManualMode error. Move direction was not defined.");
+				return;
 			}
 			else {
 				explorer->move(direction);
 				this->direction = Direction::unknown;
+				return;
 			}
 
 		default:
 			throw exception("ManualMode error. Action was not defined.");
+			return;
 		}
 	}
 }
@@ -78,7 +85,10 @@ void ScanMode::invokeCommand(IRobot* robot) {
 	}
 	else {
 		Explorer* explorer = dynamic_cast<Explorer*>(robot);
-		// logics
+		if (this->stepsNumber == 0) return;
+		else {
+			// logics for explorer 
+		}
 	}
 }
 
@@ -89,11 +99,11 @@ void AutoMode::invokeCommand(IRobot* robot) {
 	else {
 		if (dynamic_cast<Explorer*>(robot)) {
 			Explorer* explorer = dynamic_cast<Explorer*>(robot);
-			// logics
+			// logics for explorer
 		}
 		else {
 			Sapper* sapper = dynamic_cast<Sapper*>(robot);
-			// logics
+			// logics for sapper
 		}
 	}
 }

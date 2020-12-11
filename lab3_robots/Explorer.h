@@ -25,4 +25,5 @@ public:
 	// unique actions
 	void collect();
 	void scan();
+
 };

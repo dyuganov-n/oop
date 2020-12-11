@@ -71,8 +71,8 @@ private:
 			Coordinates newPosition;
 			switch (dir) {
 			case Direction::down:
-				if (position.y != internalMap.getMapLength()) { // or max val
-					newPosition = { position.x, position.y + 1 };
+				if (position.x != internalMap.getMapLength()) { // or max val
+					newPosition = { position.x + 1, position.y };
 					if (internalMap.getObject(newPosition) != Object::unknown && 
 						internalMap.getObject(newPosition) != Object::rock) {
 						return newPosition;
@@ -85,20 +85,6 @@ private:
 					throw exception("Can't move. It is the end of explored map.");
 				}
 			case Direction::up:
-				if (position.y != 0) { // or min val
-					newPosition = { position.x, position.y - 1 };
-					if (internalMap.getObject(newPosition) != Object::unknown &&
-						internalMap.getObject(newPosition) != Object::rock) {
-						return newPosition;
-					}
-					else {
-						throw exception("Can't move. This area was not explored.");
-					}
-				}
-				else {
-					throw exception("Can't move. It is the end of explored map.");
-				}
-			case Direction::left:
 				if (position.x != 0) { // or min val
 					newPosition = { position.x - 1, position.y };
 					if (internalMap.getObject(newPosition) != Object::unknown &&
@@ -112,9 +98,23 @@ private:
 				else {
 					throw exception("Can't move. It is the end of explored map.");
 				}
+			case Direction::left:
+				if (position.y != 0) { // or min val
+					newPosition = { position.x , position.y - 1 };
+					if (internalMap.getObject(newPosition) != Object::unknown &&
+						internalMap.getObject(newPosition) != Object::rock) {
+						return newPosition;
+					}
+					else {
+						throw exception("Can't move. This area was not explored.");
+					}
+				}
+				else {
+					throw exception("Can't move. It is the end of explored map.");
+				}
 			case Direction::right:
-				if (position.x != internalMap.getMapLength()) {// or max val
-					newPosition = { position.x + 1, position.y };
+				if (position.y != internalMap.getMapLength()) {// or max val
+					newPosition = { position.x, position.y + 1};
 					if (internalMap.getObject(newPosition) != Object::unknown &&
 						internalMap.getObject(newPosition) != Object::rock) {
 						return newPosition;

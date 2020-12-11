@@ -27,15 +27,7 @@ Commands:
 Dynamic map for all robots
 
 finding empty space fix
-// main with wring answer
-		ConsoleView view;
-		Parser parser(new ConsoleInput);
-		parser.setMapFileName(argc, argv);
-		Manager manager(&parser);
-		manager.createExplorer();
-		manager.createSapper();
-		view.displayMap(&manager, 21);
-		while (1) {
-			manager.step();
-			view.displayMap(&manager, 21);
-		}
+
+- обработка столкновений роботов
+- тесты
+

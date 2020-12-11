@@ -14,7 +14,7 @@ public:
 	string getString() {
 		string str;
 		cin >> str;
-		//std::transform(str.begin(), str.end(), str.begin(), tolower);
+		std::transform(str.begin(), str.end(), str.begin(), tolower);
 		return str;
 	}
 	size_t getNumber() {

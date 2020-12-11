@@ -22,54 +22,54 @@ public:
 
 	ICommand* parseCommand(Manager* mngr) {
 		string command = input->getString();
-		if (command == "SET_MODE") {
+		if (command == "set_mode") {
 			string command = input->getString();
 			if (command == "manual") {
-
+				return new ChangeModeCommand(mngr, ManualMode::getInstance());
 			}
 			else if (command == "auto") {
-
+				return new ChangeModeCommand(mngr, AutoMode::getInstance());
 			}
 			else if (command == "scan") {
-				size_t stepsN = input->getNumber();
-
+				//size_t stepsN = input->getNumber();
+				return new ChangeModeCommand(mngr, ScanMode::getInstance());
 			}
 			else {
 				throw exception("Wrong mode");
 			}
 
 		}
-		else if (command == "MOVE") {
+		else if (command == "move") {
 			string dir = input->getString();
-			if (dir == "U") {
-
+			if (dir == "u") {
+				return new MoveManualCommand(mngr, Direction::up);
 			}
-			else if (dir == "R") {
-
+			else if (dir == "r") {
+				return new MoveManualCommand(mngr, Direction::right);
 			}
-			else if (dir == "D") {
-
+			else if (dir == "d") {
+				return new MoveManualCommand(mngr, Direction::down);
 			}
-			else if (dir == "L") {
-
+			else if (dir == "l") {
+				return new MoveManualCommand(mngr, Direction::left);
 			}
 			else {
 				throw exception("Wrong direction");
 			}
 		}
-		else if (command == "SCAN") {
-
+		else if (command == "scan") {
+			return new ScanManualCommand(mngr);
 		}
-		else if (command == "GRAB") {
-
+		else if (command == "grab") {
+			return new GrabManualCommand(mngr);
 		}
-		else if (command == "SAPPER") {
+		else if (command == "sapper") {
 			string sapperMode = input->getString();
-			if (sapperMode == "ON") {
-
+			if (sapperMode == "on") {
+				return new SapperONCommand(mngr);
 			}
-			else if (sapperMode == "OFF") {
-
+			else if (sapperMode == "off") {
+				return new SapperOFFCommand(mngr);
 			}
 			else {
 				throw exception("Wrong sapper mode");

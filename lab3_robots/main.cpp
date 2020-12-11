@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 		Manager manager(parser.getMapFileName());
 		manager.CreateExplorer();
 		//manager.CreateSapper(); // no empty space because Explorers map is nor discovered at all
-		view.displayMap(&manager, cellsInView);
+		view.displayMap(&manager, cellsInView, ViewMode::LocalMap);
 
 		while (1) {
 			comHandler.HandleCommand(parser.parseCommand(&manager));
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 					//delete command;
 				//}
 			}
-			view.displayMap(&manager, 21);
+			view.displayMap(&manager, cellsInView, ViewMode::LocalMap);
 		}
 
 

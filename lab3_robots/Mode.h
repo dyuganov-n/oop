@@ -22,9 +22,10 @@ private:
 	~IdlingMode() { delete p_instance; }
 };
 
+enum class ManualModeAction { move, scan, collect, unknown };
 class ManualMode : public IMode {
 public:
-	enum class ManualModeAction {move, scan, collect, unknown};
+	
 	void invokeCommand(IRobot* robot) override;
 	static ManualMode* getInstance();
 
@@ -36,6 +37,7 @@ public:
 	}
 
 private:
+
 	ManualModeAction action = ManualModeAction::unknown;
 	Direction direction = Direction::unknown;
 
@@ -50,8 +52,13 @@ class ScanMode : public IMode {
 public:
 	void invokeCommand(IRobot* robot) override;
 	static ScanMode* getInstance();
+	void setStepsNumber(size_t N) {
+		this->stepsNumber = N;
+	}
 	
 private:
+	size_t stepsNumber = 0;
+
 	static ScanMode* p_instance;
 	ScanMode() = default;
 	~ScanMode() { delete p_instance; }
