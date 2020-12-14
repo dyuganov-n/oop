@@ -16,18 +16,10 @@ Modes
 Commands:
 
 - IRobotCommand
-	- move u/d/l/r
 	- scan
 	- collect
-	
-- IManagerCommand
-	- ChamgeModeCommand (manual, scan N, auto)
-
 
 Dynamic map for all robots
-
-finding empty space fix
-
-- обработка столкновений роботов
 - тесты
+- noexcept
 

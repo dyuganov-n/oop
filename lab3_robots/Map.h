@@ -1,9 +1,5 @@
 #pragma once
 
-/// TODO:
-/// dynamic externtion
-/// int coordinates 
-
 #include <exception>
 #include <string>
 #include <iostream>

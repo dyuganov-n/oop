@@ -17,8 +17,9 @@ IdlingMode* IdlingMode::getInstance() {
 	return p_instance;
 }
 ScanMode* ScanMode::getInstance() {
-	if (!p_instance)
+	if (!p_instance) {
 		p_instance = new ScanMode();
+	}
 	return p_instance;
 }
 AutoMode* AutoMode::getInstance() {

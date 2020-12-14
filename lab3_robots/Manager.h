@@ -20,6 +20,9 @@ private:
 	Environment* environment = nullptr; // global map is here
 	Repeater* repeater = nullptr; // information exchange between robots 
 
+	bool noSappersCreated();
+	bool explorerInManualMode();
+
 public:	
 	//Manager(Parser* prsr);
 	Manager(const string& InputFileName);
@@ -36,6 +39,7 @@ public:
 	const Map& getRobotsMap() { return this->robots[0].second->getMap(); }
 
 	Coordinates FindEmptySpace(const Map& map) const;
+	
 
 	void CreateExplorer();
 	void CreateSapper();

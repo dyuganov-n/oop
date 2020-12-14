@@ -1,6 +1,6 @@
 #pragma once
 
-enum class Direction { // need out of class
+enum class Direction {
 	unknown,
 	up,
 	down,

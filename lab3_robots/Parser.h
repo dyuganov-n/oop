@@ -31,8 +31,9 @@ public:
 				return new ChangeModeCommand(mngr, AutoMode::getInstance());
 			}
 			else if (command == "scan") {
-				//size_t stepsN = input->getNumber();
-				return new ChangeModeCommand(mngr, ScanMode::getInstance());
+				ScanMode* scanMode = ScanMode::getInstance();
+				scanMode->setStepsNumber(input->getNumber());
+				return new ChangeModeCommand(mngr, scanMode);
 			}
 			else {
 				throw exception("Wrong mode");

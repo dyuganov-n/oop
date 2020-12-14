@@ -12,54 +12,70 @@ private:
 	vector<pair<Coordinates, Object>> changes;
 	vector<Coordinates> robotsPositions;
 
-	bool isEqual(const Coordinates& l, const Coordinates& r) const{
-		if (l.x == r.x) {
-			if (l.y == r.y) {
-				return true;
-			}
+	bool isEqual(const Coordinates& l, const Coordinates& r) const noexcept {
+		if ((l.x == r.x) && (l.y == r.y)) {
+			return true;
 		}
-		return false;
+		else {
+			return false;
+		}
 	}
+
+	
 	
 public:
-	Repeater() {}
-	~Repeater() {}
+	Repeater() = default;
+	~Repeater() = default;
 
-	void notifyDefuse(const Coordinates& coords) {
+	// makes this cell empty
+	void NotifyDefuse(const Coordinates& coords) noexcept {
 		changes.push_back({ coords, Object::empty });
 	}
-	void notifyScan(const vector<pair<Coordinates, Object>>& objects) {
+
+	void NotifyScan(const vector<pair<Coordinates, Object>>& objects) noexcept {
 		for (const auto& item : objects) {
 			this->changes.push_back(item);
 		}
 	}
-	void notifyCollect(const Coordinates& coords) {
+
+	// makes this cell empty
+	void NotifyCollect(const Coordinates& coords) noexcept {
 		changes.push_back({coords, Object::empty});
 	}
 
-	// Delete prev position and add new to positions set.
-	void NotifyMove(Coordinates& prevCoords, Coordinates& newCoords) {
-		for (size_t i = 0; i < robotsPositions.size(); ++i) {
-			if (isEqual(robotsPositions[i], prevCoords)) {
-				robotsPositions.erase(robotsPositions.begin() + i);
+	// add new coords
+	void NotifyCreated(const Coordinates& newCoords) noexcept {
+		robotsPositions.push_back(newCoords);
+	}
+
+	// delete old coords, add new
+	void NotifyMove(const Coordinates& prevCoords, const Coordinates& newCoords) {
+		if (!robotsPositions.empty()) {
+			for (size_t i = 0; i < robotsPositions.size(); ++i) {
+				if (isEqual(robotsPositions.at(i), prevCoords)) {
+					robotsPositions.erase(robotsPositions.begin() + i);
+				}
+				robotsPositions.push_back(newCoords);
 			}
-			robotsPositions.push_back(newCoords);
+		}
+		else {
+			throw exception("Notify move error. There are no robots positions in repeater.");
 		}
 	}
 
-
 	// Check that there is no other robot in this position
-	bool isEmptyCell(const Coordinates& coords) {
+	bool isEmptyCell(const Coordinates& coords) const noexcept {
 		for (const auto& i : robotsPositions) {
 			if (isEqual(i, coords)) return false;
 		}
 		return true;
 	}
 
-	const vector<pair<Coordinates, Object>>& getMapUpdates() {
+	const vector<pair<Coordinates, Object>>& getMapUpdates() const noexcept {
 		return this->changes;
 	}
-	void deleteElem(const size_t& idx) {
+
+	void DeleteElem(const size_t& idx) {
 		if (idx >= this->changes.size() || idx < 0) {
 			throw exception("Can't delete this element in changes vector");
 		}

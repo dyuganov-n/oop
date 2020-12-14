@@ -10,7 +10,7 @@ Sapper::Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep,
 void Sapper::defuse() {
 	if (internalMap.getObject(position) == Object::bomb) {
 		internalMap.setObject(position, Object::empty);
-		repeater->notifyDefuse(position);
+		repeater->NotifyDefuse(position);
 		this->environment->bombDefused(position);
 	}
 }
