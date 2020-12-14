@@ -3,8 +3,8 @@
 //using namespace std;
 
 struct Coordinates {
-	size_t x = 0;
-	size_t y = 0;
+	ptrdiff_t x = 0;
+	ptrdiff_t y = 0;
 };
 
 // if problems with operator<, just dont use sorted containers

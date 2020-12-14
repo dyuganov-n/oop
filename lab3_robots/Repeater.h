@@ -20,9 +20,8 @@ private:
 			return false;
 		}
 	}
+	
 
-	
-	
 public:
 	Repeater() = default;
 	~Repeater() = default;

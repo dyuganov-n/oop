@@ -1,8 +1,4 @@
 Modes
-	- manual 
-		- move u/d/l/r
-		- scan
-		- collect
 	- scan N
 		find closest unscanned cell 
 		make steps and scan
@@ -13,13 +9,10 @@ Modes
 		stop, if all collected
 		go to manual
 
-Commands:
-
-- IRobotCommand
-	- scan
-	- collect
-
 Dynamic map for all robots
-- тесты
-- noexcept
 
+ƒобавить смену координат в самих роботах при расширении карты 
+(при снимаровании и при синхронизации карты)
+
+ѕроверить, что нигде не провер€ютс€ координаты роботов из самих роботов. 
+Ѕрать из окружени€

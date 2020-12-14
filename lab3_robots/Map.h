@@ -24,6 +24,13 @@ private:
 	size_t mapWidth = 0;
 
 	size_t resourcesOnMap = 0; // don't need?
+	
+	void deleteCurrField();
+	
+	// use current internal width and length
+	Object** createField(const size_t& length, const size_t& width);
+	void fillNewField(Object** newField, const Object& obj, const size_t& length, const size_t& width);
+	void copyOldFieldToNew(Object** newField, const size_t& offsetLength, const size_t& offsetWidth);
 
 public:
 	Map();

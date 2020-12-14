@@ -84,13 +84,12 @@ void IRobot::move(const Direction& dir) {
 
 void IRobot::idling() {
 	updateMap();
-	this->repeater->NotifyMove(position, position); // add to position track if it is not there
 }
 
 void IRobot::updateMap() {
 	for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
-		size_t _x = repeater->getMapUpdates()[i].first.x;
-		size_t _y = repeater->getMapUpdates()[i].first.y;
+		ptrdiff_t _x = repeater->getMapUpdates()[i].first.x;
+		ptrdiff_t _y = repeater->getMapUpdates()[i].first.y;
 		Object obj = repeater->getMapUpdates()[i].second;
 
 		// cell is up to date check (all robots already have this cell in their maps)

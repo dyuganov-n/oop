@@ -1,7 +1,7 @@
 #include "View.h"
 
 void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const ViewMode& VMode) {
-	if (mngr->getRobots().empty()) throw exception("Can't display map. Robots vector is empty."); // exception triggered exit and error in ~Map. WHY!?
+	if (mngr->getRobots().empty()) throw exception("Can't display map. Robots vector is empty.");
 	IRobot* mainRobot = mngr->getRobots().at(0).second;
 	if (mainRobot == nullptr) throw exception("Can't display map. Main robot pointer is nullptr.");
 	
@@ -30,7 +30,6 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 				continue;
 			}
 
-
 			// map edge
 			if (x < 0 || x > static_cast<ptrdiff_t>(mngr->getRobotsMap().getMapLength())) {
 				std::cout << "  ";
@@ -41,14 +40,13 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 				continue;
 			}
 
-			size_t _x = 0, _y = 0;
+			ptrdiff_t _x = 0, _y = 0;
 			if (x >= 0) _x = static_cast<size_t>(x);
 			else throw exception("Console view error. Coordinates can't be negative.");
 			if (y >= 0) _y = static_cast<size_t>(y);
 			else throw exception("Console view error. Coordinates can't be negative.");
 
 			// map display
-			
 			if (VMode == ViewMode::GlobalMap) {
 				const Object& obj = mngr->getEnvironment()->getObject({ _x, _y });
 				if (obj == Object::unknown) std::cout << "? ";
@@ -68,7 +66,6 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 			else {
 				throw exception("ConsoleView displayMap error. Unknown view mode.");
 			}
-			
 		}
 		std::cout << std::endl;
 	}

@@ -28,7 +28,6 @@ public:
 
 	// main actions for all robots
 
-	// no object check
 	virtual void move(const Direction& dir);
 
 	void idling();
