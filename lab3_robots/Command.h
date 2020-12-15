@@ -82,13 +82,24 @@ public:
 			throw exception("MoveManualCommand execute error. Manager is nullptr.");
 		}
 		else {
-			IMode* mode = this->manager->getRobots().at(0).first;
-			IRobot* robot = this->manager->getRobots().at(0).second;
-			if (dynamic_cast<ManualMode*>(mode)) {
-				dynamic_cast<ManualMode*>(mode)->setAction(ManualModeAction::move);
-				dynamic_cast<ManualMode*>(mode)->setDirection(direction);
-				mode->invokeCommand(robot);
+			for (size_t i = 0; i < manager->getRobots().size(); ++i) {
+				if (manager->getRobots().at(i).second->getRobotClass() == RobotClass::explorer) {
+					IMode* mode = this->manager->getRobots().at(i).first;
+					IRobot* robot = this->manager->getRobots().at(i).second;
+					if (dynamic_cast<ManualMode*>(mode)) {
+						dynamic_cast<ManualMode*>(mode)->setAction(ManualModeAction::move);
+						dynamic_cast<ManualMode*>(mode)->setDirection(direction);
+						mode->invokeCommand(robot);
+						return;
+					}
+					else {
+						throw exception("MoveManualCommand error. Explorer is not in manual mode.");
+						return;
+					}
+				}
 			}
+			throw exception("No explorers in manager");
+			return;
 		}
 	}
 private:

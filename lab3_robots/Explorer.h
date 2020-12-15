@@ -8,8 +8,6 @@ using std::vector;
 class Explorer : public IRobot {
 private:
 	const RobotClass _class = RobotClass::explorer;
-	Environment* environment = nullptr;
-
 	void _scan(const Coordinates& objCoords, vector<pair<Coordinates, Object>>& scanResult);
 
 public:
@@ -20,9 +18,6 @@ public:
 
 	// getting information about robot
 	const RobotClass& getRobotClass() const { return this->_class; }
-
-	// other
-	void setEnvironment(Environment* env) { this->environment = env; }
 
 	// unique actions
 	void collect();

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Map.h"
+#include "Environment.h"
+
 #include <set>
 #include <map>
 #include <vector>
@@ -20,7 +22,6 @@ private:
 			return false;
 		}
 	}
-	
 
 public:
 	Repeater() = default;
@@ -43,8 +44,18 @@ public:
 	}
 
 	// add new coords
-	void NotifyCreated(const Coordinates& newCoords) noexcept {
-		robotsPositions.push_back(newCoords);
+	void NotifyRobotCreated(const Coordinates& coords) noexcept {
+		robotsPositions.push_back(coords);
+	}
+
+	// delete coords
+	void NotifyRobotDeleted(const Coordinates& coords) {
+		for (size_t i = 0; i < robotsPositions.size(); ++i) {
+			if (isEqual(robotsPositions.at(i), coords)) {
+				robotsPositions.erase(robotsPositions.begin() + i);
+				return;
+			}
+		}
 	}
 
 	// delete old coords, add new
@@ -53,9 +64,10 @@ public:
 			for (size_t i = 0; i < robotsPositions.size(); ++i) {
 				if (isEqual(robotsPositions.at(i), prevCoords)) {
 					robotsPositions.erase(robotsPositions.begin() + i);
+					break;
 				}
-				robotsPositions.push_back(newCoords);
 			}
+			robotsPositions.push_back(newCoords);
 		}
 		else {
 			throw exception("Notify move error. There are no robots positions in repeater.");

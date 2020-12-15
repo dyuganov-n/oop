@@ -28,6 +28,7 @@ void createFile(const size_t& length, const size_t& width, const Object& obj) {
 
 int main(int argc, char* argv[]) {
 	try {
+		
 		ConsoleView view;
 		const size_t cellsInView = 11;
 
@@ -40,54 +41,22 @@ int main(int argc, char* argv[]) {
 		//manager.CreateSapper(); // no empty space because Explorers map is nor discovered at all
 		view.displayMap(&manager, cellsInView, ViewMode::LocalMap);
 
+		if (manager.EnvironmentPtrIsNull()) {
+			throw exception("Manager can't make step. Environment pointer is nullptr.");
+			return 0;
+		}
+		else if (manager.RepeaterPtrIsNull()) {
+			throw exception("Manager can't make step. Repeater pointers is nullptr.");
+			return 0;
+		}
 		while (1) {
-			comHandler.HandleCommand(parser.parseCommand(&manager));
-			if (manager.EnvironmentPtrIsNull()) {
-				throw exception("Manager can't make step. Environment pointer is nullptr.");
-			}
-			else if (manager.RepeaterPtrIsNull()) {
-				throw exception("Manager can't make step. Repeater pointers is nullptr.");
-			}
-			else {
-				//for (auto rbt : robots) {
-					//ICommand* command = parser->parseCommand(robots);
-					//handleCommand(command);
-					//delete command;
-				//}
-			}
+			ICommand* command = parser.parseCommand(&manager);
+			comHandler.HandleCommand(command);
+			delete command;
 			view.displayMap(&manager, cellsInView, ViewMode::LocalMap);
 		}
-
-
-	/*
-		// debug 
-		const Map m("in.txt");
-		cout << "Length: " << m.getMapLength() << endl;
-		cout << "Width: " << m.getMapWidth() << endl;
-		cout << "0,0 object: " << static_cast<char>(m.getObject({ 0, 0 })) << endl;
-		for (size_t i = 0; i < m.getMapLength(); ++i) {
-			for (size_t j = 0; j < m.getMapWidth(); ++j) {
-				cout << static_cast<char>(m.getObject({ i, j }));
-			}
-			cout << endl;
-		}
-	*/
-	
-	/*
-	// create file
-	ofstream out("in.txt");
-	if (!out.is_open()) {
-		cout << "Все плохо" << endl;
-		return 0;
-	}
-	for (size_t i = 0; i < 1100; ++i) {
-		for (size_t j = 0; j < 1000; ++j) {
-			out << static_cast<char>(Object::empty);
-		}
-		out << endl;
-	}
-	out.close();
-	*/
+		
+		//createFile(1010, 1100, Object::empty);
 
 	}
 	catch (const exception& e) {

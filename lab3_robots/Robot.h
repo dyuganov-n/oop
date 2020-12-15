@@ -19,12 +19,8 @@ public:
 	virtual void setCoordinates(const Coordinates& coords) { this->position = coords; }
 
 	// map
-	void setMap(Map& mp) {
-		this->internalMap = mp;
-	}
-	const Map& getMap() {
-		return this->internalMap;
-	}
+	void setMap(Map& mp) { this->internalMap = mp; }
+	const Map& getMap() { return this->internalMap; }
 
 	// main actions for all robots
 
@@ -40,6 +36,7 @@ protected:
 	Map internalMap;
 	Coordinates position = { 0, 0 };
 	Repeater* repeater = nullptr;
+	Environment* environment = nullptr;
 
 private:
 	bool isEmptyCell(const Coordinates& coords) const {
@@ -48,4 +45,5 @@ private:
 
 	bool isAbleToStep(const Coordinates& coords);
 	Coordinates buildNewPosition(const Direction& dir);	
+	void setEnvironment(Environment* env) { this->environment = env; }
 };

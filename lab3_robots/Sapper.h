@@ -5,7 +5,6 @@
 class Sapper : public IRobot {
 private:
 	const RobotClass _class = RobotClass::sapper;
-	Environment* environment = nullptr;
 
 public:
 	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep, Environment* env);

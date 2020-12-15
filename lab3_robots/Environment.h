@@ -63,9 +63,36 @@ public:
 	size_t getGlobalMapWidth() { return this->globalMap->getMapWidth(); }
 
 	size_t getCollectedCnt() { return this->collectedApples.size(); }
+
+	Coordinates getGlobalCoords(const Coordinates& coords) {
+		// координата + смещение относительно начала ск роботов
+		return { robotsMapZeroCoord.x + coords.x, robotsMapZeroCoord.y + coords.y };
+	}
+
+	bool isOverGlobalMapEnd(const Coordinates& coords) {
+		Coordinates globalRobPos = getGlobalCoords(coords);
+		if (globalRobPos.x >= globalMap->getMapLength() || globalRobPos.x < 0 ||
+			globalRobPos.y >= globalMap->getMapWidth() || globalRobPos.y < 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	void robotsMapExterned(const size_t& lenthOffset, const size_t& widthOffset ) {
+		this->robotsMapZeroCoord.x -= lenthOffset;
+		this->robotsMapZeroCoord.y -= widthOffset;
+	}
+
+	void setRobotsMapZeroPoint(const Coordinates& coords) {
+		this->robotsMapZeroCoord = coords;
+	}
 	
 private:
 	Map* globalMap = nullptr;
 	vector<Coordinates> collectedApples;
+	Coordinates robotsMapZeroCoord = { 0, 0 }; // начало отсчета СК роботов в СК глобальной карты
+
 };
 

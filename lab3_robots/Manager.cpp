@@ -35,8 +35,10 @@ void Manager::CreateExplorer() {
 	Coordinates newCoords = FindEmptySpace(environment->getGlobalMap());
 	IMode* newMode = IdlingMode::getInstance();
 	Explorer* newExplorer = new Explorer(newCoords, repeater, environment);
-	this->repeater->NotifyCreated(newCoords);
+	this->repeater->NotifyRobotCreated(newCoords);
 	this->robots.push_back({ newMode, newExplorer });
+	this->environment->setRobotsMapZeroPoint(newCoords);
+	// добавить в окружение
 }
 
 bool Manager::noSappersCreated() {
@@ -65,8 +67,13 @@ void Manager::CreateSapper() {
 		if (explorerInManualMode()) {
 			Coordinates newCoords = FindEmptySpace(robots.at(0).second->getMap());
 			IMode* newMode = IdlingMode::getInstance();
-			Sapper* newSapper = new Sapper(robots.at(0).second->getMap(), newCoords, repeater, environment);
-			this->repeater->NotifyCreated(newCoords);
+			Sapper* newSapper = nullptr;
+			for (const auto& item : robots) {
+				if (item.second->getRobotClass() == RobotClass::explorer) {
+					newSapper = new Sapper(item.second->getMap(), newCoords, repeater, environment);
+				}
+			}
+			this->repeater->NotifyRobotCreated(newCoords);
 			this->robots.push_back({ newMode, newSapper });
 		}
 		else {
@@ -75,6 +82,23 @@ void Manager::CreateSapper() {
 	}
 	else {
 		throw exception("Can't create more than 1 sapper.");
+	}
+}
+
+void Manager::DeleteSapper() {
+	if (noSappersCreated()) {
+		throw exception("Can't delete sapper. Sapper was not created.");
+	}
+	else {
+		for (size_t i = 0; i < robots.size(); ++i) {
+			if (robots.at(i).second->getRobotClass() == RobotClass::sapper) {
+				repeater->NotifyRobotDeleted(robots.at(i).second->getCoordinates());
+				Sapper* tmp = dynamic_cast<Sapper*>(robots.at(i).second);
+				robots.erase(robots.begin() + i);
+				//delete tmp;											// ERROR HERE
+				return;
+			}
+		}
 	}
 }
 

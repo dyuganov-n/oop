@@ -1,5 +1,6 @@
 #include "Robot.h"
 
+// cell is not a bomb or rock check
 bool IRobot::isAbleToStep(const Coordinates& coords) {
 	if (internalMap.getObject(coords) != Object::unknown &&
 		internalMap.getObject(coords) != Object::rock) {
@@ -14,67 +15,49 @@ Coordinates IRobot::buildNewPosition(const Direction& dir) {
 	Coordinates newPosition;
 	switch (dir) {
 	case Direction::down:
-		if (position.x != internalMap.getMapLength()) { // or max val
-			newPosition = { position.x + 1, position.y };
-			if (isAbleToStep(newPosition)) { 
-				return newPosition;
-			}
-			else {
-				throw exception("Can't move. This area was not explored.");
-			}
-		}
-		else {
-			throw exception("Can't move. It is the end of explored map.");
-		}
+		newPosition = { position.x + 1, position.y };
+		break;
 	case Direction::up:
-		if (position.x != 0) { // or min val
-			newPosition = { position.x - 1, position.y };
-			if (isAbleToStep(newPosition)) {
-				return newPosition;
-			}
-			else {
-				throw exception("Can't move. This area was not explored.");
-			}
-		}
-		else {
-			throw exception("Can't move. It is the end of explored map.");
-		}
+		newPosition = { position.x - 1, position.y };
+		break;
 	case Direction::left:
-		if (position.y != 0) { // or min val
-			newPosition = { position.x , position.y - 1 };
-			if (isAbleToStep(newPosition)) {
-				return newPosition;
-			}
-			else {
-				throw exception("Can't move. This area was not explored.");
-			}
-		}
-		else {
-			throw exception("Can't move. It is the end of explored map.");
-		}
+		newPosition = { position.x , position.y - 1 };
+		break;
 	case Direction::right:
-		if (position.y != internalMap.getMapLength()) {// or max val
-			newPosition = { position.x, position.y + 1 };
-			if (isAbleToStep(newPosition)) {
-				return newPosition;
-			}
-			else {
-				throw exception("Can't move. This area was not explored.");
-			}
+		newPosition = { position.x, position.y + 1 };
+		break;
+	case Direction::unknown:
+		throw exception("Robot buildNewPosition error. Unknown direction.");
+		break;
+	default: 
+		throw exception("Wrong direction while trying to move");
+		break;
+	}
+	if (!(environment->isOverGlobalMapEnd(newPosition))) {
+		if (isAbleToStep(newPosition)) {
+			return newPosition;
 		}
 		else {
-			throw exception("Can't move. It is the end of explored map.");
+			throw exception("Can't move. This cell is not available.");
 		}
-	default:
-		throw exception("Wrong direction while trying to move");
 	}
+	else {
+		throw exception("Can't move. It is the end of map.");
+	}
+
 }
 
 void IRobot::move(const Direction& dir) {
 	updateMap();
 	Coordinates newPosition = buildNewPosition(dir);
 	if (isEmptyCell(newPosition)) {
-		this->repeater->NotifyMove(position, newPosition); // add to position track if it is not there
+		if (newPosition.x < 0) { // offset, if map externed up or left
+			this->position.x += internalMap.getMapLength();
+		}
+		if (newPosition.y < 0) {
+			this->position.y += internalMap.getMapWidth();
+		}
+		this->repeater->NotifyMove(position, newPosition);
 		this->position = newPosition;
 	}
 	else {
@@ -87,9 +70,10 @@ void IRobot::idling() {
 }
 
 void IRobot::updateMap() {
+	ptrdiff_t _x = 0, _y = 0;
 	for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
-		ptrdiff_t _x = repeater->getMapUpdates()[i].first.x;
-		ptrdiff_t _y = repeater->getMapUpdates()[i].first.y;
+		_x = repeater->getMapUpdates()[i].first.x;
+		_y = repeater->getMapUpdates()[i].first.y;
 		Object obj = repeater->getMapUpdates()[i].second;
 
 		// cell is up to date check (all robots already have this cell in their maps)
