@@ -40,20 +40,56 @@ void Explorer::scan() {
 	vector<pair<Coordinates, Object>> scanResult;
 
 	// left
-	if (position.y != 0) {
-		_scan({ position.x, position.y - 1 }, scanResult);
+	Coordinates coordLeft = { position.x, position.y - 1 };
+	if (!environment->isOverGlobalMapEnd(coordLeft)) {
+		if (coordLeft.x < 0) {
+			Coordinates newPos = { position.x + static_cast<ptrdiff_t>(internalMap.getMapLength()), position.y };
+			this->repeater->NotifyMove(position, newPos);
+		}
+		if (coordLeft.y < 0) {
+			Coordinates newPos = { position.x, position.y + static_cast<ptrdiff_t>(internalMap.getMapWidth()) };
+			this->repeater->NotifyMove(position, newPos);
+		}
+		_scan(coordLeft, scanResult);
 	}
 	// right
-	if (position.y != internalMap.getMapLength()) {
-		_scan({ position.x, position.y + 1 }, scanResult);
+	Coordinates coordRight = { position.x, position.y + 1 };
+	if (!environment->isOverGlobalMapEnd(coordRight)) {
+		if (coordRight.x < 0) {
+			Coordinates newPos = { position.x + static_cast<ptrdiff_t>(internalMap.getMapLength()), position.y };
+			this->repeater->NotifyMove(position, newPos);
+		}
+		if (coordRight.y < 0) {
+			Coordinates newPos = { position.x, position.y + static_cast<ptrdiff_t>(internalMap.getMapWidth()) };
+			this->repeater->NotifyMove(position, newPos);
+		}
+		_scan(coordRight, scanResult);
 	}
 	//up
-	if (position.x != 0) {
-		_scan({ position.x - 1, position.y }, scanResult);
+	Coordinates coordUp = { position.x - 1, position.y };
+	if (!environment->isOverGlobalMapEnd(coordUp)) {
+		if (coordUp.x < 0) {
+			Coordinates newPos = { position.x + static_cast<ptrdiff_t>(internalMap.getMapLength()), position.y };
+			this->repeater->NotifyMove(position, newPos);
+		}
+		if (coordUp.y < 0) {
+			Coordinates newPos = {position.x, position.y + static_cast<ptrdiff_t>(internalMap.getMapWidth()) };
+			this->repeater->NotifyMove(position, newPos);
+		}
+		_scan(coordUp, scanResult);
 	}
 	// down
-	if (position.x != internalMap.getMapWidth()) {
-		_scan({ position.x + 1, position.y }, scanResult);
+	Coordinates coordDown = { position.x + 1, position.y };
+	if (!environment->isOverGlobalMapEnd(coordDown)) {
+		if (coordDown.x < 0) {
+			Coordinates newPos = { position.x + static_cast<ptrdiff_t>(internalMap.getMapLength()), position.y };
+			this->repeater->NotifyMove(position, { position.x + static_cast<ptrdiff_t>(internalMap.getMapLength()), position.y });
+		}
+		if (coordDown.y < 0) {
+			Coordinates newPos = { position.x, position.y + static_cast<ptrdiff_t>(internalMap.getMapWidth()) };
+			this->repeater->NotifyMove(position, newPos);
+		}
+		_scan(coordDown, scanResult);
 	}
 	//it's own cell
 	_scan(position, scanResult);

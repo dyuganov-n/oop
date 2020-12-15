@@ -24,6 +24,6 @@ public:
 	void displayMap(Manager* mngr, const int& oneSideViewField, const ViewMode& VMode);
 
 private:
-	bool robotInCell(vector<pair<IMode*, IRobot*>>& robots, ptrdiff_t x, ptrdiff_t y);
+	bool robotInCell(vector<pair<IMode*, IRobot*>>& robots, const Coordinates& coords);
 };
 

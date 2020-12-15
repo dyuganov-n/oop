@@ -15,7 +15,7 @@ class Map {
 private:
 	Object** field = nullptr;
 
-	const size_t minMapSize = 1000;
+	const size_t minMapSize = 3;
 
 	// symbols cnt in column (x)
 	size_t mapLength = 0;

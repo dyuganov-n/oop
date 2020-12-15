@@ -100,7 +100,8 @@ Map::~Map() {
 Object Map::getObject(const Coordinates& coords) const {
 	if (this->field == nullptr) throw exception("Can't get object. Field in map is nullptr.");
 	if (coords.x >= static_cast<ptrdiff_t>(mapLength) || coords.y >= static_cast<ptrdiff_t>(mapWidth)) {
-		throw exception("Can't get object from map. Incorrect coordinates.");
+		return Object::unknown;
+		//throw exception("Can't get object from map. Incorrect coordinates.");
 	}
 	else {
 		return this->field[coords.x][coords.y];
@@ -113,12 +114,13 @@ void Map::deleteCurrField() {
 		field[i] = nullptr;
 	}
 	delete[] field;
+	field = nullptr;
 }
 
 Object** Map::createField(const size_t& length, const size_t& width) {
-	Object** newField = new Object * [mapLength];
-	for (size_t i = 0; i < mapLength; ++i) {
-		newField[i] = new Object[mapWidth];
+	Object** newField = new Object* [length];
+	for (size_t i = 0; i < length; ++i) {
+		newField[i] = new Object[width];
 	}
 	return newField;
 }
@@ -144,12 +146,12 @@ void Map::copyOldFieldToNew(Object** newField, const size_t& offsetLength, const
 
 void Map::setObject(const Coordinates& coords, Object obj) {
 	if (mapLength == 0 || mapWidth == 0) {
-		throw exception("SetObject error. Map legth or width equal 0.");
+		throw exception("SetObject error. Map legth or width equal 0."); 
 	}
 	else if(coords.x >= static_cast<ptrdiff_t>(mapLength) || coords.x < 0 || 
 			coords.y >= static_cast<ptrdiff_t>(mapWidth)  || coords.y < 0) {
 
-		size_t newLength = 0, newWidth = 0;
+		size_t newLength = mapLength, newWidth = mapWidth;
 		bool needLengthOffset = false, needWidthOffset = false;
 		if (coords.x >= static_cast<ptrdiff_t>(mapLength)) {
 			newLength = this->mapLength * 2;
@@ -169,11 +171,18 @@ void Map::setObject(const Coordinates& coords, Object obj) {
 		Object** newField = createField(newLength, newWidth);
 		fillNewField(newField, Object::unknown, newLength, newWidth);
 
-		if (needLengthOffset) {
-			if(needWidthOffset) copyOldFieldToNew(newField, mapLength, mapWidth);
-			else copyOldFieldToNew(newField, mapLength, 0);
+		if (needLengthOffset && needWidthOffset) {
+			copyOldFieldToNew(newField, mapLength, mapWidth);
 		}
-		else copyOldFieldToNew(newField, 0 , mapWidth);
+		else if (needWidthOffset) {
+			copyOldFieldToNew(newField, 0, mapWidth);
+		}
+		else if (needLengthOffset) {
+			copyOldFieldToNew(newField, mapLength, 0);
+		}
+		else {
+			copyOldFieldToNew(newField, 0, 0);
+		}
 		
 		deleteCurrField();
 		this->mapLength = newLength;

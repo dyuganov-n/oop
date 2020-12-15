@@ -19,8 +19,8 @@ Coordinates Manager::FindEmptySpace(const Map& map) const {
 		//return { 0, 0 };
 	}
 	Object obj;
-	for (ptrdiff_t i = 0; i < map.getMapLength(); ++i) {
-		for (ptrdiff_t j = 0; j < map.getMapWidth(); ++j) {
+	for (ptrdiff_t i = 0; i < static_cast<ptrdiff_t>(map.getMapLength()); ++i) {
+		for (ptrdiff_t j = 0; j < ptrdiff_t(map.getMapWidth()); ++j) {
 			obj = map.getObject({ i, j });
 			if (obj == Object::empty || obj == Object::apple) {
 				if (repeater->isEmptyCell({ i, j })) return { i, j };

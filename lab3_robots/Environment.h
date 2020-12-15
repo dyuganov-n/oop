@@ -31,7 +31,7 @@ public:
 	const Map& getGlobalMap() { return *(this->globalMap); }
 
 	// global coords and robot coords are different!!!
-	const Object& getObject(const Coordinates& coords) const  {
+	Object getObject(const Coordinates& coords) const  {
 		return this->globalMap->getObject(coords);
 	}
 	void setObject(const Coordinates& coords, const Object& obj) {
@@ -71,8 +71,8 @@ public:
 
 	bool isOverGlobalMapEnd(const Coordinates& coords) {
 		Coordinates globalRobPos = getGlobalCoords(coords);
-		if (globalRobPos.x >= globalMap->getMapLength() || globalRobPos.x < 0 ||
-			globalRobPos.y >= globalMap->getMapWidth() || globalRobPos.y < 0) {
+		if (globalRobPos.x >= static_cast<ptrdiff_t>(globalMap->getMapLength()) || globalRobPos.x < 0 ||
+			globalRobPos.y >= static_cast<ptrdiff_t>(globalMap->getMapWidth()) || globalRobPos.y < 0) {
 			return true;
 		}
 		else {
