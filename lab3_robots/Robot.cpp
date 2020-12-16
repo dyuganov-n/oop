@@ -2,8 +2,8 @@
 
 // cell is not a bomb or rock check
 bool IRobot::isAbleToStep(const Coordinates& coords) {
-	if (internalMap.getObject(coords) != Object::unknown &&
-		internalMap.getObject(coords) != Object::rock) {
+	Object tmp = internalMap.getObject(coords);
+	if (tmp != Object::unknown && tmp != Object::rock) {
 		return true;
 	}
 	else {
@@ -50,15 +50,22 @@ Coordinates IRobot::buildNewPosition(const Direction& dir) {
 void IRobot::move(const Direction& dir) {
 	updateMap();
 	Coordinates newPosition = buildNewPosition(dir);
-	if (isEmptyCell(newPosition)) {
-		if (newPosition.x < 0) { // offset, if map externed up or left
-			this->position.x += internalMap.getMapLength();
+	if (isEmptyCell(newPosition)) { // able to step
+		if (isAbleToStep(newPosition)) {
+			if (newPosition.x < 0) { // offset, if map externed up or left
+				//this->position.x += internalMap.getMapLength();
+				newPosition.x += internalMap.getMapLength();
+			}
+			if (newPosition.y < 0) {
+				//this->position.y += internalMap.getMapWidth();
+				newPosition.y += internalMap.getMapWidth();
+			}
+			this->repeater->NotifyMove(position, newPosition);
+			this->position = newPosition;
 		}
-		if (newPosition.y < 0) {
-			this->position.y += internalMap.getMapWidth();
+		else {
+			throw exception("Can't move to this cell.");
 		}
-		this->repeater->NotifyMove(position, newPosition);
-		this->position = newPosition;
 	}
 	else {
 		throw exception("Can't move. There is a robot in this cell");

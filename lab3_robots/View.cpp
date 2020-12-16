@@ -85,23 +85,23 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 	system("cls");
 
 	//ptrdiff_t x = 0, y = 0;
-	Coordinates mapCoord;
+	Coordinates tmp;
 	Object obj = Object::unknown;
 
 	for (ptrdiff_t i = -oneSideViewField; i < oneSideViewField; ++i) {
 		for (ptrdiff_t j = -oneSideViewField; j < oneSideViewField; ++j) {
 
-			mapCoord.x = mainRobot->getCoordinates().x + i;
-			mapCoord.y = mainRobot->getCoordinates().y + j;
+			tmp.x = mainRobot->getCoordinates().x + i;
+			tmp.y = mainRobot->getCoordinates().y + j;
 
-			if (mngr->getEnvironment()->isOverGlobalMapEnd(mapCoord)) {
+			if (mngr->getEnvironment()->isOverGlobalMapEnd(tmp)) {
 				cout << "  ";
 				continue;
 			}
 
-			if (robotInCell(mngr->getRobots(), mapCoord)) {
+			if (robotInCell(mngr->getRobots(), tmp)) {
 				for (auto item : mngr->getRobots()) {
-					if (item.second->getCoordinates().x == mapCoord.x && item.second->getCoordinates().y == mapCoord.y) {
+					if (item.second->getCoordinates().x == tmp.x && item.second->getCoordinates().y == tmp.y) {
 						if (item.second->getRobotClass() == RobotClass::explorer) {
 							std::cout << "E ";
 						}
@@ -113,20 +113,24 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 				continue;
 			}
 
+			if (tmp.x >= mainRobot->getMap().getMapLength() || tmp.y >= mainRobot->getMap().getMapWidth()) {
+				cout << ", ";
+				continue;
+			}
 
 			if (VMode == ViewMode::GlobalMap) {
-				obj = mngr->getEnvironment()->getObject(mapCoord);
+				obj = mngr->getEnvironment()->getObject(tmp);
 			}
 			else if (VMode == ViewMode::LocalMap) {
-				obj = mngr->getRobotsMap().getObject(mapCoord);
+				obj = mngr->getRobotsMap().getObject(tmp);
 			}
 
 			if (obj == Object::unknown) std::cout << "? ";
-			else if (obj == Object::apple) std::cout << "A ";
-			else if (obj == Object::bomb) std::cout << "B ";
+			else if (obj == Object::apple) std::cout << "@ ";
+			else if (obj == Object::bomb) std::cout << "o ";
 			else if (obj == Object::empty) std::cout << ". ";
-			else if (obj == Object::rock) std::cout << "# ";
-			
+			else if (obj == Object::rock) std::cout << "A ";
+			else cout << "? ";
 
 		}
 		std::cout << std::endl;

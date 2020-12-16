@@ -98,13 +98,16 @@ Map::~Map() {
 }
 
 Object Map::getObject(const Coordinates& coords) const {
-	if (this->field == nullptr) throw exception("Can't get object. Field in map is nullptr.");
-	if (coords.x >= static_cast<ptrdiff_t>(mapLength) || coords.y >= static_cast<ptrdiff_t>(mapWidth)) {
+	if (this->field == nullptr) {
+		throw exception("Can't get object. Field in map is nullptr.");
 		return Object::unknown;
-		//throw exception("Can't get object from map. Incorrect coordinates.");
+	}
+	if (coords.x >= static_cast<ptrdiff_t>(mapLength) || coords.y >= static_cast<ptrdiff_t>(mapWidth)) {
+		//return Object::unknown;
+		throw exception("Can't get object from map. Incorrect coordinates.");
 	}
 	else {
-		return this->field[coords.x][coords.y];
+		return this->field[coords.x][coords.y]; 
 	}
 }
 
@@ -126,8 +129,11 @@ Object** Map::createField(const size_t& length, const size_t& width) {
 }
 
 void Map::fillNewField(Object** newField, const Object& obj, const size_t& length, const size_t& width) {
-	for (size_t i = 0; i < mapLength; ++i) {
-		for (size_t j = 0; j < mapWidth; ++j) {
+	if (newField == nullptr) {
+		throw exception("Fill new field in class Map error. NewField is nullptr.");
+	}
+	for (size_t i = 0; i < length; ++i) {
+		for (size_t j = 0; j < width; ++j) {
 			newField[i][j] = obj;
 		}
 	}
