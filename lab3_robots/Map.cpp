@@ -52,6 +52,9 @@ Map::Map(const string& fileName) {
 		++(this->mapLength);
 	}
 	in.seekg(0, ios_base::beg);
+	
+	in.close();
+	in.open(fileName);
 
 	field = new Object * [mapLength];
 	for (size_t i = 0; i < mapLength; ++i) {
@@ -60,7 +63,7 @@ Map::Map(const string& fileName) {
 
 	Object obj;
 	for (size_t i = 0; i < mapLength; ++i) {
-		if (!std::getline(in, str)) {
+		if (std::getline(in, str)) {
 			if (str.size() < mapWidth || str.size() > mapWidth) {
 				in.close();
 				for (size_t i = 0; i < this->mapLength; ++i) {

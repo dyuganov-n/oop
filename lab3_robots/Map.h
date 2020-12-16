@@ -10,6 +10,12 @@ using namespace std;
 #include "Coordinates.h"
 #include "Object.h"
 
+// (0,0)----> y (mapWidth)
+// |
+// |
+// V
+// x (mapLength)
+
 
 class Map {
 private:

@@ -127,9 +127,9 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 
 			if (obj == Object::unknown) std::cout << "? ";
 			else if (obj == Object::apple) std::cout << "@ ";
-			else if (obj == Object::bomb) std::cout << "o ";
+			else if (obj == Object::bomb) std::cout << "x ";
 			else if (obj == Object::empty) std::cout << ". ";
-			else if (obj == Object::rock) std::cout << "A ";
+			else if (obj == Object::rock) std::cout << "# ";
 			else cout << "? ";
 
 		}

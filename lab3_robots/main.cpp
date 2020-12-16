@@ -54,8 +54,8 @@ int main(int argc, char* argv[]) {
 			comHandler.HandleCommand(command);
 			delete command;
 			view.displayMap(&manager, cellsInView, ViewMode::LocalMap);
+			//view.displayMap(&manager, cellsInView, ViewMode::GlobalMap);
 		}
-		
 		//createFile(1010, 1100, Object::empty);
 
 	}
