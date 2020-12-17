@@ -14,6 +14,8 @@ private:
 	vector<pair<Coordinates, Object>> changes;
 	vector<Coordinates> robotsPositions;
 
+	Coordinates offsetForSync = { 0, 0 }; // x, y
+
 	bool isEqual(const Coordinates& l, const Coordinates& r) const noexcept {
 		if ((l.x == r.x) && (l.y == r.y)) {
 			return true;
@@ -28,7 +30,7 @@ public:
 	~Repeater() = default;
 
 	// makes this cell empty
-	void NotifyDefuse(const Coordinates& coords) noexcept {
+	void NotifyDefuse(const Coordinates& coords) {
 		changes.push_back({ coords, Object::empty });
 	}
 
@@ -82,8 +84,10 @@ public:
 		return true;
 	}
 
-	const vector<pair<Coordinates, Object>>& getMapUpdates() const noexcept {
-		return this->changes;
+	vector<pair<Coordinates, Object>> getMapUpdates() {
+		vector<pair<Coordinates, Object>> res(changes);
+		changes.clear();
+		return res;
 	}
 
 	void DeleteElem(const size_t& idx) {
@@ -91,5 +95,9 @@ public:
 			throw exception("Can't delete this element in changes vector");
 		}
 		this->changes.erase(changes.begin() + idx);
+	}
+
+	bool isAlone() {
+		return !robotsPositions.size();
 	}
 };

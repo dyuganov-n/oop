@@ -44,11 +44,11 @@ Coordinates IRobot::buildNewPosition(const Direction& dir) {
 	else {
 		throw exception("Can't move. It is the end of map.");
 	}
-
 }
 
 void IRobot::move(const Direction& dir) {
-	updateMap();
+	if(getRobotClass() != RobotClass::explorer) updateMap();
+
 	Coordinates newPosition = buildNewPosition(dir);
 	if (isEmptyCell(newPosition)) {
 		if (isAbleToStep(newPosition)) {
@@ -75,18 +75,36 @@ void IRobot::idling() {
 }
 
 void IRobot::updateMap() {
-	ptrdiff_t _x = 0, _y = 0;
-	for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
-		_x = repeater->getMapUpdates()[i].first.x;
-		_y = repeater->getMapUpdates()[i].first.y;
-		Object obj = repeater->getMapUpdates()[i].second;
-
-		// cell is up to date check (all robots already have this cell in their maps)
-		if (internalMap.getObject({ _x, _y }) == obj) {
-			repeater->DeleteElem(i);
-		}
-		else {
-			this->internalMap.setObject({ _x, _y }, obj);
+	if (repeater->isAlone()) { // если робот один (explorer), то все изменения уже сделаны
+		return;
+	}
+	vector<pair<Coordinates, Object>> updates(repeater->getMapUpdates());
+	Coordinates oldPosition(position);
+	for (auto& item : updates) {
+		if (item.first.x < 0 || item.first.y < 0) {
+			if (item.first.x < 0) { //  сработает только после сканирования -> сапер поменяет свои координаты под расширяющуюся карту
+				position.x += internalMap.getMapLength();
+			}
+			if (item.first.y < 0) {
+				position.y += internalMap.getMapWidth();
+			}
+			repeater->NotifyMove(oldPosition, position);
+			break;
 		}
 	}
+	this->internalMap.setObject(updates);
+
+	//ptrdiff_t _x = 0, _y = 0;
+	//for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
+	//	_x = repeater->getMapUpdates()[i].first.x;
+	//	_y = repeater->getMapUpdates()[i].first.y;
+	//	Object obj = repeater->getMapUpdates()[i].second;
+	//	// cell is up to date check (all robots already have this cell in their maps)
+	//	if (internalMap.getObject({ _x, _y }) == obj) {
+	//		repeater->DeleteElem(i);
+	//	}
+	//	else {
+	//		this->internalMap.setObject({ _x, _y }, obj);
+	//	}
+	//}
 }

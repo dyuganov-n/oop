@@ -41,7 +41,7 @@ protected:
 	Repeater* repeater = nullptr;
 	Environment* environment = nullptr;
 
-	size_t id = 0;
+	//size_t id = 0;
 
 private:
 	bool isEmptyCell(const Coordinates& coords) const {

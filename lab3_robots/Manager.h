@@ -40,7 +40,6 @@ public:
 	const Map& getRobotsMap() { return this->robots[0].second->getMap(); }
 
 	Coordinates FindEmptySpace(const Map& map) const;
-	
 
 	void CreateExplorer();
 	void CreateSapper();

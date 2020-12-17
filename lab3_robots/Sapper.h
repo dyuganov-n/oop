@@ -14,6 +14,7 @@ public:
 		this->internalMap.~Map();
 		this->environment = nullptr;
 		this->repeater = nullptr;
+		
 	}
 
 	// getting information about robot

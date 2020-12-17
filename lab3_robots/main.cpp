@@ -15,7 +15,7 @@ using namespace std;
 void createFile(const size_t& length, const size_t& width, const Object& obj) {
 	ofstream out("in.txt");
 	if (!out.is_open()) {
-		cout << "Все плохо" << endl;
+		cout << "Can't create file" << endl;
 	}
 	for (size_t i = 0; i < length; ++i) {
 		for (size_t j = 0; j < width; ++j) {

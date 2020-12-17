@@ -35,7 +35,7 @@ void Manager::CreateExplorer() {
 	Coordinates globalCoords = FindEmptySpace(environment->getGlobalMap());
 	const Coordinates robotStartCoords = { 0, 0 };
 	IMode* newMode = IdlingMode::getInstance();
-	Explorer* newExplorer = new Explorer(robotStartCoords, repeater, environment, robotsIdCnt++);
+	Explorer* newExplorer = new Explorer(robotStartCoords, repeater, environment);
 	this->repeater->NotifyRobotCreated(robotStartCoords);
 	this->robots.push_back({ newMode, newExplorer });
 	this->environment->setRobotsMapZeroPoint(globalCoords);
