@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -38,6 +39,8 @@ private:
 	void fillNewField(Object** newField, const Object& obj, const size_t& length, const size_t& width);
 	void copyOldFieldToNew(Object** newField, const size_t& offsetLength, const size_t& offsetWidth);
 
+	void _setObject(const Coordinates& coords, Object obj);
+
 public:
 	Map();
 	Map(const size_t& length, const size_t& width);
@@ -59,7 +62,10 @@ public:
 
 	const size_t& getResourcesOnMap() const { return this->resourcesOnMap; }
 
-	void setObject(const Coordinates& coords, Object obj);
+	// true, if map size changed
+	bool setObject(const Coordinates& coords, Object obj);
+
+	bool setObject(vector<pair<Coordinates, Object>> objects);
 
 	void fill(const Object& obj);
 

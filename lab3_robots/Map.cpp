@@ -153,12 +153,42 @@ void Map::copyOldFieldToNew(Object** newField, const size_t& offsetLength, const
 	}
 }
 
-void Map::setObject(const Coordinates& coords, Object obj) {
+void Map::_setObject(const Coordinates& coords, Object obj) {
+	if (coords.x < 0 || coords.x >= static_cast<ptrdiff_t>(mapLength) ||
+		coords.y < 0 || coords.y >= static_cast<ptrdiff_t>(mapWidth)) {
+		throw exception("Set object error. Coordinates can't have ");
+	}
+	else {
+		this->field[coords.x][coords.y] = obj;
+	}
+}
+
+bool Map::setObject(vector<pair<Coordinates, Object>> objects) {
+	if (mapLength == 0 || mapWidth == 0) {
+		throw exception("SetObject error. Map legth or width equal 0.");
+		return false;
+	}
+	bool changeCoordX = false, changeCoordY = false;
+	for (const auto& item : objects) {
+		if (item.first.x < 0) {
+			changeCoordX = true;
+		}
+		if (item.first.y < 0) {
+			changeCoordY = true;
+		}
+	}
+
+
+	
+}
+
+bool Map::setObject(const Coordinates& coords, Object obj) {
 	if (mapLength == 0 || mapWidth == 0) {
 		throw exception("SetObject error. Map legth or width equal 0."); 
+		return false;
 	}
-	else if(coords.x >= static_cast<ptrdiff_t>(mapLength) || coords.x < 0 || 
-			coords.y >= static_cast<ptrdiff_t>(mapWidth)  || coords.y < 0) {
+	if (coords.x >= static_cast<ptrdiff_t>(mapLength) || coords.x < 0 || 
+		coords.y >= static_cast<ptrdiff_t>(mapWidth)  || coords.y < 0) {
 
 		size_t newLength = mapLength, newWidth = mapWidth;
 		bool needLengthOffset = false, needWidthOffset = false;
@@ -198,8 +228,15 @@ void Map::setObject(const Coordinates& coords, Object obj) {
 		this->mapWidth = newWidth;
 		this->field = newField;
 		newField = nullptr;
+
+		this->field[coords.x][coords.y] = obj;
+		return true;
 	}
-	this->field[coords.x][coords.y] = obj;
+	else {
+		this->field[coords.x][coords.y] = obj;
+		return false;
+	}
+	
 }
 
 void Map::fill(const Object& obj) {

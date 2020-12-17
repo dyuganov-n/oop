@@ -94,7 +94,7 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 			tmp.x = mainRobot->getCoordinates().x + i;
 			tmp.y = mainRobot->getCoordinates().y + j;
 
-			if (mngr->getEnvironment()->isOverGlobalMapEnd(tmp)) {
+			if (mngr->getEnvironment()->isOverGlobalMap(tmp)) {
 				cout << "  ";
 				continue;
 			}

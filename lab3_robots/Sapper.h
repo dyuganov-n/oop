@@ -9,7 +9,9 @@ private:
 public:
 	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep, Environment* env);
 	Sapper() = delete;
+
 	virtual ~Sapper() {
+		this->internalMap.~Map();
 		this->environment = nullptr;
 		this->repeater = nullptr;
 	}

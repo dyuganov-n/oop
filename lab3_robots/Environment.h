@@ -34,6 +34,11 @@ public:
 	Object getObject(const Coordinates& coords) const  {
 		return this->globalMap->getObject(coords);
 	}
+
+	Object getObjectForRobot(const Coordinates& coords) const {
+		return this->globalMap->getObject(getGlobalCoords(coords));
+	}
+
 	void setObject(const Coordinates& coords, const Object& obj) {
 		this->globalMap->setObject(coords, obj);
 	}
@@ -64,13 +69,13 @@ public:
 
 	size_t getCollectedCnt() { return this->collectedApples.size(); }
 
-	Coordinates getGlobalCoords(const Coordinates& coords) {
-		// координата + смещение относительно начала ск роботов
+	Coordinates getGlobalCoords(const Coordinates& coords) const {
 		return { robotsMapZeroCoord.x + coords.x, robotsMapZeroCoord.y + coords.y };
 	}
 
-	bool isOverGlobalMapEnd(const Coordinates& coords) {
+	bool isOverGlobalMap(const Coordinates& coords) const {
 		Coordinates globalRobPos = getGlobalCoords(coords);
+
 		if (globalRobPos.x >= static_cast<ptrdiff_t>(globalMap->getMapLength()) || globalRobPos.x < 0 ||
 			globalRobPos.y >= static_cast<ptrdiff_t>(globalMap->getMapWidth()) || globalRobPos.y < 0) {
 			return true;
@@ -87,6 +92,19 @@ public:
 
 	void setRobotsMapZeroPoint(const Coordinates& coords) {
 		this->robotsMapZeroCoord = coords;
+	}
+	Coordinates getRobotsZeroPoint() {
+		return this->robotsMapZeroCoord;
+	}
+
+	vector<pair<Coordinates, Object>> scan(const vector<Coordinates>& coords) const {
+		vector<pair<Coordinates, Object>> result;
+		for (const auto& item : coords) {
+			if (!isOverGlobalMap(item)) {
+				result.push_back({ item, getObjectForRobot(item) });
+			}
+		}
+		return result;
 	}
 	
 private:

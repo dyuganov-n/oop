@@ -33,7 +33,7 @@ Coordinates IRobot::buildNewPosition(const Direction& dir) {
 		throw exception("Wrong direction while trying to move");
 		break;
 	}
-	if (!(environment->isOverGlobalMapEnd(newPosition))) {
+	if (!(environment->isOverGlobalMap(newPosition))) {
 		if (isAbleToStep(newPosition)) {
 			return newPosition;
 		}
@@ -50,14 +50,12 @@ Coordinates IRobot::buildNewPosition(const Direction& dir) {
 void IRobot::move(const Direction& dir) {
 	updateMap();
 	Coordinates newPosition = buildNewPosition(dir);
-	if (isEmptyCell(newPosition)) { // able to step
+	if (isEmptyCell(newPosition)) {
 		if (isAbleToStep(newPosition)) {
 			if (newPosition.x < 0) { // offset, if map externed up or left
-				//this->position.x += internalMap.getMapLength();
 				newPosition.x += internalMap.getMapLength();
 			}
 			if (newPosition.y < 0) {
-				//this->position.y += internalMap.getMapWidth();
 				newPosition.y += internalMap.getMapWidth();
 			}
 			this->repeater->NotifyMove(position, newPosition);

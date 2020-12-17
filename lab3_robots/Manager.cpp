@@ -32,13 +32,13 @@ Coordinates Manager::FindEmptySpace(const Map& map) const {
 }
 
 void Manager::CreateExplorer() {
-	Coordinates newCoords = FindEmptySpace(environment->getGlobalMap());
+	Coordinates globalCoords = FindEmptySpace(environment->getGlobalMap());
+	const Coordinates robotStartCoords = { 0, 0 };
 	IMode* newMode = IdlingMode::getInstance();
-	Explorer* newExplorer = new Explorer(newCoords, repeater, environment);
-	this->repeater->NotifyRobotCreated(newCoords);
+	Explorer* newExplorer = new Explorer(robotStartCoords, repeater, environment, robotsIdCnt++);
+	this->repeater->NotifyRobotCreated(robotStartCoords);
 	this->robots.push_back({ newMode, newExplorer });
-	this->environment->setRobotsMapZeroPoint(newCoords);
-	// добавить в окружение
+	this->environment->setRobotsMapZeroPoint(globalCoords);
 }
 
 bool Manager::noSappersCreated() {
@@ -94,6 +94,7 @@ void Manager::DeleteSapper() {
 			if (robots.at(i).second->getRobotClass() == RobotClass::sapper) {
 				repeater->NotifyRobotDeleted(robots.at(i).second->getCoordinates());
 				Sapper* tmp = dynamic_cast<Sapper*>(robots.at(i).second);
+				//tmp->~Sapper();
 				robots.erase(robots.begin() + i);
 				//delete tmp;											// ERROR HERE
 				return;

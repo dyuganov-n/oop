@@ -5,6 +5,8 @@
 #include "Repeater.h"
 #include "Direction.h"
 
+
+
 enum class RobotClass {
 	explorer,
 	sapper
@@ -32,11 +34,14 @@ public:
 	virtual void setRepeater(Repeater* rep) { this->repeater = rep; }
 	virtual void updateMap();
 
+	
 protected:
 	Map internalMap;
 	Coordinates position = { 0, 0 };
 	Repeater* repeater = nullptr;
 	Environment* environment = nullptr;
+
+	size_t id = 0;
 
 private:
 	bool isEmptyCell(const Coordinates& coords) const {

@@ -15,6 +15,7 @@ using std::cin;
 class Manager {
 private:
 	vector<pair<IMode*, IRobot*>> robots; // can Mode use their unique functions?
+	size_t robotsIdCnt = 0;
 
 	//Parser* parser = nullptr;
 	Environment* environment = nullptr; // global map is here
