@@ -194,45 +194,46 @@ bool Map::setObject(vector<pair<Coordinates, Object>> objects) {
 		}
 		return false;
 	}
-
-	// expansion case
-	if (notEnoughSpaceX) {
-		newLength *= 2;
-	}
-	if (notEnoughSpaceY) {
-		newWidth *= 2;
-	}
-	
-	Object** newField = createField(newLength, newWidth);
-	fillNewField(newField, Object::unknown, newLength, newWidth);
-
-	if (changeCoordX && changeCoordY) {
-		copyOldFieldToNew(newField, mapLength, mapWidth);
-	}
-	else if (changeCoordX) {
-		copyOldFieldToNew(newField, mapLength, 0);
-	}
-	else if (changeCoordY) {
-		copyOldFieldToNew(newField, 0, mapWidth);
-	}
 	else {
-		copyOldFieldToNew(newField, 0, 0);
+		// expansion case
+		if (notEnoughSpaceX) {
+			newLength *= 2;
+		}
+		if (notEnoughSpaceY) {
+			newWidth *= 2;
+		}
+
+		Object** newField = createField(newLength, newWidth);
+		fillNewField(newField, Object::unknown, newLength, newWidth);
+
+		if (changeCoordX && changeCoordY) {
+			copyOldFieldToNew(newField, mapLength, mapWidth);
+		}
+		else if (changeCoordX) {
+			copyOldFieldToNew(newField, mapLength, 0);
+		}
+		else if (changeCoordY) {
+			copyOldFieldToNew(newField, 0, mapWidth);
+		}
+		else {
+			copyOldFieldToNew(newField, 0, 0);
+		}
+
+		deleteCurrField();
+		this->field = newField;
+		newField = nullptr;
+
+		this->mapLength = newLength;
+		this->mapWidth = newWidth;
+
+		for (auto& item : objects) {
+			if (changeCoordX) item.first.x += mapLength/2;
+			if (changeCoordY) item.first.y += mapWidth/2;
+			_setObject(item.first, item.second);
+		}
+		return true;
 	}
 
-	deleteCurrField();
-	this->field = newField;
-	newField = nullptr;
-
-	this->mapLength = newLength;
-	this->mapWidth = newWidth;
-
-	for (auto& item : objects) {
-		if (changeCoordX) item.first.x += mapLength/2;
-		if (changeCoordY) item.first.y += mapWidth/2;
-		_setObject(item.first, item.second);
-	}
-
-	return true;
 }
 
 // return true, if expansion needed

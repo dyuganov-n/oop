@@ -8,11 +8,10 @@ using std::vector;
 class Explorer : public IRobot {
 private:
 	const RobotClass _class = RobotClass::explorer;
-	void _scan(const Coordinates& objCoords, vector<pair<Coordinates, Object>>& scanResult);
+	
 
 public:
 	Explorer(const Coordinates& startPosition, Repeater* rep, Environment* env);
-	//Explorer(const Map& _map, const Coordinates& startPosition, Repeater* rep, Environment* env);
 	Explorer() = delete;
 	virtual ~Explorer();
 
@@ -22,5 +21,4 @@ public:
 	// unique actions
 	void collect();
 	void scan();
-
 };

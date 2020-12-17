@@ -24,12 +24,6 @@ void Explorer::collect() {
 	}
 }
 
-void Explorer::_scan(const Coordinates& objCoords, vector<pair<Coordinates, Object>>& scanResult) {
-	Object obj = this->environment->getObjectForRobot(objCoords);
-	scanResult.push_back({ objCoords, obj });
-	this->internalMap.setObject(objCoords, obj); // use old coords!!!
-}
-
 void Explorer::scan() {
 	const vector<Coordinates> coords = {
 		{ position.x, position.y - 1 }, // left
@@ -38,8 +32,18 @@ void Explorer::scan() {
 		{ position.x + 1, position.y }, // down
 		position						// curr position
 	};
-	Coordinates newZeroPoint = environment->getRobotsZeroPoint();
+	bool needScan = false;
 
+	// no double scan check
+	for (const auto& item : environment->scan(coords)) { 
+		if (internalMap.getObject(item.first) != item.second) {
+			needScan = true;
+			break;
+		}
+	}
+	if (!needScan) return;
+
+	Coordinates newZeroPoint = environment->getRobotsZeroPoint();
 	Coordinates oldPosition(position);
 	for (auto& item : coords) {
 		if (item.x < 0 || item.y < 0) {
@@ -49,7 +53,7 @@ void Explorer::scan() {
 				newZeroPoint.x -= offsetX;
 			}
 			if (item.y < 0) {
-				size_t offsetY = internalMap.getMapLength();
+				size_t offsetY = internalMap.getMapWidth();
 				position.y += offsetY;
 				newZeroPoint.y -= offsetY;
 			}
