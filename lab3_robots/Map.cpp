@@ -153,7 +153,6 @@ void Map::copyOldFieldToNew(Object** newField, const size_t& offsetLength, const
 	}
 }
 
-// 
 void Map::_setObject(const Coordinates& coords, Object obj) {
 	if (coords.x < 0 || coords.x >= static_cast<ptrdiff_t>(mapLength) ||
 		coords.y < 0 || coords.y >= static_cast<ptrdiff_t>(mapWidth)) {
@@ -164,7 +163,6 @@ void Map::_setObject(const Coordinates& coords, Object obj) {
 	}
 }
 
-
 // return true, if expansion needed
 bool Map::setObject(vector<pair<Coordinates, Object>> objects) {
 	size_t newLength = mapLength, newWidth = mapWidth;
@@ -174,12 +172,10 @@ bool Map::setObject(vector<pair<Coordinates, Object>> objects) {
 	bool notEnoughSpaceX = false, notEnoughSpaceY = false;
 	for (auto& item : objects) {
 		if (item.first.x < 0) {
-			//item.first.x += mapLength;
 			changeCoordX = true;
 			notEnoughSpaceX = true;
 		}
 		if (item.first.y < 0) {
-			//item.first.y += mapWidth;
 			changeCoordY = true;
 			notEnoughSpaceY = true;
 		}
@@ -194,8 +190,7 @@ bool Map::setObject(vector<pair<Coordinates, Object>> objects) {
 		}
 		return false;
 	}
-	else {
-		// expansion case
+	else {// expansion case
 		if (notEnoughSpaceX) {
 			newLength *= 2;
 		}
@@ -222,7 +217,6 @@ bool Map::setObject(vector<pair<Coordinates, Object>> objects) {
 		deleteCurrField();
 		this->field = newField;
 		newField = nullptr;
-
 		this->mapLength = newLength;
 		this->mapWidth = newWidth;
 

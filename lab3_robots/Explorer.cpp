@@ -36,23 +36,27 @@ void Explorer::scan() {
 
 	// no double scan check
 	for (const auto& item : environment->scan(coords)) { 
-		if (internalMap.getObject(item.first) != item.second) {
-			needScan = true;
-			break;
+		if (item.first.x < internalMap.getMapLength() && item.first.x >= 0 &&
+			item.first.y < internalMap.getMapWidth() && item.first.y >= 0) 
+		{
+			if (internalMap.getObject(item.first) != item.second) {
+				needScan = true;
+				break;
+			}
 		}
 	}
 	if (!needScan) return;
 
 	Coordinates newZeroPoint = environment->getRobotsZeroPoint();
 	Coordinates oldPosition(position);
-	for (auto& item : coords) {
-		if (item.x < 0 || item.y < 0) {
-			if (item.x < 0) {
+	for (auto& item : environment->scan(coords)) {
+		if (item.first.x < 0 || item.first.y < 0) {
+			if (item.first.x < 0) {
 				size_t offsetX = internalMap.getMapLength();
 				position.x += offsetX;
 				newZeroPoint.x -= offsetX;
 			}
-			if (item.y < 0) {
+			if (item.first.y < 0) {
 				size_t offsetY = internalMap.getMapWidth();
 				position.y += offsetY;
 				newZeroPoint.y -= offsetY;
