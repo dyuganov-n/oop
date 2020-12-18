@@ -77,6 +77,11 @@ void ManualMode::invokeCommand(IRobot* robot) {
 	}
 }
 
+//vector<Coordinates> findWayToUnknCell() {
+//	vector<Coordinates> result;
+//	return result;
+//}
+
 void ScanMode::invokeCommand(IRobot* robot) {
 	if (robot == nullptr) {
 		throw exception("Scan mode error. Robot is nullptr.");

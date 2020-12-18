@@ -1,5 +1,3 @@
 
 scan N mode logics
 auto mode logics
-
-fix robot creation with dynamic map

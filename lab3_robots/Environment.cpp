@@ -21,7 +21,7 @@ Environment::~Environment() {
 
 bool Environment::appleCollected(const Coordinates& coords) {
 	if (getObjectForRobot(coords) == Object::apple) {
-		globalMap->setObject(coords, Object::empty);
+		globalMap->setObject(getGlobalCoords(coords), Object::empty);
 		collectedApples.push_back(coords);
 		return true;
 	}

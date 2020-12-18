@@ -52,6 +52,9 @@ void IRobot::move(const Direction& dir) {
 	Coordinates newPosition = buildNewPosition(dir);
 	if (isEmptyCell(newPosition)) {
 		if (isAbleToStep(newPosition)) {
+			if (getRobotClass() == RobotClass::explorer && internalMap.getObject(newPosition) == Object::bomb) {
+				return;
+			}
 			if (newPosition.x < 0) { // offset, if map externed up or left
 				newPosition.x += internalMap.getMapLength();
 			}

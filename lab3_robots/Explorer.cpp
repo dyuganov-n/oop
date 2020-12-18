@@ -36,8 +36,8 @@ void Explorer::scan() {
 
 	// no double scan check
 	for (const auto& item : environment->scan(coords)) { 
-		if (item.first.x < internalMap.getMapLength() && item.first.x >= 0 &&
-			item.first.y < internalMap.getMapWidth() && item.first.y >= 0) 
+		if (item.first.x < static_cast<ptrdiff_t>(internalMap.getMapLength()) && item.first.x >= 0 &&
+			item.first.y < static_cast<ptrdiff_t>(internalMap.getMapWidth()) && item.first.y >= 0) 
 		{
 			if (internalMap.getObject(item.first) != item.second) {
 				needScan = true;
