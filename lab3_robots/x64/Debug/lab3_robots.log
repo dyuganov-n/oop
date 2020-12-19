@@ -1,2 +1,18 @@
-﻿  Explorer.cpp
+﻿  Command.cpp
+  CommandHandler.cpp
+  Explorer.cpp
+  main.cpp
+  Manager.cpp
+  Mode.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Mode.cpp(170,28): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Mode.cpp(171,25): warning C4018: '>=': signed/unsigned mismatch
+  Parser.cpp
+  Repeater.cpp
+  Robot.cpp
+  Sapper.cpp
+  View.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.cpp(39,14): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.cpp(39,61): warning C4018: '>=': signed/unsigned mismatch
+  Generating Code...
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.h(102): warning C4715: 'Repeater::getNewCoords': not all control paths return a value
   lab3_robots.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\x64\Debug\lab3_robots.exe

@@ -61,7 +61,7 @@ void IRobot::move(const Direction& dir) {
 			if (newPosition.y < 0) {
 				newPosition.y += internalMap.getMapWidth();
 			}
-			this->repeater->NotifyMove(position, newPosition);
+			this->repeater->NotifyMove(getRobotClass(), position, newPosition);
 			this->position = newPosition;
 		}
 		else {
@@ -83,25 +83,31 @@ void IRobot::updateMap() {
 	}
 	vector<pair<Coordinates, Object>> updates(repeater->getMapUpdates());
 	Coordinates oldPosition(position);
-	for (auto& item : updates) {
-		if (item.first.x < 0 || item.first.y < 0) {
-			if (item.first.x < 0) { //  сработает только после сканировани€ -> сапер помен€ет свои координаты под расшир€ющуюс€ карту
-				position.x += internalMap.getMapLength();
-			}
-			if (item.first.y < 0) {
-				position.y += internalMap.getMapWidth();
-			}
-			repeater->NotifyMove(oldPosition, position);
-			break;
-		}
+	
+	if (getRobotClass() == RobotClass::sapper) {
+		this->position = repeater->getNewCoords(this->getRobotClass());
 	}
+
+	//for (auto& item : updates) {
+	//	if (item.first.x < 0 || item.first.y < 0) {
+	//		if (item.first.x < 0) { //  сработает только после сканировани€ -> сапер помен€ет свои координаты под расшир€ющуюс€ карту
+	//			position.x += internalMap.getMapLength();
+	//		}
+	//		if (item.first.y < 0) {
+	//			position.y += internalMap.getMapWidth();
+	//		}
+	//		break;
+	//	}
+	//}
+
 	this->internalMap.setObject(updates);
+	repeater->NotifyMove(this->getRobotClass(), oldPosition, position);
 
 	//ptrdiff_t _x = 0, _y = 0;
-	//for (size_t i = 0; i < repeater->getMapUpdates().size(); ++i) {
-	//	_x = repeater->getMapUpdates()[i].first.x;
-	//	_y = repeater->getMapUpdates()[i].first.y;
-	//	Object obj = repeater->getMapUpdates()[i].second;
+	//for (size_t i = 0; i < updates.size(); ++i) {
+	//	_x = updates[i].first.x;
+	//	_y = updates[i].first.y;
+	//	Object obj = updates[i].second;
 	//	// cell is up to date check (all robots already have this cell in their maps)
 	//	if (internalMap.getObject({ _x, _y }) == obj) {
 	//		repeater->DeleteElem(i);

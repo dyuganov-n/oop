@@ -4,7 +4,6 @@ Explorer::Explorer(const Coordinates& startPosition, Repeater* rep, Environment*
 	this->position = startPosition;
 	this->repeater = rep;
 	this->environment = env;
-	//this->id = _id;
 }
 
 Explorer::~Explorer() {
@@ -33,9 +32,9 @@ void Explorer::scan() {
 		position						// curr position
 	};
 	bool needScan = false;
-
+	vector<pair<Coordinates, Object>> scan(environment->scan(coords));
 	// no double scan check
-	for (const auto& item : environment->scan(coords)) { 
+	for (const auto& item : scan) {
 		if (item.first.x < static_cast<ptrdiff_t>(internalMap.getMapLength()) && item.first.x >= 0 &&
 			item.first.y < static_cast<ptrdiff_t>(internalMap.getMapWidth()) && item.first.y >= 0) 
 		{
@@ -48,24 +47,38 @@ void Explorer::scan() {
 	if (!needScan) return;
 
 	Coordinates newZeroPoint = environment->getRobotsZeroPoint();
-	Coordinates oldPosition(position);
-	for (auto& item : environment->scan(coords)) {
+	ptrdiff_t offsetX = 0, offsetY = 0;
+	
+	for (auto& item : scan) {
 		if (item.first.x < 0 || item.first.y < 0) {
 			if (item.first.x < 0) {
-				size_t offsetX = internalMap.getMapLength();
+				offsetX = internalMap.getMapLength();
 				position.x += offsetX;
 				newZeroPoint.x -= offsetX;
 			}
 			if (item.first.y < 0) {
-				size_t offsetY = internalMap.getMapWidth();
+				offsetY = internalMap.getMapWidth();
 				position.y += offsetY;
 				newZeroPoint.y -= offsetY;
 			}
-			repeater->NotifyMove(oldPosition, position);
+			repeater->NotifyMapExp(offsetX, offsetY);
+			//repeater->NotifyMove({position.x - offsetX, position.y - offsetY}, position);
 			break;
 		}
 	}
-	internalMap.setObject(environment->scan(coords));
+	internalMap.setObject(scan);
 	environment->setRobotsMapZeroPoint(newZeroPoint);
-	repeater->NotifyScan(environment->scan(coords));
+
+	//if (!repeater->isAlone()) {
+	//	const vector<Coordinates> newCoordsForScan = {
+	//	{ position.x, position.y - 1 }, // left
+	//	{ position.x, position.y + 1 }, // right
+	//	{ position.x - 1, position.y }, // up
+	//	{ position.x + 1, position.y }, // down
+	//	position						// curr position
+	//	};
+	//	repeater->NotifyScan(environment->scan(newCoordsForScan));
+	//}
+	
+	
 }

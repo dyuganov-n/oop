@@ -153,6 +153,7 @@
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Repeater.h" />
     <ClInclude Include="Robot.h" />
+    <ClInclude Include="RobotClass.h" />
     <ClInclude Include="Sapper.h" />
     <ClInclude Include="View.h" />
   </ItemGroup>

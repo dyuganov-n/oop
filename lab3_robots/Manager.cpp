@@ -36,7 +36,7 @@ void Manager::CreateExplorer() {
 	const Coordinates robotStartCoords = { 0, 0 };
 	IMode* newMode = IdlingMode::getInstance();
 	Explorer* newExplorer = new Explorer(robotStartCoords, repeater, environment);
-	this->repeater->NotifyRobotCreated(robotStartCoords);
+	this->repeater->NotifyRobotCreated(RobotClass::explorer ,robotStartCoords);
 	this->robots.push_back({ newMode, newExplorer });
 	this->environment->setRobotsMapZeroPoint(globalCoords);
 }
@@ -73,7 +73,7 @@ void Manager::CreateSapper() {
 					newSapper = new Sapper(item.second->getMap(), newCoords, repeater, environment);
 				}
 			}
-			this->repeater->NotifyRobotCreated(newCoords);
+			this->repeater->NotifyRobotCreated(RobotClass::sapper, newCoords);
 			this->robots.push_back({ newMode, newSapper });
 		}
 		else {

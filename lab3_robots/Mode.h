@@ -58,6 +58,7 @@ public:
 	
 private:
 	size_t stepsNumber = 0;
+	vector<Coordinates> way;
 
 	static ScanMode* p_instance;
 	ScanMode() = default;
@@ -70,6 +71,9 @@ public:
 	static AutoMode* getInstance();
 
 private:
+	vector<Coordinates> sapperWay;
+	vector<Coordinates> explorerWay;
+
 	static AutoMode* p_instance;
 	AutoMode() = default;
 	~AutoMode() {

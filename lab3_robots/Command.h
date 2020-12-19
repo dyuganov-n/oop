@@ -38,6 +38,12 @@ public:
 			if (dynamic_cast<ManualMode*>(mode)) {
 				dynamic_cast<ManualMode*>(mode)->setAction(ManualModeAction::collect);
 				mode->invokeCommand(robot);
+
+				for (auto& item : manager->getRobots()) {
+					if (item.second->getRobotClass() == RobotClass::sapper) {
+						item.second->updateMap();
+					}
+				}
 			}
 			else {
 				throw exception("GrabManualCommand error. Wrong robot mode for this command.");
@@ -61,6 +67,13 @@ public:
 			if (dynamic_cast<ManualMode*>(mode)) {
 				dynamic_cast<ManualMode*>(mode)->setAction(ManualModeAction::scan);
 				dynamic_cast<ManualMode*>(mode)->invokeCommand(robot);
+
+				for (auto& item : manager->getRobots()) {
+					if (item.second->getRobotClass() == RobotClass::sapper) {
+						item.second->updateMap();
+					}
+				}
+
 			}
 			else {
 				throw exception("ScanManualCommand error. Wrong robot mode for this command.");
@@ -90,6 +103,7 @@ public:
 						dynamic_cast<ManualMode*>(mode)->setAction(ManualModeAction::move);
 						dynamic_cast<ManualMode*>(mode)->setDirection(direction);
 						mode->invokeCommand(robot);
+
 						return;
 					}
 					else {

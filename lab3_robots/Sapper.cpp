@@ -5,7 +5,6 @@ Sapper::Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep,
 	position = startPosition;
 	this->environment = env;
 	this->repeater = rep;
-	//this->id = _id;
 }
 
 void Sapper::defuse() {

@@ -4,13 +4,8 @@
 #include "Environment.h"
 #include "Repeater.h"
 #include "Direction.h"
+#include "RobotClass.h"
 
-
-
-enum class RobotClass {
-	explorer,
-	sapper
-};
 
 class IRobot {
 public:
