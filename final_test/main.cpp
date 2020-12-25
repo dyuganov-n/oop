@@ -29,8 +29,8 @@ int* const c6 = nullptr;
 
 
 // TASK 3
-// 
-// 
+// поля
+// методы
 
 // TASK 4
 void swap(int* first, int* second) {
@@ -122,8 +122,6 @@ void testSixTask() {
 	}
 }
 
-
-
 // TASK 7
 //Конструируются поля A
 //Конструктор A
@@ -164,6 +162,39 @@ public:
 	/*iterator begin();
 	iterator end();*/
 
+};
+
+
+// TASK 10
+// Напишите аналог shared_ptr. Для счетчика используйте разделяемый между указателями объект. 
+
+class Conunt {
+private:
+	size_t cnt = 0;
+public:
+	void increase() { ++cnt; }
+	void decrease() { --cnt; }
+	size_t getCnt() { return cnt; }
+};
+
+template<typename _Ty>
+class mySharedPtr {
+private:
+	Conunt c;
+	_Ty* ptr;
+public:
+	mySharedPtr(_Ty* ptr) {
+		c.increase();
+		this->ptr = ptr;
+	}
+	~mySharedPtr() {
+		if (c.getCnt() == 0) {
+			delete[] ptr;
+		}
+		else {
+			c.decrease();
+		}
+	}
 };
 
 
