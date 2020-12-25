@@ -83,6 +83,16 @@ public:
 // деструкторы в обратном порядке
 
 
+// TASK 8
+//int n = 1;
+//int* p1 = new int;
+//myType* t1 = new myType(args); 
+//int* p2 = new int[n];
+//
+//int* p3 = (int*)malloc(sizeof(int)*n);
+//if(p3 == NULL) { ... };
+
+
 
 int main() {
 
