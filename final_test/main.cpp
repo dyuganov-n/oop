@@ -23,6 +23,10 @@ const int* c5 = &c4;
 int const* c6 = &c4;
 
 
+// TASK 2
+// Примитивные типы С++ и ограничения на их размеры.
+// char <= short <= int <= long <= long long 
+
 
 int main() {
 
