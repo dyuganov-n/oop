@@ -85,12 +85,35 @@ public:
 
 // TASK 8
 //int n = 1;
-//int* p1 = new int;
-//myType* t1 = new myType(args); 
-//int* p2 = new int[n];
+//int* p1 = new int; // один инт
+// delete p1;
+//myType* t1 = new myType(args); // объект моего типа, с аргументами конструктора 
+// delete t1;
+//int* p2 = new int[n]; // массив интов
+// delete[] p2;
 //
 //int* p3 = (int*)malloc(sizeof(int)*n);
 //if(p3 == NULL) { ... };
+
+
+// TASK 9 
+
+#include <iterator>
+class DynamicArr {
+private:
+	size_t size;
+	size_t* data;
+public:
+
+	void setSize(const size_t &newSize);
+	size_t getSize();
+	size_t& operator[](const size_t& idx);
+	void push_back(const size_t& item);
+	/*iterator begin();
+	iterator end();*/
+
+};
+
 
 
 
