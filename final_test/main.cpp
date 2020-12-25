@@ -168,7 +168,7 @@ public:
 // TASK 10
 // Напишите аналог shared_ptr. Для счетчика используйте разделяемый между указателями объект. 
 
-class Conunt {
+class Count {
 private:
 	size_t cnt = 0;
 public:
@@ -177,15 +177,22 @@ public:
 	size_t getCnt() { return cnt; }
 };
 
+Count cnt;
+
 template<typename _Ty>
 class mySharedPtr {
 private:
-	Conunt c;
+	Count* c = nullptr;
 	_Ty* ptr;
 public:
-	mySharedPtr(_Ty* ptr) {
-		c.increase();
+	mySharedPtr(_Ty* ptr, Count *cnt) {
+		c->increase();
 		this->ptr = ptr;
+	}
+	mySharedPtr(mySharedPtr other) {
+		c = other.c;
+		c->increase();
+		this->ptr = other.ptr;
 	}
 	~mySharedPtr() {
 		if (c.getCnt() == 0) {
