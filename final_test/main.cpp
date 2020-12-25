@@ -45,15 +45,37 @@ void swap(int& first, int& second) {
 	second = tmp;
 }
 
+// TASK 5
+// Напишите код, демонстрирующий работу виртуальной функции и отличие ее поведения от невиртуальных функций.
+
+// поведение с virtual и без него отличается
+class Parent
+{
+public:
+	string doSth() { return "P"; }
+	// virtual string doSth() { return "P"; }
+};
+
+class Child : public Parent
+{
+public:
+	 string doSth() { return "C"; }
+	 // virtual string doSth() { return "C"; }
+};
+
+// код для мэйна:
+//Child chld;
+//Parent& par = chld;
+//cout << par.doSth() << endl;
+
+
+
+
+
 
 int main() {
 
-	int a = 9, b = 0;
-	cout << a << ' ' << b << endl;
-	swap(a, b);
-	cout << a << ' ' << b << endl;
-	swap(&a, &b);
-	cout << a << ' ' << b << endl;
+	
 
 
 	return 0;
