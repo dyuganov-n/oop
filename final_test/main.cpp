@@ -69,7 +69,59 @@ public:
 //cout << par.doSth() << endl;
 
 
+
 // TASK 6
+class A {
+public:
+	//virtual size_t getIdx() { return myIdx; }
+	A() {
+		info = "A - " + to_string(exceptionsCnt++);
+	}
+	size_t getInstance(){
+		return exceptionsCnt++;
+	}
+	virtual string getInfo(){ return info; }
+private:
+	static size_t exceptionsCnt;
+	string info;
+};
+size_t A::exceptionsCnt = 0;
+
+class B : public A {
+public:
+	B() {
+		info = "B - " + to_string(getInstance());
+	}
+	virtual string getInfo() { return info; }
+private:
+	string info;
+};
+
+class C : public B {
+public:
+	C() {
+		info = "C - " + to_string(getInstance());
+	}
+	virtual string getInfo() { return info; }
+private:
+	string info;
+};
+
+void testSixTask() {
+	try {
+		throw C();
+	}
+	catch (C ex) {
+		cout << ex.getInfo() << endl;
+	}
+	catch (B ex) {
+		cout << ex.getInfo() << endl;
+	}
+	catch (A ex) {
+		cout << ex.getInfo() << endl;
+	}
+}
+
 
 
 // TASK 7
@@ -119,7 +171,7 @@ public:
 
 int main() {
 
-	
+	testSixTask();
 
 
 	return 0;
