@@ -39,7 +39,7 @@ public:
 		return { robotsMapZeroCoord.x + coords.x, robotsMapZeroCoord.y + coords.y };
 	}
 
-	bool isOverGlobalMap(const Coordinates& coords) const;
+	bool isOverGlobalMap(const Coordinates& coords) const; 
 
 	void setRobotsMapZeroPoint(const Coordinates& coords) { 
 		this->robotsMapZeroCoord = coords;

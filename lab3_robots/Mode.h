@@ -4,7 +4,6 @@
 #include "Explorer.h"
 #include "Sapper.h"
 
-// modes could be singletones
 
 class IMode {
 public:
@@ -58,7 +57,7 @@ public:
 	
 private:
 	size_t stepsNumber = 0;
-	vector<Coordinates> way;
+	//vector<Coordinates> way;
 
 	static ScanMode* p_instance;
 	ScanMode() = default;

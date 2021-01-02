@@ -14,8 +14,8 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 	for (ptrdiff_t i = -oneSideViewField; i < oneSideViewField; ++i) {
 		for (ptrdiff_t j = -oneSideViewField; j < oneSideViewField; ++j) {
 
-			tmp.x = mainRobot->getCoordinates().x + i;
-			tmp.y = mainRobot->getCoordinates().y + j;
+			tmp.x = mainRobot->getPosition().x + i;
+			tmp.y = mainRobot->getPosition().y + j;
 
 			if (mngr->getEnvironment()->isOverGlobalMap(tmp)) {
 				cout << "  ";
@@ -24,7 +24,7 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 
 			if (robotInCell(mngr->getRobots(), tmp)) {
 				for (auto item : mngr->getRobots()) {
-					if (item.second->getCoordinates().x == tmp.x && item.second->getCoordinates().y == tmp.y) {
+					if (item.second->getPosition().x == tmp.x && item.second->getPosition().y == tmp.y) {
 						if (item.second->getRobotClass() == RobotClass::explorer) {
 							std::cout << "E ";
 						}
@@ -63,7 +63,7 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 
 bool ConsoleView::robotInCell(vector<pair<IMode*, IRobot*>>& robots, const Coordinates &coords) {
 	for (auto item : robots) {
-		if (item.second->getCoordinates().x == coords.x && item.second->getCoordinates().y == coords.y) {
+		if (item.second->getPosition().x == coords.x && item.second->getPosition().y == coords.y) {
 			return true;
 		}
 	}

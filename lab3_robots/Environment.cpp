@@ -40,7 +40,7 @@ bool Environment::bombDefused(const Coordinates& coords) {
 	}
 }
 
-bool Environment::isOverGlobalMap(const Coordinates& coords) const {
+bool Environment::isOverGlobalMap(const Coordinates& coords) const { 
 	Coordinates globalRobPos = getGlobalCoords(coords);
 
 	if (globalRobPos.x >= static_cast<ptrdiff_t>(globalMap->getMapLength()) || globalRobPos.x < 0 ||

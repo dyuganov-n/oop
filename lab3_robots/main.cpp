@@ -56,6 +56,7 @@ int main(int argc, char* argv[]) {
 			view.displayMap(&manager, cellsInView, ViewMode::LocalMap);
 			//view.displayMap(&manager, cellsInView, ViewMode::GlobalMap);
 		}
+
 		//createFile(1010, 1100, Object::empty);
 
 	}
@@ -63,5 +64,6 @@ int main(int argc, char* argv[]) {
 		cout << "Exception: " << e.what() << endl;
 		return 0;
 	}
+
 	return 0;
 }

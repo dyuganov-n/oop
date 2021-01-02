@@ -143,6 +143,7 @@
     <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="ConsoleInput.h" />
     <ClInclude Include="Coordinates.h" />
+    <ClInclude Include="CoordOperations.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Explorer.h" />

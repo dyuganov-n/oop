@@ -1,5 +1,9 @@
 #include "Mode.h"
-#include "Command.h"
+#include "CoordOperations.h"
+
+#include <map>
+#include <queue>
+using namespace std;
 
 ManualMode* ManualMode::p_instance = NULL;
 IdlingMode* IdlingMode::p_instance = NULL;
@@ -77,88 +81,7 @@ void ManualMode::invokeCommand(IRobot* robot) {
 	}
 }
 
-//vector<Coordinates> findWayToUnknCell(const Map& map, const Coordinates& start, const Object& objToFind) {
-//	vector<Coordinates> result;
-//	
-//	const ptrdiff_t W = 12;         // ширина рабочего пол€
-//	const ptrdiff_t H = 8;         // высота рабочего пол€
-//	const ptrdiff_t WALL = -1;         // непроходима€ €чейка
-//	const ptrdiff_t BLANK = -2;         // свободна€ непомеченна€ €чейка
-//
-//	ptrdiff_t px[W * H], py[W * H];      // координаты €чеек, вход€щих  путь
-//	ptrdiff_t len;                       // длина пути
-//	ptrdiff_t grid[H][W];                // рабочее поле
-//
-//	// ѕеред вызовом lee() массив grid заполнен значени€ми WALL и BLANK
-//
-//	const ptrdiff_t dy[4] = { 1, 0, -1, 0 };   // смещени€, соответствующие сосед€м €чейки
-//	const ptrdiff_t dx[4] = { 0, 1, 0, -1 };   // справа, снизу, слева и сверху
-//	ptrdiff_t d, y, x, k;
-//	bool stop;
-//
-//	ptrdiff_t ax, ay, bx, by; // вход, координаты точек A и B
-//	//if (grid[ay][ax] == WALL || grid[by][bx] == WALL) return false;  // €чейка (ax, ay) или (bx, by) - стена
-//
-//	// распространение волны
-//	d = 0;
-//	grid[start.x][start.y] = 0;            // стартова€ €чейка помечена 0
-//	do {
-//		stop = true;               // предполагаем, что все свободные клетки уже помечены
-//		for (x = 0; x < map.getMapLength(); ++x)
-//			for (y = 0; y < map.getMapWidth(); ++y)
-//				if (grid[x][y] == d)                         // €чейка (x, y) помечена числом d
-//				{
-//					for (k = 0; k < 4; ++k)                    // проходим по всем непомеченным сосед€м
-//					{
-//						int ix = x + dx[k], iy = y + dy[k];
-//						if (ix >= 0 && ix < map.getMapLength() && iy >= 0 && iy < map.getMapWidth() &&
-//							grid[ix][iy] == BLANK)
-//						{
-//							stop = false;              // найдены непомеченные клетки
-//							grid[ix][iy] = d + 1;      // распростран€ем волну
-//						}
-//					}
-//				}
-//		d++;
-//	//} while (!stop && grid[by][bx] == BLANK);
-//	} while (!stop);
-//
-//
-//	if (grid[by][bx] == BLANK) return {};  // путь не найден
-//
-//	// восстановление пути
-//	ptrdiff_t len = grid[by][bx];            // длина кратчайшего пути из (ax, ay) в (bx, by)
-//	y = bx;
-//	x = by;
-//	d = len;
-//	while (d > 0)
-//	{
-//		px[d] = y;
-//		py[d] = x; // записываем €чейку (x, y) в путь
-//		//result.push_back({ x, y });
-//		d--;
-//		for (k = 0; k < 4; ++k)
-//		{
-//			int iy = x + dx[k], ix = y + dy[k];
-//			if (iy >= 0 && iy < H && ix >= 0 && ix < W &&
-//				grid[iy][ix] == d)
-//			{
-//				y = y + dy[k];
-//				x = x + dx[k];           // переходим в €чейку, котора€ на 1 ближе к старту
-//				break;
-//			}
-//		}
-//	}
-//	px[0] = ax;
-//	py[0] = ay;                    // теперь px[0..len] и py[0..len] - координаты €чеек пути
-//	return result;
-//}
-
-#include <unordered_map>
-#include <queue>
-using namespace std;
-
-vector<pair<Coordinates, Object>> neighbors(const Coordinates& pos, const Map& _map) {
+vector<pair<Coordinates, Object>> neighbors(const Coordinates& pos, const Map& _map, const Environment& env) {
 	vector<Coordinates> neighbors = {
 		{pos.x - 1, pos.y},
 		{pos.x + 1, pos.y},
@@ -167,59 +90,100 @@ vector<pair<Coordinates, Object>> neighbors(const Coordinates& pos, const Map& _
 	};
 	for (size_t i = 0; i < neighbors.size(); ++i) {
 		const Coordinates& elem = neighbors.at(i);
-		if (elem.x < 0 || elem.x >= _map.getMapLength() || 
-			elem.y < 0 || elem.y >= _map.getMapWidth()) 
+		if (elem.x < 0 || elem.x >= static_cast<ptrdiff_t>(_map.getMapLength()) || 
+			elem.y < 0 || elem.y >= static_cast<ptrdiff_t>(_map.getMapWidth()) ||
+			env.isOverGlobalMap(elem))
 		{
 			neighbors.erase(neighbors.begin() + i);
 		}
 	}
-
 	vector<pair<Coordinates, Object>> result;
 	for (const auto& item : neighbors) {
 		result.push_back({ item, _map.getObject(item) });
 	}
-
 	return result;
 }
 
-//vector<Coordinates> findWayToCell(const Map& _map, const Coordinates& start, const Object& objToFind) {
-//	
-//	queue<Coordinates> frontier;
-//	frontier.push(start);
-//	unordered_map<Coordinates, bool> visited;
-//	visited[start] = true;
-//	Coordinates current;
-//
-//	bool stop = false;
-//
-//	while (!frontier.empty() || stop) {
-//		current = frontier.front();
-//		for (auto& next : neighbors(current, _map)) {
-//			if (!visited.at(next.first)) {
-//				frontier.push(next.first);
-//				visited[next.first] = true;
-//				if (next.second == objToFind) {
-//					stop = true;
-//					break;
-//				}
-//			}
-//		}
-//	}
-//}
+vector<Coordinates> findPathToCell (const Map& _map, const Coordinates& start, const Object& objToFind, const Environment& env) {
+
+	if (start.x < 0 || start.x >= _map.getMapLength() || start.y < 0 || start.y >= _map.getMapWidth()) {
+		throw exception("Searching path to cell error. Wrong start point coordinates.");
+	}
+
+	queue<Coordinates> frontier;
+	map<Coordinates, Coordinates> cameFrom; 
+	map<Coordinates, bool> visited;	
+	Coordinates current, final;
+
+	frontier.push(start);
+	visited[start] = true;
+	cameFrom[start] = start;
+	bool wayFound = false;
+
+	// search
+	while (!frontier.empty()) {
+		current = frontier.front();
+		frontier.pop();
+
+		if (_map.getObject(current) == objToFind) {
+			final = current; // должен быть ближайшим
+			wayFound = true;
+			break;
+		}
+
+		for (auto& next : neighbors(current, _map, env)) {
+			if (!cameFrom.count(next.first)) {
+				frontier.push(next.first); // вылет
+				visited[next.first] = true;
+				cameFrom[next.first] = current;
+			}
+		}
+	}
+
+	if (!wayFound) {
+		return {};
+	}
+
+	// build the way
+	vector<Coordinates> result;
+	current = final;
+	result.push_back(current);
+	
+	while (current != start) {
+		current = cameFrom.at(current);
+		result.push_back(current);
+	}
+
+	reverse(result.begin(), result.end());
+
+	return result;
+}
 
 void ScanMode::invokeCommand(IRobot* robot) {
 	if (robot == nullptr) {
 		throw exception("Scan mode error. Robot is nullptr.");
 	}
-	else if (!dynamic_cast<Explorer*>(robot)) {
+	if (!dynamic_cast<Explorer*>(robot)) {
 		throw exception("Scan mode error. Robot is not Explorer.");
 	}
-	else {
-		Explorer* explorer = dynamic_cast<Explorer*>(robot);
-		if (this->stepsNumber == 0) return;
-		else {
-			// logics for explorer 
-			
+
+	Explorer* explorer = dynamic_cast<Explorer*>(robot);
+	if (this->stepsNumber == 0) return;
+
+	// logics for explorer 
+	while (stepsNumber > 0) {
+		explorer->scan();
+
+		// в дороге до клетки есть лишние элементы 
+		vector<Coordinates> path = findPathToCell(explorer->getMap(), explorer->getPosition(), Object::unknown, *(robot->getEnvironment()));
+		if (path.empty()) return;
+
+		for (size_t i = 0; i < path.size(); ++i) {
+			explorer->move(path.at(i));
+			explorer->scan();
+		}
+		if (path.size() < stepsNumber) {
+			stepsNumber -= path.size();
 		}
 	}
 }
@@ -239,3 +203,5 @@ void AutoMode::invokeCommand(IRobot* robot) {
 		}
 	}
 }
+
+

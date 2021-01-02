@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Direction.h"
-#include "Mode.h"
 #include "Manager.h"
 
 //#include <string>
@@ -187,6 +185,9 @@ public:
 	virtual void execute() override {
 		//manager->getRobots()[0].first = newMode;
 		manager->ChangeExplorerMode(newMode);
+		if (dynamic_cast<ScanMode*>(newMode) || dynamic_cast<AutoMode*>(newMode)) {
+			newMode->invokeCommand(manager->getRobots().at(0).second);
+		}
 	}
 
 private:

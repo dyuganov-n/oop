@@ -69,16 +69,4 @@ void Explorer::scan() {
 	internalMap.setObject(scan);
 	environment->setRobotsMapZeroPoint(newZeroPoint);
 
-	//if (!repeater->isAlone()) {
-	//	const vector<Coordinates> newCoordsForScan = {
-	//	{ position.x, position.y - 1 }, // left
-	//	{ position.x, position.y + 1 }, // right
-	//	{ position.x - 1, position.y }, // up
-	//	{ position.x + 1, position.y }, // down
-	//	position						// curr position
-	//	};
-	//	repeater->NotifyScan(environment->scan(newCoordsForScan));
-	//}
-	
-	
 }

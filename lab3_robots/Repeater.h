@@ -15,8 +15,6 @@ private:
 	vector<pair<Coordinates, Object>> changes;
 	vector<pair<Coordinates, RobotClass>> robotsPositions;
 
-	Coordinates offsetForSync = { 0, 0 }; // x, y
-
 	bool isEqual(const Coordinates& l, const Coordinates& r) const noexcept {
 		if ((l.x == r.x) && (l.y == r.y)) {
 			return true;
