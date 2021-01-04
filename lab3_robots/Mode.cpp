@@ -104,7 +104,37 @@ vector<pair<Coordinates, Object>> neighbors(const Coordinates& pos, const Map& _
 	return result;
 }
 
-vector<Coordinates> findPathToCell (const Map& _map, const Coordinates& start, const Object& objToFind, const Environment& env) {
+Coordinates finalPointSearch(const Map& _map, const Coordinates& start, const Object& objToFind, const Environment& env) {
+	queue<Coordinates> frontier;
+	map<Coordinates, bool> visited;
+	Coordinates current, final = start;
+
+	frontier.push(start);
+	visited[start] = true;
+	bool wayFound = false, finalPointFound = false;
+
+	// search final point
+	while (!frontier.empty()) {
+		current = frontier.front();
+		frontier.pop();
+
+		if (_map.getObject(current) == objToFind) {
+			final = current;
+			break;
+		}
+
+		for (auto& next : neighbors(current, _map, env)) {
+			if (!visited.count(next.first)) {
+				frontier.push(next.first);
+				visited[next.first] = true;
+			}
+		}
+	}
+
+	return final;
+}
+
+vector<Coordinates> findPathToCell (const Map& _map, const Coordinates& start, const Environment& env, const Object& objToFind, const vector<Object>& barrierObjs) {
 
 	if (start.x < 0 || start.x >= _map.getMapLength() || start.y < 0 || start.y >= _map.getMapWidth()) {
 		throw exception("Searching path to cell error. Wrong start point coordinates.");
@@ -120,20 +150,30 @@ vector<Coordinates> findPathToCell (const Map& _map, const Coordinates& start, c
 	cameFrom[start] = start;
 	bool wayFound = false;
 
-	// search
+	// search final point
+	final = finalPointSearch(_map, start, objToFind, env);
+	if (final == start) return {};	
+
+	// не учитываются стены и др преграды на пути
+	// не может прийти к точке в углу
+	// не доходит до точки вообще
+
+	// looking for path to final point
 	while (!frontier.empty()) {
 		current = frontier.front();
 		frontier.pop();
 
-		if (_map.getObject(current) == objToFind) {
-			final = current; // должен быть ближайшим
+		if (final == current) {
 			wayFound = true;
 			break;
 		}
 
 		for (auto& next : neighbors(current, _map, env)) {
+			/*for (const auto& item : barrierObjs) {
+				if (next.second == item) continue;
+			}*/
 			if (!cameFrom.count(next.first)) {
-				frontier.push(next.first); // вылет
+				frontier.push(next.first);
 				visited[next.first] = true;
 				cameFrom[next.first] = current;
 			}
@@ -174,15 +214,22 @@ void ScanMode::invokeCommand(IRobot* robot) {
 	while (stepsNumber > 0) {
 		explorer->scan();
 
-		// в дороге до клетки есть лишние элементы 
-		vector<Coordinates> path = findPathToCell(explorer->getMap(), explorer->getPosition(), Object::unknown, *(robot->getEnvironment()));
+		vector<Coordinates> path;
+		path = findPathToCell(explorer->getMap(), explorer->getPosition(), *(robot->getEnvironment()), Object::unknown, { Object::bomb, Object::rock });
 		if (path.empty()) return;
 
-		for (size_t i = 0; i < path.size(); ++i) {
-			explorer->move(path.at(i));
-			explorer->scan();
+		if (stepsNumber <= path.size()) {
+			for (size_t i = 0; i < stepsNumber; ++i) {
+				explorer->move(path.at(i));
+				explorer->scan();
+			}
+			break;
 		}
-		if (path.size() < stepsNumber) {
+		else {
+			for (size_t i = 0; i < path.size(); ++i) {
+				explorer->move(path.at(i));
+				explorer->scan();
+			}
 			stepsNumber -= path.size();
 		}
 	}
