@@ -115,10 +115,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="in.txt">
+    <Text Include="TODO.txt">
       <Filter>Source Files</Filter>
     </Text>
-    <Text Include="TODO.txt">
+    <Text Include="in1.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="in.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>

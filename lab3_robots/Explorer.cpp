@@ -68,5 +68,4 @@ void Explorer::scan() {
 	}
 	internalMap.setObject(scan);
 	environment->setRobotsMapZeroPoint(newZeroPoint);
-
 }

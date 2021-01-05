@@ -100,14 +100,25 @@ Map::~Map() {
 	field = nullptr;
 }
 
+string Map::getStringCoords(const Coordinates& coords) const  {
+	string result = "Coordinates are: (";
+	result += to_string(coords.x);
+	result += ", ";
+	result += to_string(coords.y);
+	result += ").";
+	return result;
+}
+
 Object Map::getObject(const Coordinates& coords) const {
 	if (this->field == nullptr) {
 		throw exception("Can't get object. Field in map is nullptr.");
 		return Object::unknown;
 	}
-	if (coords.x >= static_cast<ptrdiff_t>(mapLength) || coords.y >= static_cast<ptrdiff_t>(mapWidth)) {
+	if (coords.x < 0 || coords.x >= static_cast<ptrdiff_t>(mapLength) || 
+		coords.y < 0 || coords.y >= static_cast<ptrdiff_t>(mapWidth)) {
 		//return Object::unknown;
-		throw exception("Can't get object from map. Incorrect coordinates.");
+		string massage = "Map getObject error: incorrect coordinates. " + getStringCoords(coords);
+		throw exception(massage.c_str());
 	}
 	else {
 		return this->field[coords.x][coords.y]; 

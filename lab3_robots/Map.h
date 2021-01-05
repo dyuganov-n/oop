@@ -40,6 +40,7 @@ private:
 	void copyOldFieldToNew(Object** newField, const size_t& offsetLength, const size_t& offsetWidth);
 
 	void _setObject(const Coordinates& coords, Object obj);
+	string getStringCoords(const Coordinates& coords) const;
 
 public:
 	Map();

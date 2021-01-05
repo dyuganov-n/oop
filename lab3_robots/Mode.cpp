@@ -2,6 +2,7 @@
 #include "CoordOperations.h"
 
 #include <map>
+#include <unordered_map>
 #include <queue>
 using namespace std;
 
@@ -81,20 +82,32 @@ void ManualMode::invokeCommand(IRobot* robot) {
 	}
 }
 
-vector<pair<Coordinates, Object>> neighbors(const Coordinates& pos, const Map& _map, const Environment& env) {
+vector<pair<Coordinates, Object>> neighbors(const Coordinates& pos, const Map& _map, 
+											const Environment& env, const vector<Object>& barrierObjs) {
 	vector<Coordinates> neighbors = {
 		{pos.x - 1, pos.y},
 		{pos.x + 1, pos.y},
 		{pos.x, pos.y - 1},
 		{pos.x, pos.y + 1}
 	};
+
 	for (size_t i = 0; i < neighbors.size(); ++i) {
 		const Coordinates& elem = neighbors.at(i);
+		
 		if (elem.x < 0 || elem.x >= static_cast<ptrdiff_t>(_map.getMapLength()) || 
 			elem.y < 0 || elem.y >= static_cast<ptrdiff_t>(_map.getMapWidth()) ||
 			env.isOverGlobalMap(elem))
 		{
 			neighbors.erase(neighbors.begin() + i);
+			--i;
+			continue;
+		}
+		for (const auto& item : barrierObjs) {
+			if (_map.getObject(elem) == item) {
+				neighbors.erase(neighbors.begin() + i);
+				--i;
+				break;
+			}
 		}
 	}
 	vector<pair<Coordinates, Object>> result;
@@ -104,97 +117,126 @@ vector<pair<Coordinates, Object>> neighbors(const Coordinates& pos, const Map& _
 	return result;
 }
 
-Coordinates finalPointSearch(const Map& _map, const Coordinates& start, const Object& objToFind, const Environment& env) {
+Coordinates finalPointSearch(const Map& _map, const Coordinates& start, const Object& objToFind,
+							 const Environment& env, const vector<Object>& barrierObjs) {
 	queue<Coordinates> frontier;
-	map<Coordinates, bool> visited;
-	Coordinates current, final = start;
+	map<Coordinates, Coordinates> cameFrom;
 
+	cameFrom[start] = start;
 	frontier.push(start);
-	visited[start] = true;
-	bool wayFound = false, finalPointFound = false;
 
 	// search final point
-	while (!frontier.empty()) {
+	/*while (!frontier.empty()) {
 		current = frontier.front();
 		frontier.pop();
 
 		if (_map.getObject(current) == objToFind) {
-			final = current;
-			break;
+			return current;
 		}
 
-		for (auto& next : neighbors(current, _map, env)) {
+		for (auto& next : neighbors(current, _map, env, barrierObjs)) {
+			if (next.second == objToFind) {
+				return next.first;
+			}
 			if (!visited.count(next.first)) {
 				frontier.push(next.first);
 				visited[next.first] = true;
 			}
 		}
-	}
+	}*/
 
-	return final;
-}
-
-vector<Coordinates> findPathToCell (const Map& _map, const Coordinates& start, const Environment& env, const Object& objToFind, const vector<Object>& barrierObjs) {
-
-	if (start.x < 0 || start.x >= _map.getMapLength() || start.y < 0 || start.y >= _map.getMapWidth()) {
-		throw exception("Searching path to cell error. Wrong start point coordinates.");
-	}
-
-	queue<Coordinates> frontier;
-	map<Coordinates, Coordinates> cameFrom; 
-	map<Coordinates, bool> visited;	
-	Coordinates current, final;
-
-	frontier.push(start);
-	visited[start] = true;
-	cameFrom[start] = start;
-	bool wayFound = false;
-
-	// search final point
-	final = finalPointSearch(_map, start, objToFind, env);
-	if (final == start) return {};	
-
-	// не учитываются стены и др преграды на пути
-	// не может прийти к точке в углу
-	// не доходит до точки вообще
-
-	// looking for path to final point
 	while (!frontier.empty()) {
-		current = frontier.front();
+		const Coordinates current = frontier.front();
 		frontier.pop();
 
-		if (final == current) {
-			wayFound = true;
-			break;
+		//if (env.isOverGlobalMap(current)) continue;
+		if (_map.getObject(current) == objToFind) {
+			return current;
 		}
 
-		for (auto& next : neighbors(current, _map, env)) {
-			/*for (const auto& item : barrierObjs) {
-				if (next.second == item) continue;
-			}*/
+		vector<pair<Coordinates, Object>> _neighbors = neighbors(current, _map, env, barrierObjs);
+
+		for (auto& next : _neighbors) {
+			//if (next.second == objToFind) { return next.first; }
 			if (!cameFrom.count(next.first)) {
 				frontier.push(next.first);
-				visited[next.first] = true;
 				cameFrom[next.first] = current;
 			}
 		}
 	}
 
-	if (!wayFound) {
-		return {};
-	}
+	return start;
 
-	// build the way
+	//while (!frontier.empty()) {
+	//	current = frontier.front();
+	//	frontier.pop();
+	//	if (_map.getObject(current) == objToFind) {
+	//		return current;
+	//	}
+	//	for (auto& next : neighbors(current, _map, env, barrierObjs)) {
+	//		if (!cameFrom.count(next.first)) {
+	//			frontier.push(next.first);
+	//			//visited[next.first] = true;
+	//			cameFrom[next.first] = current;
+	//		}
+	//	}
+	//}
+}
+
+vector<Coordinates> buildPath(const Coordinates& start, const Coordinates& goal, const map<Coordinates, Coordinates>& cameFrom) {
+	Coordinates current = goal;
 	vector<Coordinates> result;
-	current = final;
 	result.push_back(current);
-	
+
 	while (current != start) {
 		current = cameFrom.at(current);
 		result.push_back(current);
 	}
-
 	reverse(result.begin(), result.end());
+
+	return result;
+}
+
+vector<Coordinates> findPathToCell (const Map& _map, const Coordinates& start, const Environment& env, 
+									const Object& objToFind, const vector<Object>& barrierObjs) {
+
+	if (start.x < 0 || start.x >= _map.getMapLength() || 
+		start.y < 0 || start.y >= _map.getMapWidth()) {
+		throw exception("Searching path to cell error. Wrong start point coordinates.");
+	}
+
+	queue<Coordinates> frontier;
+	map<Coordinates, Coordinates> cameFrom; 
+	frontier.push(start);
+	cameFrom[start] = start;
+	bool wayFound = false;
+
+	// search final point
+	Coordinates goal = finalPointSearch(_map, start, objToFind, env, barrierObjs);
+	if (goal == start) return {};
+
+	// looking for path to final point
+	while (!frontier.empty()) {
+		Coordinates current = frontier.front();
+		frontier.pop();
+
+		if (goal == current) {
+			wayFound = true;
+			break;
+		}
+
+		for (auto& next : neighbors(current, _map, env, barrierObjs)) {
+			if (!cameFrom.count(next.first)) {
+				frontier.push(next.first);
+				cameFrom[next.first] = current;
+			}
+		}
+	}
+
+	if (!wayFound) { return {}; }
+
+	// build the way
+	vector<Coordinates> result = buildPath(start, goal, cameFrom);
 
 	return result;
 }
@@ -215,10 +257,11 @@ void ScanMode::invokeCommand(IRobot* robot) {
 		explorer->scan();
 
 		vector<Coordinates> path;
-		path = findPathToCell(explorer->getMap(), explorer->getPosition(), *(robot->getEnvironment()), Object::unknown, { Object::bomb, Object::rock });
+		path = findPathToCell(explorer->getMap(), explorer->getPosition(), *(explorer->getEnvironment()), Object::unknown, { Object::bomb, Object::rock });
 		if (path.empty()) return;
+		else path.pop_back();
 
-		if (stepsNumber <= path.size()) {
+		if (stepsNumber < path.size()) {
 			for (size_t i = 0; i < stepsNumber; ++i) {
 				explorer->move(path.at(i));
 				explorer->scan();
@@ -235,20 +278,43 @@ void ScanMode::invokeCommand(IRobot* robot) {
 	}
 }
 
-void AutoMode::invokeCommand(IRobot* robot) {
-	if (robot == nullptr) {
+
+
+void AutoMode::invokeCommand(Explorer* explorer, Sapper* sapper) {
+	if (explorer != nullptr) {
 		throw exception("Auto mode error. Robot is nullptr.");
+		return;
 	}
-	else {
-		if (dynamic_cast<Explorer*>(robot)) {
-			Explorer* explorer = dynamic_cast<Explorer*>(robot);
-			// logics for explorer
-		}
-		else {
-			Sapper* sapper = dynamic_cast<Sapper*>(robot);
-			// logics for sapper
-		}
+
+	bool stop = false;
+	vector<Coordinates> explorerPath, sapperPath;
+	explorerPath = findPathToCell(explorer->getMap(), explorer->getPosition(), *(explorer->getEnvironment()), Object::apple, { Object::bomb, Object::rock });
+	if (explorerPath.empty()) return;
+	if (sapper != nullptr) {
+		sapperPath = findPathToCell(sapper->getMap(), sapper->getPosition(), *(sapper->getEnvironment()), Object::bomb, { Object::rock });
 	}
+
+	// построить два пути
+	// идти по шагам
+	// если какой-то из роботов достиг цели, сделать действие и построить себе новый путь
+	// если путь исследователя пуст, то выходим
+
+	while (true) {
+
+
+
+
+	}
+
+
 }
 
-
+void AutoMode::invokeCommand(IRobot* robot) {
+	if (robot->getRobotClass() != RobotClass::explorer) {
+		throw exception("AutoMode::invokeCommand(IRobot* robot) error. Robot is not explorer.");
+	}
+	else {
+		Explorer* explorer = dynamic_cast<Explorer*>(robot);
+		invokeCommand(explorer, nullptr);
+	}
+}

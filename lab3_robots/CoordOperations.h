@@ -2,27 +2,32 @@
 
 #include "Coordinates.h"
 
+
 bool operator==(const Coordinates& first, const Coordinates& second) {
-	if (first.x == second.x && first.y == second.y) {
-		return true;
-	}
+	if (first.x == second.x && first.y == second.y) return true;
 	return false;
 }
 
 bool operator!=(const Coordinates& first, const Coordinates& second) {
 	if (first == second) return false;
-	else return true;
+	return true;
 }
 
+//bool operator<(const Coordinates& first, const Coordinates& second) {
+//	if (first.x < second.x) {
+//		if (first.y < second.y) {
+//			return true;
+//		}
+//		return false;
+//	}
+//	if (first.y < second.y) {
+//		return true;
+//	}
+//	return false;
+//}
+
 bool operator<(const Coordinates& first, const Coordinates& second) {
-	if (first.x < second.x) {
-		if (first.y < second.y) {
-			return true;
-		}
-		return false;
-	}
-	if (first.y < second.y) {
-		return true;
-	}
-	return false;
+	if (first.x != second.x) return first.x < second.x;
+	return first.y < second.y;
 }
+

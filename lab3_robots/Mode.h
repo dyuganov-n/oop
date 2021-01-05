@@ -67,6 +67,7 @@ private:
 class AutoMode : public IMode {
 public:
 	void invokeCommand(IRobot* robot) override;
+	void invokeCommand(Explorer* robot, Sapper* sapper);
 	static AutoMode* getInstance();
 
 private:

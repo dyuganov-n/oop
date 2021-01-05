@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="in.txt" />
+    <Text Include="in1.txt" />
     <Text Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
