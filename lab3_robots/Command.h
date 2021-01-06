@@ -184,7 +184,7 @@ public:
 	
 	virtual void execute() override {
 		//manager->getRobots()[0].first = newMode;
-		manager->ChangeExplorerMode(newMode);
+		manager->changeExplorerMode(newMode);
 		if (dynamic_cast<ScanMode*>(newMode)) {
 			Explorer* explorer = dynamic_cast<Explorer*>(manager->getRobots().at(0).second);
 			if (explorer->getRobotClass() != RobotClass::explorer) {
@@ -232,7 +232,7 @@ public:
 			throw exception("SapperONCommand execute error. Manager is nullptr.");
 		}
 		else {
-			manager->CreateSapper();
+			manager->createSapper();
 		}
 	}
 
@@ -250,7 +250,7 @@ public:
 			throw exception("SapperOFFCommand execute error. Manager is nullptr.");
 		}
 		else {
-			manager->DeleteSapper();
+			manager->deleteSapper();
 		}
 	}
 

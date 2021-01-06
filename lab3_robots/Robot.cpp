@@ -1,7 +1,6 @@
 #include "Robot.h"
 
-// cell is not a bomb or rock check
-bool IRobot::isAbleToStep(const Coordinates& coords) {
+bool IRobot::isAbleToStep(const Coordinates& coords) const {
 	Object tmp = internalMap.getObject(coords);
 	if (tmp != Object::unknown && tmp != Object::rock) {
 		return true;
@@ -47,10 +46,6 @@ Coordinates IRobot::buildNewPosition(const Direction& dir) {
 }
 
 void IRobot::move(const Direction& dir) {
-	//if (getRobotClass() != RobotClass::explorer) {
-	//	updateMap();
-	//}
-
 	updateMap();
 
 	Coordinates newPosition = buildNewPosition(dir);

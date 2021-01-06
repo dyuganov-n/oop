@@ -13,7 +13,7 @@ Manager::~Manager() {
 	repeater = nullptr;
 }
 
-Coordinates Manager::FindEmptySpace(const Map& map) const {
+Coordinates Manager::findEmptySpace(const Map& map) const {
 	if (repeater == nullptr) {
 		throw exception("Can't find empty space. Repeater is nullptr.");
 		//return { 0, 0 };
@@ -31,8 +31,8 @@ Coordinates Manager::FindEmptySpace(const Map& map) const {
 	//return { 0, 0 };
 }
 
-void Manager::CreateExplorer() {
-	Coordinates globalCoords = FindEmptySpace(environment->getGlobalMap());
+void Manager::createExplorer() {
+	Coordinates globalCoords = findEmptySpace(environment->getGlobalMap());
 	const Coordinates robotStartCoords = { 0, 0 };
 	IMode* newMode = IdlingMode::getInstance();
 	Explorer* newExplorer = new Explorer(robotStartCoords, repeater, environment);
@@ -59,13 +59,13 @@ bool Manager::explorerInManualMode() {
 	}
 }
 
-void Manager::CreateSapper() {
+void Manager::createSapper() {
 	if (robots.empty()) {
 		throw exception("Can't create sapper. There is no explorers.");
 	}
 	else if(noSappersCreated()) {
 		if (explorerInManualMode()) {
-			Coordinates newCoords = FindEmptySpace(robots.at(0).second->getMap());
+			Coordinates newCoords = findEmptySpace(robots.at(0).second->getMap());
 			IMode* newMode = IdlingMode::getInstance();
 			Sapper* newSapper = nullptr;
 			for (const auto& item : robots) {
@@ -85,7 +85,7 @@ void Manager::CreateSapper() {
 	}
 }
 
-void Manager::DeleteSapper() {
+void Manager::deleteSapper() {
 	if (noSappersCreated()) {
 		throw exception("Can't delete sapper. Sapper was not created.");
 	}
@@ -96,14 +96,14 @@ void Manager::DeleteSapper() {
 				Sapper* tmp = dynamic_cast<Sapper*>(robots.at(i).second);
 				//tmp->~Sapper();
 				robots.erase(robots.begin() + i);
-				//delete tmp;
+				delete tmp;
 				return;
 			}
 		}
 	}
 }
 
-void Manager::ChangeExplorerMode(IMode* newMode) {
+void Manager::changeExplorerMode(IMode* newMode) {
 	for (auto& item : robots) {
 		if (item.second->getRobotClass() == RobotClass::explorer) {
 			item.first = newMode;

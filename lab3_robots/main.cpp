@@ -28,7 +28,6 @@ void createFile(const size_t& length, const size_t& width, const Object& obj) {
 
 int main(int argc, char* argv[]) {
 	try {
-		
 		ConsoleView view;
 		const size_t cellsInView = 11;
 
@@ -37,15 +36,14 @@ int main(int argc, char* argv[]) {
 		parser.setMapFileName(argc, argv);
 
 		Manager manager(parser.getMapFileName());
-		manager.CreateExplorer();
-		//manager.CreateSapper(); // no empty space because Explorers map is nor discovered at all
+		manager.createExplorer();
 		view.displayMap(&manager, cellsInView, ViewMode::LocalMap);
 
 		if (manager.EnvironmentPtrIsNull()) {
 			throw exception("Manager can't make step. Environment pointer is nullptr.");
 			return 0;
 		}
-		else if (manager.RepeaterPtrIsNull()) {
+		else if (manager.repeaterPtrIsNull()) {
 			throw exception("Manager can't make step. Repeater pointers is nullptr.");
 			return 0;
 		}

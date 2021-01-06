@@ -10,18 +10,11 @@ public:
 	Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep, Environment* env);
 	Sapper() = delete;
 
-	virtual ~Sapper() {
-		this->internalMap.~Map();
-		this->environment = nullptr;
-		this->repeater = nullptr;
-		
-	}
+	virtual ~Sapper();
 
 	// getting information about robot
 	const RobotClass& getRobotClass() const { return this->_class; }
 
 	// unique actions
 	void defuse();
-
 };
-

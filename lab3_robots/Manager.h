@@ -34,20 +34,17 @@ public:
 	Environment* getEnvironment() { return this->environment; }
 
 	bool EnvironmentPtrIsNull() { return environment == nullptr ? true : false; }
-	bool RepeaterPtrIsNull() { return repeater == nullptr ? true : false; }
+	bool repeaterPtrIsNull() { return repeater == nullptr ? true : false; }
 
 	vector<pair<IMode*, IRobot*>>& getRobots() { return this->robots; }
 	const Map& getRobotsMap() { return this->robots[0].second->getMap(); }
 
-	Coordinates FindEmptySpace(const Map& map) const;
+	Coordinates findEmptySpace(const Map& map) const;
 
-	void CreateExplorer();
-	void CreateSapper();
-	void DeleteSapper();
+	void createExplorer();
+	void createSapper();
+	void deleteSapper();
 
-	void ChangeExplorerMode(IMode* newMode);
-
-	//void handleCommand(ICommand* command);
-	//void Step();
+	void changeExplorerMode(IMode* newMode);
 };
 

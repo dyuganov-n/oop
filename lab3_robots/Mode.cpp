@@ -121,30 +121,10 @@ Coordinates finalPointSearch(const Map& _map, const Coordinates& start, const Ob
 							 const Environment& env, const vector<Object>& barrierObjs) {
 	queue<Coordinates> frontier;
 	map<Coordinates, Coordinates> cameFrom;
-
 	cameFrom[start] = start;
 	frontier.push(start);
 
 	// search final point
-	/*while (!frontier.empty()) {
-		current = frontier.front();
-		frontier.pop();
-
-		if (_map.getObject(current) == objToFind) {
-			return current;
-		}
-
-		for (auto& next : neighbors(current, _map, env, barrierObjs)) {
-			if (next.second == objToFind) {
-				return next.first;
-			}
-			if (!visited.count(next.first)) {
-				frontier.push(next.first);
-				visited[next.first] = true;
-			}
-		}
-	}*/
-
 	while (!frontier.empty()) {
 		const Coordinates current = frontier.front();
 		frontier.pop();
@@ -166,21 +146,6 @@ Coordinates finalPointSearch(const Map& _map, const Coordinates& start, const Ob
 	}
 
 	return start;
-
-	//while (!frontier.empty()) {
-	//	current = frontier.front();
-	//	frontier.pop();
-	//	if (_map.getObject(current) == objToFind) {
-	//		return current;
-	//	}
-	//	for (auto& next : neighbors(current, _map, env, barrierObjs)) {
-	//		if (!cameFrom.count(next.first)) {
-	//			frontier.push(next.first);
-	//			//visited[next.first] = true;
-	//			cameFrom[next.first] = current;
-	//		}
-	//	}
-	//}
 }
 
 vector<Coordinates> buildPath(const Coordinates& start, const Coordinates& goal, const map<Coordinates, Coordinates>& cameFrom) {
@@ -286,7 +251,6 @@ void AutoMode::invokeCommand(Explorer* explorer, Sapper* sapper) {
 		throw exception("Auto mode error. Robot is nullptr.");
 		return;
 	}
-	//TODO:  синхронизировать карты роботов
 
 	bool allBombsDefused = false;
 	vector<Coordinates> explorerPath, sapperPath;

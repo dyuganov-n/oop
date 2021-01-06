@@ -7,6 +7,11 @@ Sapper::Sapper(const Map& _map, const Coordinates& startPosition, Repeater* rep,
 	this->repeater = rep;
 }
 
+Sapper::~Sapper() {
+	this->environment = nullptr;
+	this->repeater = nullptr;
+}
+
 void Sapper::defuse() {
 	updateMap();
 	if (internalMap.getObject(position) == Object::bomb) {
