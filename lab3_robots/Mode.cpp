@@ -259,7 +259,10 @@ void ScanMode::invokeCommand(IRobot* robot) {
 		vector<Coordinates> path;
 		path = findPathToCell(explorer->getMap(), explorer->getPosition(), *(explorer->getEnvironment()), Object::unknown, { Object::bomb, Object::rock });
 		if (path.empty()) return;
-		else path.pop_back();
+		else {
+			path.erase(path.begin()); // delete current cell 
+			path.pop_back(); // delete last cell (to scan it we don't step there & it can be bad cell)
+		}
 
 		if (stepsNumber < path.size()) {
 			for (size_t i = 0; i < stepsNumber; ++i) {
@@ -298,11 +301,12 @@ void AutoMode::invokeCommand(Explorer* explorer, Sapper* sapper) {
 			explorer->collect();
 			explorerPath = findPathToCell(explorer->getMap(), explorer->getPosition(), *(explorer->getEnvironment()), Object::apple, { Object::bomb, Object::rock });
 			if (explorerPath.empty()) return;
+			explorerPath.erase(explorerPath.begin()); // delete current cell 
 		}
 		
 		// sapper
 		if (sapper != nullptr && !allBombsDefused) {
-			if (!explorerPath.empty()) {
+			if (!sapperPath.empty()) {
 				sapper->move(sapperPath.at(0));
 				sapperPath.erase(sapperPath.begin());
 			}
@@ -310,6 +314,7 @@ void AutoMode::invokeCommand(Explorer* explorer, Sapper* sapper) {
 				sapper->defuse();
 				sapperPath = findPathToCell(sapper->getMap(), sapper->getPosition(), *(sapper->getEnvironment()), Object::bomb, { Object::rock });
 				if (sapperPath.empty()) allBombsDefused = true;
+				else sapperPath.erase(sapperPath.begin()); // delete current cell
 			}
 		}
 	}

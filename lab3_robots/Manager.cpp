@@ -96,7 +96,7 @@ void Manager::DeleteSapper() {
 				Sapper* tmp = dynamic_cast<Sapper*>(robots.at(i).second);
 				//tmp->~Sapper();
 				robots.erase(robots.begin() + i);
-				//delete tmp;											// ERROR HERE
+				//delete tmp;
 				return;
 			}
 		}

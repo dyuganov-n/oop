@@ -47,9 +47,11 @@ Coordinates IRobot::buildNewPosition(const Direction& dir) {
 }
 
 void IRobot::move(const Direction& dir) {
-	if (getRobotClass() != RobotClass::explorer) {
-		updateMap();
-	}
+	//if (getRobotClass() != RobotClass::explorer) {
+	//	updateMap();
+	//}
+
+	updateMap();
 
 	Coordinates newPosition = buildNewPosition(dir);
 	if (isEmptyCell(newPosition)) {
@@ -71,7 +73,7 @@ void IRobot::move(const Direction& dir) {
 		}
 	}
 	else {
-		throw exception("Can't move. There is a robot in this cell");
+		//throw exception("Can't move. There is a robot in this cell");
 	}
 }
 
@@ -83,7 +85,7 @@ void IRobot::updateMap() {
 	if (repeater->isAlone()) { // если робот один (explorer), то все изменения уже сделаны
 		return;
 	}
-	vector<pair<Coordinates, Object>> updates(repeater->getMapUpdates());
+	/*vector<pair<Coordinates, Object>> updates(repeater->getMapUpdates());
 	Coordinates oldPosition(position);
 	
 	if (getRobotClass() == RobotClass::sapper) {
@@ -91,11 +93,21 @@ void IRobot::updateMap() {
 	}
 
 	internalMap.setObject(updates);
-	repeater->NotifyMove(this->getRobotClass(), oldPosition, position);
+	repeater->NotifyMove(this->getRobotClass(), oldPosition, position);*/
 
+	vector<vector<pair<Coordinates, Object>>> updates(repeater->getMapUpdates(getRobotClass()));
+	Coordinates oldPosition(position);
+	if (getRobotClass() == RobotClass::sapper) {
+		this->position = repeater->getNewCoords(this->getRobotClass());
+	}
+	for (const auto item : updates) {
+		internalMap.setObject(item);
+	}
+	repeater->NotifyMove(this->getRobotClass(), oldPosition, position);
 }
 
 void IRobot::move(const Coordinates& coords) {
+	updateMap();
 	if (coords.x < 0 || coords.x >= static_cast<ptrdiff_t>(getMap().getMapLength()) ||
 		coords.y < 0 || coords.y >= static_cast<ptrdiff_t>(getMap().getMapWidth())) {
 		throw exception("Robot coordinates move error. New coordinates are over robot map.");
@@ -116,6 +128,6 @@ void IRobot::move(const Coordinates& coords) {
 		return;
 	}
 	else {
-		throw exception("Robot coordinates move error. New coordinates are not in avaliable area.");
+		//throw exception("Robot coordinates move error. New coordinates are not in avaliable area.");
 	}
 }

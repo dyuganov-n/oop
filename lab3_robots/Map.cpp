@@ -308,7 +308,7 @@ void Map::fill(const Object& obj) {
 	}
 }
 
-Map Map::operator=(const Map& other) {
+Map& Map::operator=(const Map& other) {
 	// cleaning mem
 	for (size_t i = 0; i < mapLength; ++i) {
 		delete[] field[i];

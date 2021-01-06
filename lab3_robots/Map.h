@@ -70,7 +70,7 @@ public:
 
 	void fill(const Object& obj);
 
-	Map operator=(const Map& other);
+	Map& operator=(const Map& other);
 
 };
 

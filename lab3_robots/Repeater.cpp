@@ -1,8 +1,5 @@
 #include "Repeater.h"
 
-
-
-
 bool Repeater::isEqual(const Coordinates& l, const Coordinates& r) const noexcept {
 	if ((l.x == r.x) && (l.y == r.y)) {
 		return true;
@@ -67,16 +64,26 @@ bool Repeater::isEmptyCell(const Coordinates& coords) const noexcept {
 	return true;
 }
 
-vector<pair<Coordinates, Object>> Repeater::getMapUpdates() {
-	vector<pair<Coordinates, Object>> res(changes);
-	changes.clear();
-	return res;
-	//return this->changes;
+//vector<pair<Coordinates, Object>> Repeater::getMapUpdates() {
+//	vector<pair<Coordinates, Object>> res(changes);
+//	changes.clear();
+//	return res;
+//	//return this->changes;
+//}
+
+// get map updates for robot class robotClass
+vector<vector<pair<Coordinates, Object>>> Repeater::getMapUpdates(const RobotClass& robotClass) {
+	if (robotClass == RobotClass::explorer) {
+		vector<vector<pair<Coordinates, Object>>> result(changesOfSapper);
+		changesOfSapper.clear();
+		return result;
+	}
+	else if (robotClass == RobotClass::sapper) {
+		vector<vector<pair<Coordinates, Object>>> result(changesOfExplorer);
+		changesOfExplorer.clear();
+		return result;
+	}
+	else return {};
 }
 
-void Repeater::DeleteElem(const size_t& idx) {
-	if (idx >= this->changes.size() || idx < 0) {
-		throw exception("Can't delete this element in changes vector");
-	}
-	this->changes.erase(changes.begin() + idx);
-}
+

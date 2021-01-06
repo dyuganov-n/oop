@@ -12,6 +12,7 @@ Explorer::~Explorer() {
 }
 
 void Explorer::collect() {
+	updateMap();
 	if (internalMap.getObject(position) == Object::apple) {
 		if (environment->appleCollected(position)) {
 			internalMap.setObject(position, Object::empty);
@@ -24,6 +25,7 @@ void Explorer::collect() {
 }
 
 void Explorer::scan() {
+	updateMap();
 	const vector<Coordinates> coords = {
 		{ position.x, position.y - 1 }, // left
 		{ position.x, position.y + 1 }, // right
@@ -45,6 +47,7 @@ void Explorer::scan() {
 		}
 	}
 	if (!needScan) return;
+	this->repeater->NotifyScan(scan);
 
 	Coordinates newZeroPoint = environment->getRobotsZeroPoint();
 	ptrdiff_t offsetX = 0, offsetY = 0;
@@ -68,4 +71,5 @@ void Explorer::scan() {
 	}
 	internalMap.setObject(scan);
 	environment->setRobotsMapZeroPoint(newZeroPoint);
+
 }
