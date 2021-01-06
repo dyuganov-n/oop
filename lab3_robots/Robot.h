@@ -20,9 +20,7 @@ public:
 
 	// one cell step
 	virtual void move(const Direction& dir);
-
-	// move with check that new coords are in one step from robot
-	virtual void move(const Coordinates& coords);
+	virtual void move(const Coordinates& coords);// move with check that new coords are in one step from robot
 
 	virtual void idling();
 
@@ -31,7 +29,6 @@ public:
 	virtual void updateMap();
 	virtual Environment* getEnvironment() { return this->environment; }
 
-	
 protected:
 	Map internalMap;
 	Coordinates position = { 0, 0 };

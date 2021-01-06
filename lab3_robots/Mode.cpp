@@ -283,19 +283,11 @@ void AutoMode::invokeCommand(Explorer* explorer, Sapper* sapper) {
 		throw exception("Auto mode error. Robot is nullptr.");
 		return;
 	}
+	//TODO:  синхронизировать карты роботов
 
 	bool allBombsDefused = false;
 	vector<Coordinates> explorerPath, sapperPath;
-	explorerPath = findPathToCell(explorer->getMap(), explorer->getPosition(), *(explorer->getEnvironment()), Object::apple, { Object::bomb, Object::rock });
-	if (explorerPath.empty()) return;
-	if (sapper != nullptr) {
-		sapperPath = findPathToCell(sapper->getMap(), sapper->getPosition(), *(sapper->getEnvironment()), Object::bomb, { Object::rock });
-		if (sapperPath.empty()) allBombsDefused = true;
-	}
 
-	// СИНХРОНИЗИРОВАТЬ КАРТЫ РОБОТОВ НА КАЖДОМ ШАГУ
-
-	
 	while (true) {
 		// explorer
 		if (!explorerPath.empty()) {
@@ -308,7 +300,6 @@ void AutoMode::invokeCommand(Explorer* explorer, Sapper* sapper) {
 			if (explorerPath.empty()) return;
 		}
 		
-
 		// sapper
 		if (sapper != nullptr && !allBombsDefused) {
 			if (!explorerPath.empty()) {

@@ -15,14 +15,7 @@ private:
 	vector<pair<Coordinates, Object>> changes;
 	vector<pair<Coordinates, RobotClass>> robotsPositions;
 
-	bool isEqual(const Coordinates& l, const Coordinates& r) const noexcept {
-		if ((l.x == r.x) && (l.y == r.y)) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+	bool isEqual(const Coordinates& l, const Coordinates& r) const noexcept;
 
 public:
 	Repeater() = default;
@@ -50,76 +43,23 @@ public:
 	}
 
 	// delete coords
-	void NotifyRobotDeleted(const Coordinates& coords) {
-		for (size_t i = 0; i < robotsPositions.size(); ++i) {
-			if (isEqual(robotsPositions.at(i).first, coords)) {
-				robotsPositions.erase(robotsPositions.begin() + i);
-				return;
-			}
-		}
-	}
+	void NotifyRobotDeleted(const Coordinates& coords);
 
 	// delete old coords, add new
-	void NotifyMove(const RobotClass& _class, const Coordinates& prevCoords, const Coordinates& newCoords) {
-		if (!robotsPositions.empty()) {
-			for (size_t i = 0; i < robotsPositions.size(); ++i) {
-				if (isEqual(robotsPositions.at(i).first, prevCoords) && robotsPositions.at(i).second == _class) {
-					robotsPositions.erase(robotsPositions.begin() + i);
-					break;
-				}
-			}
-			robotsPositions.push_back({ newCoords, _class});
-		}
-		else {
-			throw exception("Notify move error. There are no robots positions in repeater.");
-		}
-	}
+	void NotifyMove(const RobotClass& _class, const Coordinates& prevCoords, const Coordinates& newCoords);
 
-	void NotifyMapExp(const ptrdiff_t& offsetX, const ptrdiff_t& offsetY) {
-		for (auto& item : robotsPositions) {
-			item.first.x += offsetX;
-			item.first.y += offsetY;
-		}
-	}
+	void NotifyMapExp(const ptrdiff_t& offsetX, const ptrdiff_t& offsetY);
 
-	Coordinates getSapperCoords() {
-		const RobotClass _class = RobotClass::sapper;
-		for (const auto& item : robotsPositions) {
-			if (item.second == _class) {
-				return item.first;
-			}
-		}
-	}
+	Coordinates getSapperCoords();
 
-	Coordinates getNewCoords(const RobotClass& _class) {
-		for (const auto& item : robotsPositions) {
-			if (item.second == _class) {
-				return item.first;
-			}
-		}
-	}
+	Coordinates getNewCoords(const RobotClass& _class);
 
 	// Check that there is no other robot in this position
-	bool isEmptyCell(const Coordinates& coords) const noexcept {
-		for (const auto& i : robotsPositions) {
-			if (isEqual(i.first, coords)) return false;
-		}
-		return true;
-	}
+	bool isEmptyCell(const Coordinates& coords) const noexcept;
 
-	vector<pair<Coordinates, Object>> getMapUpdates() {
-		vector<pair<Coordinates, Object>> res(changes);
-		changes.clear();
-		return res;
-		//return this->changes;
-	}
+	vector<pair<Coordinates, Object>> getMapUpdates();
 
-	void DeleteElem(const size_t& idx) {
-		if (idx >= this->changes.size() || idx < 0) {
-			throw exception("Can't delete this element in changes vector");
-		}
-		this->changes.erase(changes.begin() + idx);
-	}
+	void DeleteElem(const size_t& idx);
 
 	bool isAlone() {
 		return !robotsPositions.size();
