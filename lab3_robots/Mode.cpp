@@ -278,35 +278,50 @@ void ScanMode::invokeCommand(IRobot* robot) {
 	}
 }
 
-
-
 void AutoMode::invokeCommand(Explorer* explorer, Sapper* sapper) {
-	if (explorer != nullptr) {
+	if (explorer == nullptr) {
 		throw exception("Auto mode error. Robot is nullptr.");
 		return;
 	}
 
-	bool stop = false;
+	bool allBombsDefused = false;
 	vector<Coordinates> explorerPath, sapperPath;
 	explorerPath = findPathToCell(explorer->getMap(), explorer->getPosition(), *(explorer->getEnvironment()), Object::apple, { Object::bomb, Object::rock });
 	if (explorerPath.empty()) return;
 	if (sapper != nullptr) {
 		sapperPath = findPathToCell(sapper->getMap(), sapper->getPosition(), *(sapper->getEnvironment()), Object::bomb, { Object::rock });
+		if (sapperPath.empty()) allBombsDefused = true;
 	}
 
-	// построить два пути
-	// идти по шагам
-	// если какой-то из роботов достиг цели, сделать действие и построить себе новый путь
-	// если путь исследователя пуст, то выходим
+	// СИНХРОНИЗИРОВАТЬ КАРТЫ РОБОТОВ НА КАЖДОМ ШАГУ
 
+	
 	while (true) {
+		// explorer
+		if (!explorerPath.empty()) {
+			explorer->move(explorerPath.at(0));
+			explorerPath.erase(explorerPath.begin());
+		}
+		else {
+			explorer->collect();
+			explorerPath = findPathToCell(explorer->getMap(), explorer->getPosition(), *(explorer->getEnvironment()), Object::apple, { Object::bomb, Object::rock });
+			if (explorerPath.empty()) return;
+		}
+		
 
-
-
-
+		// sapper
+		if (sapper != nullptr && !allBombsDefused) {
+			if (!explorerPath.empty()) {
+				sapper->move(sapperPath.at(0));
+				sapperPath.erase(sapperPath.begin());
+			}
+			else {
+				sapper->defuse();
+				sapperPath = findPathToCell(sapper->getMap(), sapper->getPosition(), *(sapper->getEnvironment()), Object::bomb, { Object::rock });
+				if (sapperPath.empty()) allBombsDefused = true;
+			}
+		}
 	}
-
-
 }
 
 void AutoMode::invokeCommand(IRobot* robot) {

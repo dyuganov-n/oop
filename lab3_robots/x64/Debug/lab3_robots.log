@@ -1,4 +1,9 @@
-﻿  Mode.cpp
+﻿  Command.cpp
+  CommandHandler.cpp
+  Mode.cpp
 C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Mode.cpp(203,29): warning C4018: '>=': signed/unsigned mismatch
 C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Mode.cpp(204,26): warning C4018: '>=': signed/unsigned mismatch
+  Parser.cpp
+  main.cpp
+  Generating Code...
   lab3_robots.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\x64\Debug\lab3_robots.exe

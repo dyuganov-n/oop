@@ -185,8 +185,35 @@ public:
 	virtual void execute() override {
 		//manager->getRobots()[0].first = newMode;
 		manager->ChangeExplorerMode(newMode);
-		if (dynamic_cast<ScanMode*>(newMode) || dynamic_cast<AutoMode*>(newMode)) {
-			newMode->invokeCommand(manager->getRobots().at(0).second);
+		if (dynamic_cast<ScanMode*>(newMode)) {
+			Explorer* explorer = dynamic_cast<Explorer*>(manager->getRobots().at(0).second);
+			if (explorer->getRobotClass() != RobotClass::explorer) {
+				throw exception("ChangeModeCommand error. Can't invoke scan mode. Explorer is not explorer in manager.");
+			}
+			newMode->invokeCommand(explorer);
+		}
+		else if (dynamic_cast<AutoMode*>(newMode)) {
+			AutoMode* md = dynamic_cast<AutoMode*>(newMode);
+			if (manager->getRobots().size() == 2) {
+				Explorer* explorer = dynamic_cast<Explorer*>(manager->getRobots().at(0).second);
+				if (explorer->getRobotClass() != RobotClass::explorer) {
+					throw exception("ChangeModeCommand error. Can't invoke auto mode. Explorer is not explorer in manager.");
+				}
+				Sapper* sapper = dynamic_cast<Sapper*>(manager->getRobots().at(1).second);
+				if (sapper->getRobotClass() != RobotClass::sapper) {
+					throw exception("ChangeModeCommand error. Can't invoke auto mode. Sapper is not sapper in manager.");
+				}
+
+				md->invokeCommand(explorer, sapper);
+			}
+			else {
+				IRobot* explorer = dynamic_cast<Explorer*>(manager->getRobots().at(0).second);
+				if (explorer->getRobotClass() != RobotClass::explorer) {
+					throw exception("ChangeModeCommand error. Can't invoke scan mode. Explorer is not explorer in manager.");
+				}
+				newMode->invokeCommand(explorer);
+			}
+			
 		}
 	}
 
