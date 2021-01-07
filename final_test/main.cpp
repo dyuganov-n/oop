@@ -26,11 +26,13 @@ int* const c6 = nullptr;
 // TASK 2
 // Примитивные типы С++ и ограничения на их размеры.
 // char <= short <= int <= long <= long long 
+// float <= double
+// signed или unsigned на размер не влияет
 
 
 // TASK 3
-// поля
-// методы
+// состояние (значения полей), поведение (методы), идентичность/детефикатор (имя объекта)
+
 
 // TASK 4
 void swap(int* first, int* second) {
@@ -109,16 +111,16 @@ private:
 
 void testSixTask() {
 	try {
-		throw C();
+		throw B();
 	}
 	catch (C ex) {
-		cout << ex.getInfo() << endl;
+		cout << "C: " + ex.getInfo() << endl;
 	}
 	catch (B ex) {
-		cout << ex.getInfo() << endl;
+		cout << "B: " + ex.getInfo() << endl;
 	}
 	catch (A ex) {
-		cout << ex.getInfo() << endl;
+		cout << "A: " + ex.getInfo() << endl;
 	}
 }
 
@@ -144,25 +146,43 @@ void testSixTask() {
 //
 //int* p3 = (int*)malloc(sizeof(int)*n);
 //if(p3 == NULL) { ... };
+//if it is class obj, call constructor
 
 
 // TASK 9 
+
+class Iterator {
+public:
+	Iterator(size_t* arr, size_t& idx);
+	virtual ~Iterator();
+
+	Iterator& operator++ ();
+	bool operator== (const Iterator& other);
+	bool operator!= (const Iterator& other);
+	size_t& operator* ();
+	size_t* operator-> ();
+};
 
 #include <iterator>
 class DynamicArr {
 private:
 	size_t size;
-	size_t* data;
+	size_t* data; // arr itself
+	size_t capacity;
 public:
-
+	DynamicArr();
+	virtual ~DynamicArr();
 	void setSize(const size_t &newSize);
 	size_t getSize();
 	size_t& operator[](const size_t& idx);
+	DynamicArr& operator=(const DynamicArr& other);
 	void push_back(const size_t& item);
-	/*iterator begin();
-	iterator end();*/
-
+	void erase(const size_t& idx);
+	Iterator begin();
+	Iterator end();
 };
+
+
 
 
 // TASK 10
@@ -177,39 +197,52 @@ public:
 	size_t getCnt() { return cnt; }
 };
 
-Count cnt;
-
 template<typename _Ty>
 class mySharedPtr {
 private:
-	Count* c = nullptr;
-	_Ty* ptr;
+	Count* cnt = nullptr;
+	_Ty* ptr = nullptr;
 public:
-	mySharedPtr(_Ty* ptr, Count *cnt) {
-		c->increase();
+	mySharedPtr(_Ty* ptr) {
+		cnt = new Count;
+		cnt->increase();
 		this->ptr = ptr;
 	}
-	mySharedPtr(mySharedPtr other) {
-		c = other.c;
-		c->increase();
+	mySharedPtr(const mySharedPtr& other) {
+		cnt = other.cnt;
+		cnt->increase();
 		this->ptr = other.ptr;
 	}
 	~mySharedPtr() {
-		if (c.getCnt() == 0) {
+		cnt->decrease();
+		if (cnt.getCnt() == 0) {
 			delete[] ptr;
+			delete cnt;
 		}
-		else {
-			c.decrease();
+	}
+	mySharedPtr& operator= (const mySharedPtr& other) {
+		this->cnt->decrease();
+		if (cnt.getCnt() == 0) {
+			delete[] ptr;
+			delete cnt;
 		}
+
+		this->cnt = other.cnt;
+		this->ptr = other.ptr;
 	}
 };
 
 
-
-
 int main() {
+	int* ptr1, *ptr2;
+	mySharedPtr<int> a(ptr1);
+	mySharedPtr<int> aa(a);
 
-	testSixTask();
+	mySharedPtr<int> b(ptr2);
+	a = b;
+
+
+	//testSixTask();
 
 
 	return 0;
