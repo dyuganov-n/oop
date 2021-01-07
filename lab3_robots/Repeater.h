@@ -12,7 +12,6 @@ using std::vector;
 
 class Repeater {
 private:
-	//vector<pair<Coordinates, Object>> changes;
 	vector<vector<pair<Coordinates, Object>>> changesOfSapper;
 	vector<vector<pair<Coordinates, Object>>> changesOfExplorer;
 
@@ -26,26 +25,21 @@ public:
 
 	// makes this cell empty
 	void NotifyDefuse(const Coordinates& coords) {
-		//changes.push_back({ coords, Object::empty });
 		changesOfSapper.push_back({ { coords, Object::empty } });
 	}
 
 	void NotifyScan(const vector<pair<Coordinates, Object>>& objects) noexcept {
-		if (isAlone()) { // если робот один (explorer), то все изменения уже сделаны
+		if (isAlone()) {
 			return;
 		}
-		//for (const auto& item : objects) {
-		//	//this->changes.push_back(item);
-		//}
 		changesOfExplorer.push_back(objects);
 	}
 
 	// makes this cell empty
 	void NotifyCollect(const Coordinates& coords) noexcept {
-		if (isAlone()) { // если робот один (explorer), то все изменения уже сделаны
+		if (isAlone()) {
 			return;
 		}
-		//changes.push_back({coords, Object::empty});
 		changesOfExplorer.push_back({ { coords, Object::empty } });
 	}
 
@@ -69,11 +63,7 @@ public:
 	// Check that there is no other robot in this position
 	bool isEmptyCell(const Coordinates& coords) const noexcept;
 
-	//vector<pair<Coordinates, Object>> getMapUpdates();
-	//vector<pair<Coordinates, Object>> getMapUpdates(const RobotClass&);
 	vector<vector<pair<Coordinates, Object>>> getMapUpdates(const RobotClass& robotClass);
-
-	//void DeleteElem(const size_t& idx);
 
 	bool isAlone() {
 		return robotsPositions.size() == 1;

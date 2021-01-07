@@ -13,19 +13,6 @@ bool operator!=(const Coordinates& first, const Coordinates& second) {
 	return true;
 }
 
-//bool operator<(const Coordinates& first, const Coordinates& second) {
-//	if (first.x < second.x) {
-//		if (first.y < second.y) {
-//			return true;
-//		}
-//		return false;
-//	}
-//	if (first.y < second.y) {
-//		return true;
-//	}
-//	return false;
-//}
-
 bool operator<(const Coordinates& first, const Coordinates& second) {
 	if (first.x != second.x) return first.x < second.x;
 	return first.y < second.y;

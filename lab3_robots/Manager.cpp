@@ -94,7 +94,6 @@ void Manager::deleteSapper() {
 			if (robots.at(i).second->getRobotClass() == RobotClass::sapper) {
 				repeater->NotifyRobotDeleted(robots.at(i).second->getPosition());
 				Sapper* tmp = dynamic_cast<Sapper*>(robots.at(i).second);
-				//tmp->~Sapper();
 				robots.erase(robots.begin() + i);
 				delete tmp;
 				return;

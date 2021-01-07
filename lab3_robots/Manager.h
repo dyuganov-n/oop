@@ -14,10 +14,9 @@ using std::cin;
 
 class Manager {
 private:
-	vector<pair<IMode*, IRobot*>> robots; // can Mode use their unique functions?
+	vector<pair<IMode*, IRobot*>> robots;
 	size_t robotsIdCnt = 0;
 
-	//Parser* parser = nullptr;
 	Environment* environment = nullptr; // global map is here
 	Repeater* repeater = nullptr; // information exchange between robots 
 
@@ -25,11 +24,9 @@ private:
 	bool explorerInManualMode();
 
 public:	
-	//Manager(Parser* prsr);
 	Manager(const string& InputFileName);
 	~Manager();
 
-	//void setParser(Parser* newParser) { this->parser = newParser; }
 	void setEnvironment(Environment* newEnvironment) { this->environment = newEnvironment; }
 	Environment* getEnvironment() { return this->environment; }
 

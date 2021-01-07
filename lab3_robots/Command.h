@@ -183,7 +183,6 @@ public:
 	}
 	
 	virtual void execute() override {
-		//manager->getRobots()[0].first = newMode;
 		manager->changeExplorerMode(newMode);
 		if (dynamic_cast<ScanMode*>(newMode)) {
 			Explorer* explorer = dynamic_cast<Explorer*>(manager->getRobots().at(0).second);

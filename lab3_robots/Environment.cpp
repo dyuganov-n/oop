@@ -2,7 +2,6 @@
 
 Environment::Environment(const string& globalMapFileName) {
 	if (!globalMapFileName.empty()) {
-		//Map tmp(globalMapFileName);
 		this->globalMap = new Map(globalMapFileName);
 	}
 	else {
@@ -42,7 +41,6 @@ bool Environment::bombDefused(const Coordinates& coords) {
 
 bool Environment::isOverGlobalMap(const Coordinates& coords) const { 
 	Coordinates globalRobPos = getGlobalCoords(coords);
-
 	if (globalRobPos.x >= static_cast<ptrdiff_t>(globalMap->getMapLength()) || globalRobPos.x < 0 ||
 		globalRobPos.y >= static_cast<ptrdiff_t>(globalMap->getMapWidth()) || globalRobPos.y < 0) {
 		return true;

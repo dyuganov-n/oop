@@ -7,7 +7,6 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 	
 	system("cls");
 
-	//ptrdiff_t x = 0, y = 0;
 	Coordinates tmp;
 	Object obj = Object::unknown;
 
@@ -26,11 +25,9 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 				for (auto item : mngr->getRobots()) {
 					if (item.second->getPosition().x == tmp.x && item.second->getPosition().y == tmp.y) {
 						if (item.second->getRobotClass() == RobotClass::explorer) {
-							//std::cout << "E ";
 							printf("\x1B[94mE \033[0m");
 						}
 						else if (item.second->getRobotClass() == RobotClass::sapper) {
-							//std::cout << "S ";
 							printf("\x1B[96mS \033[0m");
 						}
 					}
@@ -50,12 +47,6 @@ void ConsoleView::displayMap(Manager* mngr, const int& oneSideViewField, const V
 				obj = mngr->getRobotsMap().getObject(tmp);
 			}
 
-			/*if (obj == Object::unknown) std::cout << "? ";
-			else if (obj == Object::apple) std::cout << "@ ";
-			else if (obj == Object::bomb) std::cout << "x ";
-			else if (obj == Object::empty) std::cout << ". ";
-			else if (obj == Object::rock) std::cout << "# ";
-			else cout << "? ";*/
 			if (obj == Object::unknown) printf("\x1B[37m? \033[0m");
 			else if (obj == Object::apple) printf("\x1B[32m@ \033[0m");
 			else if (obj == Object::bomb) printf("\x1B[31mx \033[0m");

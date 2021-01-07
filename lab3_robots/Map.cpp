@@ -116,9 +116,9 @@ Object Map::getObject(const Coordinates& coords) const {
 	}
 	if (coords.x < 0 || coords.x >= static_cast<ptrdiff_t>(mapLength) || 
 		coords.y < 0 || coords.y >= static_cast<ptrdiff_t>(mapWidth)) {
-		//return Object::unknown;
 		string massage = "Map getObject error: incorrect coordinates. " + getStringCoords(coords);
 		throw exception(massage.c_str());
+		return Object::unknown;
 	}
 	else {
 		return this->field[coords.x][coords.y]; 
@@ -238,7 +238,6 @@ bool Map::setObject(vector<pair<Coordinates, Object>> objects) {
 		}
 		return true;
 	}
-
 }
 
 // return true, if expansion needed

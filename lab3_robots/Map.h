@@ -17,7 +17,6 @@ using namespace std;
 // V
 // x (mapLength)
 
-
 class Map {
 private:
 	Object** field = nullptr;
@@ -30,7 +29,7 @@ private:
 	// symbols cnt in line (y)
 	size_t mapWidth = 0;
 
-	size_t resourcesOnMap = 0; // don't need?
+	size_t resourcesOnMap = 0;
 	
 	void deleteCurrField();
 	

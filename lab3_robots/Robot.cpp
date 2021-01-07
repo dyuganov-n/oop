@@ -77,18 +77,9 @@ void IRobot::idling() {
 }
 
 void IRobot::updateMap() {
-	if (repeater->isAlone()) { // если робот один (explorer), то все изменения уже сделаны
+	if (repeater->isAlone()) {
 		return;
 	}
-	/*vector<pair<Coordinates, Object>> updates(repeater->getMapUpdates());
-	Coordinates oldPosition(position);
-	
-	if (getRobotClass() == RobotClass::sapper) {
-		this->position = repeater->getNewCoords(this->getRobotClass());
-	}
-
-	internalMap.setObject(updates);
-	repeater->NotifyMove(this->getRobotClass(), oldPosition, position);*/
 
 	vector<vector<pair<Coordinates, Object>>> updates(repeater->getMapUpdates(getRobotClass()));
 	Coordinates oldPosition(position);

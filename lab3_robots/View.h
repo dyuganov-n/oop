@@ -1,16 +1,9 @@
 #pragma once
 
-//#include "Map.h"
-//#include "Robot.h"
-
-#include "Sapper.h"
-#include "Explorer.h"
 #include "Manager.h"
 
 #include <iostream>
 #include <exception>
-
-//using namespace std;
 
 // запрашивает у менеджера карту с роботами
 enum class ViewMode { GlobalMap, LocalMap };

@@ -54,7 +54,7 @@ public:
 private:
 	Map* globalMap = nullptr;
 	vector<Coordinates> collectedApples;
-	Coordinates robotsMapZeroCoord = { 0, 0 }; // начало отсчета СК роботов в СК глобальной карты
+	Coordinates robotsMapZeroCoord = { 0, 0 };
 
 };
 

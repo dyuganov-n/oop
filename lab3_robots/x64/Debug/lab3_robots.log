@@ -1,16 +1,24 @@
 ﻿  Command.cpp
   CommandHandler.cpp
+  ConsoleInput.cpp
+  Environment.cpp
   Explorer.cpp
   Manager.cpp
+  Map.cpp
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Map.cpp(193,19): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Map.cpp(194,19): warning C4018: '>=': signed/unsigned mismatch
   Mode.cpp
 C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Mode.cpp(168,29): warning C4018: '>=': signed/unsigned mismatch
 C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Mode.cpp(169,26): warning C4018: '>=': signed/unsigned mismatch
   Parser.cpp
+  Repeater.cpp
   Robot.cpp
   Sapper.cpp
   View.cpp
-C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.cpp(41,14): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.cpp(41,61): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.cpp(38,14): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\View.cpp(38,61): warning C4018: '>=': signed/unsigned mismatch
   main.cpp
   Generating Code...
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.cpp(50): warning C4715: 'Repeater::getSapperCoords': not all control paths return a value
+C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Repeater.cpp(58): warning C4715: 'Repeater::getNewCoords': not all control paths return a value
   lab3_robots.vcxproj -> C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\x64\Debug\lab3_robots.exe

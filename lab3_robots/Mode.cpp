@@ -121,23 +121,23 @@ Coordinates finalPointSearch(const Map& _map, const Coordinates& start, const Ob
 							 const Environment& env, const vector<Object>& barrierObjs) {
 	queue<Coordinates> frontier;
 	map<Coordinates, Coordinates> cameFrom;
+	vector<pair<Coordinates, Object>> _neighbors;
+	Coordinates current;
+
 	cameFrom[start] = start;
 	frontier.push(start);
 
 	// search final point
 	while (!frontier.empty()) {
-		const Coordinates current = frontier.front();
+		current = frontier.front();
 		frontier.pop();
 
-		//if (env.isOverGlobalMap(current)) continue;
 		if (_map.getObject(current) == objToFind) {
 			return current;
 		}
 
-		vector<pair<Coordinates, Object>> _neighbors = neighbors(current, _map, env, barrierObjs);
-
+		_neighbors = neighbors(current, _map, env, barrierObjs);
 		for (auto& next : _neighbors) {
-			//if (next.second == objToFind) { return next.first; }
 			if (!cameFrom.count(next.first)) {
 				frontier.push(next.first);
 				cameFrom[next.first] = current;
@@ -172,6 +172,8 @@ vector<Coordinates> findPathToCell (const Map& _map, const Coordinates& start, c
 
 	queue<Coordinates> frontier;
 	map<Coordinates, Coordinates> cameFrom; 
+	Coordinates current;
+
 	frontier.push(start);
 	cameFrom[start] = start;
 	bool wayFound = false;
@@ -180,9 +182,9 @@ vector<Coordinates> findPathToCell (const Map& _map, const Coordinates& start, c
 	Coordinates goal = finalPointSearch(_map, start, objToFind, env, barrierObjs);
 	if (goal == start) return {};
 
-	// looking for path to final point
+	// search path to final point
 	while (!frontier.empty()) {
-		Coordinates current = frontier.front();
+		current = frontier.front();
 		frontier.pop();
 
 		if (goal == current) {
@@ -217,11 +219,10 @@ void ScanMode::invokeCommand(IRobot* robot) {
 	Explorer* explorer = dynamic_cast<Explorer*>(robot);
 	if (this->stepsNumber == 0) return;
 
-	// logics for explorer 
+	vector<Coordinates> path;
 	while (stepsNumber > 0) {
 		explorer->scan();
 
-		vector<Coordinates> path;
 		path = findPathToCell(explorer->getMap(), explorer->getPosition(), *(explorer->getEnvironment()), Object::unknown, { Object::bomb, Object::rock });
 		if (path.empty()) return;
 		else {

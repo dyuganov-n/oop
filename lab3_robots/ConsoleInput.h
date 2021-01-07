@@ -7,7 +7,6 @@ using std::string;
 
 #include <algorithm>
 #include <cctype>
-//using namespace std;
 
 class ConsoleInput {
 public:

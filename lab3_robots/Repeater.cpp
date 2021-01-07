@@ -64,13 +64,6 @@ bool Repeater::isEmptyCell(const Coordinates& coords) const noexcept {
 	return true;
 }
 
-//vector<pair<Coordinates, Object>> Repeater::getMapUpdates() {
-//	vector<pair<Coordinates, Object>> res(changes);
-//	changes.clear();
-//	return res;
-//	//return this->changes;
-//}
-
 // get map updates for robot class robotClass
 vector<vector<pair<Coordinates, Object>>> Repeater::getMapUpdates(const RobotClass& robotClass) {
 	if (robotClass == RobotClass::explorer) {
