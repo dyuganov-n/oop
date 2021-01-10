@@ -1,15 +1,33 @@
 #include <iostream>
+#include <fstream>
+#include <exception>
 
 using namespace std;
 
+#include "CSVParser.h"
 #include "tuple_print.h"
-#include <tuple>
+
 
 int main() {
+	try {
+		ifstream file("test.csv");
+		if (!file.is_open()) {
+			throw exception("Input file was not opened.");
+			return 0;
+		}
 
-	//tuple<int, double, size_t, string> a = { -1, 1.11, 11, "azaza" };
-	tuple<> a;
-	cout << a << endl;
+		CSVParser<int, string> parser(file, 0 /*skip first lines count*/);
 
-	return 0;
+		for (tuple<int, string> rs : parser) {
+			cout << rs << endl;
+		}
+
+
+		file.close();
+		return 0;
+	}
+	catch (const exception& e) {
+		cout << "Exception: " << e.what() << endl;
+		return 0;
+	}
 }
