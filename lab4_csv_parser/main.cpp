@@ -7,7 +7,8 @@ using namespace std;
 
 int main() {
 
-	tuple<int, double, size_t, string> a = { -1, 1.11, 11, "azaza" };
+	//tuple<int, double, size_t, string> a = { -1, 1.11, 11, "azaza" };
+	tuple<> a;
 	cout << a << endl;
 
 	return 0;

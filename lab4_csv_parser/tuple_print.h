@@ -17,6 +17,11 @@ namespace tuplePrint {
 		return os << std::get<std::tuple_size<Tuple>::value - 1>(t);
 	}
 
+	template <typename Ch, typename Tr, class Tuple>
+	std::basic_ostream<Ch, Tr>& printTuple(std::basic_ostream<Ch, Tr>& os, const Tuple& t, _size_t<0>) {
+		return os;
+	}
+
 	template<typename Ch, typename Tr, typename... Args>
 	std::basic_ostream<Ch, Tr>& operator<<(std::basic_ostream<Ch, Tr>& os, const std::tuple<Args...>& t) {
 		os << '(';
