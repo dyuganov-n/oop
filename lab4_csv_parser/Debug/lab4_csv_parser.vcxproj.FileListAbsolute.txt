@@ -1,0 +1,2 @@
+C:\Users\Dyuga\Desktop\study_labs\oop\lab4_csv_parser\Debug\lab4_csv_parser.exe
+C:\Users\Dyuga\Desktop\study_labs\oop\lab4_csv_parser\Debug\lab4_csv_parser.pdb
