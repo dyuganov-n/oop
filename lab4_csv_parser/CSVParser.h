@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <exception>
 
 
 using namespace std;
@@ -27,13 +28,14 @@ public:
 
 	private:
 		CSVParser* parser = nullptr;
+        //CSVParser& parser;
 		bool isEnd = false;
 		std::size_t lineNumber = 0;
 
 		std::tuple<Args...> record;
 
 		//Private functions
-		void getRecord() {
+		void _getRecord() {
 			std::string line;
 			if (!isEnd) {
 				std::getline(parser->file, line);
@@ -43,26 +45,23 @@ public:
 		}
 
     public:
+
         explicit iterator() : isEnd(true) {}
 
-        explicit iterator(CSVParser& parser) : parser(&parser) {
-            auto& file = parser.file;
-            while (!isEnd && lineNumber < parser.linesToSkip) {
+        explicit iterator(CSVParser& _parser) : parser(&_parser) {
+            auto& file = _parser.file;
+            while (!isEnd && lineNumber < _parser.linesToSkip) {
                 file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 isEnd = file.eof();
                 lineNumber++;
             }
-            /*for (; !isEnd && lineNumber < parser.linesToSkip; lineNumber++) {
-                file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                isEnd = file.eof();
-            }*/
-            getRecord();
+            _getRecord();
         }
 
         iterator& operator++() {
             if (!isEnd) {
                 lineNumber++;
-                getRecord();
+                _getRecord();
             }
             return *this;
         }
@@ -107,37 +106,62 @@ public:
         return tokens;
     }
 
-    template<typename T, typename std::enable_if<!std::is_same<T, std::string>::value>::type* = nullptr>
-    static T getValue(const std::string& token, std::size_t tokenNo) {
-        static std::istringstream convertStream;
-
+    template<typename T>
+    T getValue(const std::string& str) {
+        cout << typeid(T).name() << endl; // for debug
+        //std::stringstream convertStream(str);
         T val;
+        std::istringstream convertStream;
         convertStream.clear();
-        convertStream.str(token);
-        convertStream >> val;
-
+        convertStream.str(str);
+        //convertStream << str;
+        //convertStream >> val;
+        if (convertStream >> val) {
+            string errorMassage = "GetValue error. std::stringstream convertStream failed. Current var. type is ";
+            errorMassage += typeid(T).name();
+            throw std::exception(errorMassage.c_str());
+        }
         return val;
     }
 
-    template<typename T, typename std::enable_if<std::is_same<T, std::string>::value>::type* = nullptr>
-    static const T& getValue(const std::string& token, std::size_t) {
-        return token;
+    template<>
+    std::string getValue<std::string>(const std::string& str) {
+        return str;
     }
 
-    std::tuple<Args...> getRecord(const std::string& line) {
-        std::string value;
+    template<>
+    int getValue<int>(const std::string& str) {
+        return std::stoi(str);
+    }
 
+    template<>
+    double getValue<double>(const std::string& str) {
+        return std::stod(str);
+    }
+
+    template<>
+    float getValue<float>(const std::string& str) {
+        return std::stof(str);
+    }
+
+    template<>
+    char getValue<char>(const std::string& str) {
+        return str.at(0);
+    }
+
+
+    
+    std::tuple<Args...> getRecord(const std::string& line) {
         if (file.eof()) {
             return std::tuple<Args...>();
         }
+        std::vector<std::string> tokens(getTokens(line));
 
-        auto tokens = getTokens(line);
+        reverse(tokens.begin(), tokens.end());
         auto tokensIterator = tokens.begin();
 
-        std::size_t k = 0;
-        return std::tuple<Args...>(getValue<Args>(*tokensIterator++, k++)...);
+        std::tuple<Args...> result = std::tuple<Args...>(getValue<Args>(*tokensIterator++)...);
+
+        return result;
     }
-
-
 };
-
