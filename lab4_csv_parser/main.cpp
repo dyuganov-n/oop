@@ -10,18 +10,19 @@ using namespace std;
 
 int main() {
 	try {
-		ifstream file("test1.csv");
+		ifstream file("test.csv");
 		if (!file.is_open()) {
 			throw exception("Input file was not opened.");
 			return 0;
 		}
 
 		//CSVParser<string, char, double, int> parser(file, 0);
-		//CSVParser<int, string, string> parser(file, 0);
-		CSVParser<int, string> parser(file, 0 /*skip first lines count*/);
+		//CSVParser<int, string, string, char> parser(file, 0);
+		CSVParser<int, string, string, double, char> parser(file, 0 /*skip first lines count*/);
 		for (auto& rs : parser) {
 			cout << rs << endl;
 		}
+
 
 		file.close();
 		return 0;

@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <exception>
+#include <iterator>
 
 
 using namespace std;
@@ -28,13 +29,11 @@ public:
 
 	private:
 		CSVParser* parser = nullptr;
-        //CSVParser& parser;
 		bool isEnd = false;
 		std::size_t lineNumber = 0;
 
 		std::tuple<Args...> record;
 
-		//Private functions
 		void _getRecord() {
 			std::string line;
 			if (!isEnd) {
@@ -93,7 +92,7 @@ public:
         return iterator();
     }
 
-    std::vector<std::string> getTokens(const std::string& line) {
+    std::vector<std::string> getStrings(const std::string& line) {
         std::string token;
         std::vector<std::string> tokens;
 
@@ -107,60 +106,37 @@ public:
     }
 
     template<typename T>
-    T getValue(const std::string& str) {
-        cout << typeid(T).name() << endl; // for debug
-        //std::stringstream convertStream(str);
+    T getValueFromStr(const std::string& str) {
+        std::stringstream convertStream(str);
         T val;
-        std::istringstream convertStream;
-        convertStream.clear();
-        convertStream.str(str);
-        //convertStream << str;
-        //convertStream >> val;
-        if (convertStream >> val) {
-            string errorMassage = "GetValue error. std::stringstream convertStream failed. Current var. type is ";
-            errorMassage += typeid(T).name();
-            throw std::exception(errorMassage.c_str());
-        }
+        convertStream >> val;
         return val;
     }
 
     template<>
-    std::string getValue<std::string>(const std::string& str) {
+    std::string getValueFromStr<std::string>(const std::string& str) {
         return str;
     }
 
-    template<>
-    int getValue<int>(const std::string& str) {
-        return std::stoi(str);
+    template<size_t N>
+    void fillTuple(std::tuple<Args...>& t, std::vector<std::string>& strings) {
+        std::get<N - 1>(t) = getValueFromStr<std::tuple_element<N - 1, std::tuple<Args...>>::type>(strings.at(N - 1));
+        fillTuple<N - 1>(t, strings);
     }
 
     template<>
-    double getValue<double>(const std::string& str) {
-        return std::stod(str);
+    void fillTuple<1>(std::tuple<Args...>& t, std::vector<std::string>& strings) {
+        std::get<0>(t) = getValueFromStr<std::tuple_element<0, std::tuple<Args...>>::type>(strings.at(0));
     }
-
-    template<>
-    float getValue<float>(const std::string& str) {
-        return std::stof(str);
-    }
-
-    template<>
-    char getValue<char>(const std::string& str) {
-        return str.at(0);
-    }
-
-
     
     std::tuple<Args...> getRecord(const std::string& line) {
         if (file.eof()) {
             return std::tuple<Args...>();
         }
-        std::vector<std::string> tokens(getTokens(line));
+        std::vector<std::string> strings(getStrings(line));
 
-        reverse(tokens.begin(), tokens.end());
-        auto tokensIterator = tokens.begin();
-
-        std::tuple<Args...> result = std::tuple<Args...>(getValue<Args>(*tokensIterator++)...);
+        std::tuple<Args...> result; 
+        fillTuple<sizeof...(Args)>(result, strings);
 
         return result;
     }
