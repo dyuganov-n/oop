@@ -18,7 +18,7 @@ int main() {
 
 		//CSVParser<string, char, double, int> parser(file, 0);
 		//CSVParser<int, string, string, char> parser(file, 0);
-		CSVParser<int, string, string, double, char> parser(file, 0 /*skip first lines count*/);
+		CSVParser<int, string> parser(file, 1 /*skip first lines count*/);
 		for (auto& rs : parser) {
 			cout << rs << endl;
 		}

@@ -17,7 +17,6 @@ class CSVParser {
 private:
 	ifstream& file;
 	size_t linesToSkip = 0;
-	
 
 public:
 	CSVParser(std::ifstream& _file, const size_t& _linesToSkip) : file(_file), linesToSkip(_linesToSkip) {}
@@ -134,6 +133,9 @@ public:
             return std::tuple<Args...>();
         }
         std::vector<std::string> strings(getStrings(line));
+
+        /*auto stringsIterator = strings.begin();
+        return std::tuple<Args...>(getValueFromStr<Args>(*stringsIterator++)...);*/
 
         std::tuple<Args...> result; 
         fillTuple<sizeof...(Args)>(result, strings);
