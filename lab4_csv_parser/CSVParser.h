@@ -32,12 +32,9 @@ public:
 		CSVParser* parser = nullptr;
 		bool isEnd = false;
 		std::size_t lineNumber = 0;
-
-        //std::size_t currentLine = lineNumber;
 		std::tuple<Args...> record;
 
         void delShieldedData(string& line) {
-            //bool shieldedBlockStart = false;
             bool shieldedBlockEnd = true;
 
             for (size_t i = 0; i < line.size(); ++i) {

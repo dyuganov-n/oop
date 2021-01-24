@@ -37,8 +37,5 @@
     <None Include="test1.csv">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="test2.csv">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

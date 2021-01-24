@@ -16,7 +16,6 @@ int main() {
 			return 0;
 		}
 
-		//CSVParser<string, char, double, int> parser(file, 0);
 		CSVParser<int, string, string, double, char> parser(file, 0);
 		//CSVParser<int, string> parser(file, 0 /*skip first lines count*/);
 		parser.setColumnSepSymbol('/');
