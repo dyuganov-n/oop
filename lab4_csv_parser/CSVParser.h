@@ -17,6 +17,7 @@ class CSVParser {
 private:
 	ifstream& file;
 	size_t linesToSkip = 0;
+    char sepSymbol = ';';
 
 public:
 	CSVParser(std::ifstream& _file, const size_t& _linesToSkip) : file(_file), linesToSkip(_linesToSkip) {}
@@ -107,7 +108,7 @@ public:
 
         std::stringstream tmp_stream(line);
 
-        while (getline(tmp_stream, token, ';')) {
+        while (getline(tmp_stream, token, sepSymbol)) {
             tokens.push_back(token);
         }
 
@@ -179,5 +180,9 @@ public:
         }
 
         return result;
+    }
+
+    void setSepSymbol(const char& symbol) {
+        sepSymbol = symbol;
     }
 };
