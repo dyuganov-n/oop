@@ -31,15 +31,25 @@ public:
 		bool isEnd = false;
 		std::size_t lineNumber = 0;
 
+        //std::size_t currentLine = lineNumber;
 		std::tuple<Args...> record;
 
 		void _getRecord() {
-			std::string line;
-			if (!isEnd) {
-				std::getline(parser->file, line);
-				isEnd = parser->file.eof();
-				record = parser->getRecord(line);
-			}
+            try {
+                std::string line;
+                if (!isEnd) {
+                    std::getline(parser->file, line);
+                    isEnd = parser->file.eof();
+                    record = parser->getRecord(line);
+                }
+            }
+            catch (const std::exception& e) {
+                string massage = e.what();
+                massage += to_string(lineNumber + 1);
+                massage += " line. ";
+                throw exception(massage.c_str());
+            }
+			
 		}
 
     public:
@@ -108,7 +118,10 @@ public:
     T getValueFromStr(const std::string& str) {
         std::stringstream convertStream(str);
         T val;
-        convertStream >> val;
+        if (!(convertStream >> val)) {
+            std::string massage = "Parser type error. ";
+            throw std::exception(massage.c_str());
+        }
         return val;
     }
 
@@ -119,13 +132,33 @@ public:
 
     template<size_t N>
     void fillTuple(std::tuple<Args...>& t, std::vector<std::string>& strings) {
-        std::get<N - 1>(t) = getValueFromStr<std::tuple_element<N - 1, std::tuple<Args...>>::type>(strings.at(N - 1));
+        try {
+            std::get<N - 1>(t) = getValueFromStr<std::tuple_element<N - 1, std::tuple<Args...>>::type>(strings.at(N - 1));
+        }
+        catch (const std::exception& e) {
+            string massage = e.what();
+            massage += "Wrong type at ";
+            massage += to_string(N);
+            massage += " column. ";
+            throw exception(massage.c_str());
+            return;
+        }
         fillTuple<N - 1>(t, strings);
     }
 
     template<>
     void fillTuple<1>(std::tuple<Args...>& t, std::vector<std::string>& strings) {
-        std::get<0>(t) = getValueFromStr<std::tuple_element<0, std::tuple<Args...>>::type>(strings.at(0));
+        try {
+            std::get<0>(t) = getValueFromStr<std::tuple_element<0, std::tuple<Args...>>::type>(strings.at(0));
+        }
+        catch (const std::exception& e) {
+            string massage = e.what();
+            massage += "Wrong type at ";
+            massage += to_string(1);
+            massage += " column. ";
+            throw std::exception(massage.c_str());
+            return;
+        }
     }
     
     std::tuple<Args...> getRecord(const std::string& line) {
@@ -138,7 +171,12 @@ public:
         return std::tuple<Args...>(getValueFromStr<Args>(*stringsIterator++)...);*/
 
         std::tuple<Args...> result; 
-        fillTuple<sizeof...(Args)>(result, strings);
+        try {
+            fillTuple<sizeof...(Args)>(result, strings);
+        }
+        catch (const std::exception& e) {
+            throw e;
+        }
 
         return result;
     }
