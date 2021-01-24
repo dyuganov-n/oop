@@ -19,7 +19,8 @@ int main() {
 		//CSVParser<string, char, double, int> parser(file, 0);
 		CSVParser<int, string, string, double, char> parser(file, 0);
 		//CSVParser<int, string> parser(file, 0 /*skip first lines count*/);
-		parser.setSepSymbol('/');
+		parser.setColumnSepSymbol('/');
+		parser.setShieldingSymbol('"');
 		for (auto& rs : parser) {
 			cout << rs << endl;
 		}

@@ -17,7 +17,8 @@ class CSVParser {
 private:
 	ifstream& file;
 	size_t linesToSkip = 0;
-    char sepSymbol = ';';
+    char columnsSepSymbol = ';';
+    char shieldingSymbol = '"';
 
 public:
 	CSVParser(std::ifstream& _file, const size_t& _linesToSkip) : file(_file), linesToSkip(_linesToSkip) {}
@@ -35,11 +36,29 @@ public:
         //std::size_t currentLine = lineNumber;
 		std::tuple<Args...> record;
 
+        void delShieldedData(string& line) {
+            //bool shieldedBlockStart = false;
+            bool shieldedBlockEnd = true;
+
+            for (size_t i = 0; i < line.size(); ++i) {
+                if (line.at(i) == parser->getShieldingSymbol()) {
+                    line.erase(line.begin() + i);
+                    shieldedBlockEnd = !shieldedBlockEnd;
+                    --i;
+                }
+                else if (!shieldedBlockEnd) {
+                    line.erase(line.begin() + i);
+                    --i;
+                }
+            }
+        }
+
 		void _getRecord() {
             try {
                 std::string line;
                 if (!isEnd) {
                     std::getline(parser->file, line);
+                    delShieldedData(line);
                     isEnd = parser->file.eof();
                     record = parser->getRecord(line);
                 }
@@ -108,7 +127,7 @@ public:
 
         std::stringstream tmp_stream(line);
 
-        while (getline(tmp_stream, token, sepSymbol)) {
+        while (getline(tmp_stream, token, columnsSepSymbol)) {
             tokens.push_back(token);
         }
 
@@ -182,7 +201,17 @@ public:
         return result;
     }
 
-    void setSepSymbol(const char& symbol) {
-        sepSymbol = symbol;
+    void setColumnSepSymbol(const char& symbol) {
+        columnsSepSymbol = symbol;
     }
+
+    void setShieldingSymbol(const char& symbol) {
+        if (symbol == this->columnsSepSymbol) {
+            throw std::exception("Shielding symbol is equal columns sep. symbol. ");
+        }
+        shieldingSymbol = symbol;
+    }
+
+    char getShieldingSymbol() { return this->shieldingSymbol; }
+    char getColumnSepSymbol() { return this->columnsSepSymbol; }
 };
