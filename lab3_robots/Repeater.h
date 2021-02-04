@@ -18,7 +18,6 @@ private:
 	vector<pair<Coordinates, RobotClass>> robotsPositions;
 
 	bool isEqual(const Coordinates& l, const Coordinates& r) const noexcept;
-
 public:
 	Repeater() = default;
 	~Repeater() = default;

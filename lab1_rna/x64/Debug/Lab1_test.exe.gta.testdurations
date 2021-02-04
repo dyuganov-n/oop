@@ -36,7 +36,7 @@
     <TestDuration Test="Split.Split" Duration="1" />
     <TestDuration Test="Split.SplitFromZero" Duration="1" />
     <TestDuration Test="Split.SplitFromEnd" Duration="1" />
-    <TestDuration Test="Split.SplitEmptyRna" Duration="1" />
+    <TestDuration Test="Split.SplitEmptyRna" Duration="4" />
     <TestDuration Test="Split.SplitWithWrongIndex" Duration="1" />
     <TestDuration Test="IsComplementary.EmptyRna" Duration="1" />
     <TestDuration Test="IsComplementary.ComplementaryRna" Duration="1" />

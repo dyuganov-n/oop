@@ -8,7 +8,6 @@ using std::vector;
 class Explorer : public IRobot {
 private:
 	const RobotClass _class = RobotClass::explorer;
-	
 
 public:
 	Explorer(const Coordinates& startPosition, Repeater* rep, Environment* env);

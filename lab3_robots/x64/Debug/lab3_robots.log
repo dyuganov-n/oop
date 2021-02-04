@@ -1,12 +1,8 @@
 ﻿  Command.cpp
   CommandHandler.cpp
-  ConsoleInput.cpp
   Environment.cpp
   Explorer.cpp
   Manager.cpp
-  Map.cpp
-C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Map.cpp(193,19): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Map.cpp(194,19): warning C4018: '>=': signed/unsigned mismatch
   Mode.cpp
 C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Mode.cpp(168,29): warning C4018: '>=': signed/unsigned mismatch
 C:\Users\Dyuga\Desktop\study_labs\oop\lab3_robots\Mode.cpp(169,26): warning C4018: '>=': signed/unsigned mismatch

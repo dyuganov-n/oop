@@ -5,18 +5,6 @@
 
 #include <gtest/gtest.h>
 
-/*
-#include <time.h> // time
-
-#include <stdlib.h>
-#include <crtdbg.h>
-
-//using testing::Eq;
-//namespace { class RNATest : public testing::Test{ public: }; }
-
-// memory
-#define _CRTDBG_MAP_ALLOC
-*/
 
 TEST(Constructors, EmptyConstructor) {
 	// Arragnge, act
@@ -504,7 +492,6 @@ TEST(OperatorGetNuclByIndex, WrongIndex) {
 	ASSERT_THROW(d[100], std::exception);
 	ASSERT_THROW(e[100], std::exception);
 	ASSERT_THROW(f[100], std::exception);
-
 }
 
 TEST(OperatorGetNuclByIndex, NormalUse) {

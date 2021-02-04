@@ -11,6 +11,7 @@ public class MorseEncoder {
 
     public void encode(String resultFileName){
 
+        // create stats file int the end
     }
 
 }
