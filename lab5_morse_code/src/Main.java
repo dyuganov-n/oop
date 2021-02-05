@@ -1,7 +1,4 @@
-import java.io.*;
-import java.lang.StringBuilder;
-import java.util.ArrayList;
-import java.util.Hashtable;
+
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -13,16 +10,17 @@ public class Main {
             String inputFileName = in.next();
 
             Parser parser = new Parser();
+            Alphabet alphabet = new Alphabet("");
 
             if(command.equals("decode")){
-                MorseDecoder decoder = new MorseDecoder();
+                MorseDecoder decoder = new MorseDecoder(alphabet);
                 String outputFileName = "decode_result.txt";
                 decoder.decode(parser.parseFile(inputFileName), outputFileName);
                 System.out.println("Decode completed. Output file: " + outputFileName);
             }
             else if(command.equals("code")){
                 String outputFileName = "encode_result.txt";
-                MorseEncoder encoder = new MorseEncoder();
+                MorseEncoder encoder = new MorseEncoder(alphabet);
                 encoder.encode(parser.parseFile(inputFileName), outputFileName);
             }
 
