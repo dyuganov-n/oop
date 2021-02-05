@@ -1,14 +1,15 @@
 import java.util.HashSet;
 
 public class StatCounter {
-    private Character symbol;
+    private final Character symbol;
     private Integer counter = 0;
 
     public StatCounter(Character symbol){
         this.symbol = symbol;
+        counter = 1;
     }
 
-    public Character getSymbol() {
+    public Character getSymbol(){
         return symbol;
     }
 
@@ -30,8 +31,8 @@ public class StatCounter {
     }
 
     //public native int hashCode();
-
-    public int hashCode() {
+    // использовать хеш код из обджекта
+    /*public int hashCode() {
         return (int)symbol;
-    }
+    }*/
 }

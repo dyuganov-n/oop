@@ -2,14 +2,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 
 public class MorseEncoder {
-    private final String fileName;
-    public MorseEncoder(String fileName){
-        this.fileName = fileName;
-    }
+    public MorseEncoder(){}
 
-    public void encode(String resultFileName){
+    public void encode(ArrayList<String> text, String resultFileName){
 
         // create stats file int the end
     }
