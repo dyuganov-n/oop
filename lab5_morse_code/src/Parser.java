@@ -18,7 +18,7 @@ public class Parser {
     }
 
     public ArrayList<String> parseForDecoder(String fileName) throws java.io.IOException{
-        String morseCodeSpace = "   ";
+        String morseCodeSpace = "    ";
 
         ArrayList<String> result = new ArrayList<>();
         BufferedReader in = new BufferedReader(new FileReader(fileName));

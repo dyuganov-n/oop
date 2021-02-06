@@ -22,6 +22,7 @@ public class Main {
                 String outputFileName = "encode_result.txt";
                 MorseEncoder encoder = new MorseEncoder(alphabet);
                 encoder.encode(parser.parseForEncoder(inputFileName), outputFileName);
+                System.out.println("Encode completed. Output file: " + outputFileName);
             }
 
         }

@@ -25,14 +25,19 @@ public class StatCounter {
         --counter;
     }
 
-    public boolean equals(StatCounter other) {
-        if(other == null) return false;
-        return (this == other) || (this.symbol.equals(other.symbol) && this.counter.equals(other.counter));
+    public boolean equals(Object other) {
+        if(this == other) {
+            return true;
+        }
+        if (other == null || other.getClass() != this.getClass()) {
+            return false;
+        }
+        StatCounter sc = (StatCounter)other;
+        return this.symbol.equals(sc.symbol);
     }
 
-    //public native int hashCode();
-    // использовать хеш код из обджекта
-    /*public int hashCode() {
+    // or use hashCode realisation from Object class
+    public int hashCode() {
         return (int)symbol;
-    }*/
+    }
 }
