@@ -36,7 +36,6 @@ public class StatCounter {
         return this.symbol.equals(sc.symbol);
     }
 
-    // or use hashCode realisation from Object class
     public int hashCode() {
         return (int)symbol;
     }
