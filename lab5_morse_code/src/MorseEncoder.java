@@ -1,8 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MorseEncoder {
     private final Alphabet alphabet;
@@ -13,49 +11,20 @@ public class MorseEncoder {
 
     public void encode(ArrayList<String> text, String resultFileName) throws NullPointerException, IOException {
         StringBuilder resultString = new StringBuilder();
-        Set<StatCounter> statistics = new HashSet<StatCounter>();
+        StatCounter statCounter = new StatCounter();
 
         try(FileWriter encodeOut = new FileWriter(resultFileName)) {
             for(String str : text){
                 for (Character character : str.toCharArray()){
-                    resultString.append(alphabet.getMorseCodeByChar(character));
-                    resultString.append(' ');
-
-                    if(!statistics.add(new StatCounter(character))){
-                        for (StatCounter counter : statistics) {
-                            if(counter.getSymbol().equals(character)){
-                                counter.increaseCnt();
-                            }
-                        }
-                    }
+                    resultString.append(alphabet.getMorseCodeByChar(character).toString()).append(" ");
+                    statCounter.add(character);
                 }
                 String morseCodeSpace = "   ";
                 encodeOut.write(resultString.toString() + morseCodeSpace);
                 resultString.delete(0, resultString.length());
             }
         }
-
-        printStatsToFile("encode_stats.txt", statistics);
-    }
-
-    private void printStatsToFile(String fileName, Set<StatCounter> statistics) throws IOException{
-        try (FileWriter statsOut = new FileWriter(fileName)) {
-
-            for (StatCounter counter : statistics) {
-                statsOut.write(counter.getSymbol().toString() + ' ' + counter.getCounter() + '\n');
-            }
-        }
-    }
-
-    /// Returns true if increased
-    private void increaseIfContains(Set<StatCounter> statistics, Character character){
-        if(!statistics.add(new StatCounter(character))){
-            for (StatCounter counter : statistics) {
-                if(counter.getSymbol().equals(character)){
-                    counter.increaseCnt();
-                }
-            }
-        }
+        statCounter.printToFile("encode_stats.txt");
     }
 
 }

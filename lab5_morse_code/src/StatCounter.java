@@ -1,42 +1,30 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.Set;
 
 public class StatCounter {
-    private final Character symbol;
-    private Integer counter = 0;
+    private Set<CharCounter> statistics = null;
 
-    public StatCounter(Character symbol){
-        this.symbol = symbol;
-        counter = 1;
+    public StatCounter(){
+        statistics = new HashSet<CharCounter>();
     }
 
-    public Character getSymbol(){
-        return symbol;
-    }
-
-    public Integer getCounter() {
-        return counter;
-    }
-
-    public void increaseCnt() {
-        ++counter;
-    }
-
-    public void decrease() {
-        --counter;
-    }
-
-    public boolean equals(Object other) {
-        if(this == other) {
-            return true;
+    public void add(Character character){
+        if(!statistics.add(new CharCounter(character))){
+            for (CharCounter counter : statistics) {
+                if(counter.getSymbol().equals(character)){
+                    counter.increaseCnt();
+                }
+            }
         }
-        if (other == null || other.getClass() != this.getClass()) {
-            return false;
-        }
-        StatCounter sc = (StatCounter)other;
-        return this.symbol.equals(sc.symbol);
     }
 
-    public int hashCode() {
-        return (int)symbol;
+    public void printToFile(String fileName) throws IOException {
+        try (FileWriter statsOut = new FileWriter(fileName)) {
+            for(CharCounter counter : statistics){
+                statsOut.write(counter.getSymbol().toString() + ' ' + counter.getCounter() + '\n');
+            }
+        }
     }
 }
