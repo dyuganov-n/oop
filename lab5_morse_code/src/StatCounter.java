@@ -1,5 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,9 +23,12 @@ public class StatCounter {
 
     public void printToFile(String fileName) throws IOException {
         try (FileWriter statsOut = new FileWriter(fileName)) {
+            Integer cnt = 0;
             for(CharCounter counter : statistics){
                 statsOut.write(counter.getSymbol().toString() + ' ' + counter.getCounter() + '\n');
+                cnt += counter.getCounter();
             }
+            statsOut.write("\n" + "TOTAL: " + cnt.toString());
         }
     }
 }
