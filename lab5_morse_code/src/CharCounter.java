@@ -1,10 +1,9 @@
 public class CharCounter {
     private final Character symbol;
-    private Integer counter = 0;
+    private Integer counter = 1;
 
     public CharCounter(Character symbol){
         this.symbol = symbol;
-        counter = 1;
     }
 
     public Character getSymbol(){

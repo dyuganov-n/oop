@@ -1,9 +1,6 @@
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MorseDecoder {
     private final Alphabet alphabet;
@@ -11,8 +8,7 @@ public class MorseDecoder {
         this.alphabet = alphabet;
     }
 
-    public void decode(ArrayList<String> text, String resultFileName) throws NullPointerException, IOException {
-        String morseCodeSpace = "   ";
+    public void decode(ArrayList<String> text, String resultFileName) throws IOException {
         StringBuilder resultString = new StringBuilder();
         StatCounter statCounter = new StatCounter();
 
