@@ -1,0 +1,3 @@
+C:\Users\Dyuga\Desktop\study_labs\oop\lab1_rna\x64\Debug\Lab1_test.pdb
+C:\Users\Dyuga\Desktop\study_labs\oop\Lab1_test\x64\Debug\Lab1_test.vcxproj.CopyComplete
+C:\Users\Dyuga\Desktop\study_labs\oop\Lab1_test\x64\Debug\Lab1_test.pdb
